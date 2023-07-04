@@ -1,0 +1,42 @@
+.appHeader {
+  max-width: 1280px;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  outline: 1px solid red;
+  background-color: #1C1C21;
+}
+
+.headerNavbar {
+  outline: 1px solid honeydew;
+  display: flex;
+  align-items: center;
+}
+
+.headerTabMenu {
+  outline: 1px solid darkcyan;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.headerLink { 
+  padding: 16px 20px;
+  border-radius: 40px;
+  box-shadow: 0px 5px 5px 0px #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #F2F2F3;
+}
+
+.headerLogo {
+    margin-right: 288px;
+    margin-left: 112px;
+}
+
