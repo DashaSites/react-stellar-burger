@@ -9,7 +9,6 @@
 .main {
   display: flex;
   justify-content: space-between;
-  outline: 1px solid darkorange;
   gap: 56px;
   margin: 0 auto;
 }
