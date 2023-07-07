@@ -9,12 +9,12 @@ const modalsContainer = document.querySelector("#modals");
 const Modal = ({ onCloseClick, onEscClick, children }) => {
 
   React.useEffect(() => {
-    document.addEventListener("click", onEscClick);
+    document.addEventListener("keydown", onEscClick);
 
     return () => {
-      document.removeEventListener("click", onEscClick);
+      document.removeEventListener("keydown", onEscClick);
     };
-  }, []); // Как это активировать?
+  }, []); 
 
   return ReactDOM.createPortal(
     <>
