@@ -6,9 +6,7 @@ const IngredientDetails = ({ ingredient }) => {
       <h2 className={`${ingredientDetailsStyles.heading} text text_type_main-large`}>
         Детали ингредиента
       </h2>
-      <div className={ingredientDetailsStyles.image}>
-        {ingredient.image}
-      </div>
+      <img className={ingredientDetailsStyles.image} src={ingredient.image} />
       <h3 className={`${ingredientDetailsStyles.title} text text_type_main-medium`}>
         {ingredient.name}
       </h3>
