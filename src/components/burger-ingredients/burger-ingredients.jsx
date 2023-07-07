@@ -2,10 +2,9 @@ import { useState } from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../ingredient/ingredient.jsx";
-import { data } from "../../utils/data.js";
 import PropTypes from 'prop-types';
 
-const BurgerIngredients = () => {
+const BurgerIngredients = ({ ingredients, onClick }) => {
 
   // Подключаем табы: изначально стейт принимает таб, выбранный по умолчанию
   const [current, setCurrent] = useState('bun');
@@ -21,15 +20,15 @@ const BurgerIngredients = () => {
   }
 
 
-  const buns = data.filter((element) => { // Вытаскиваем из data массив с булками
+  const buns = ingredients.filter((element) => { // Вытаскиваем из всех данных массив булок
     return element.type === "bun";
   });
   
-  const sauces = data.filter((element) => { // Вытаскиваем из data массив с соусами
+  const sauces = ingredients.filter((element) => { // Вытаскиваем из всех данных массив соусов
     return element.type === "sauce";
   });
 
-  const mains = data.filter((element) => { // Вытаскиваем из data массив с начинкой
+  const mains = ingredients.filter((element) => { // Вытаскиваем из всех данных массив начинок
     return element.type === "main";
   });
 
@@ -55,7 +54,7 @@ const BurgerIngredients = () => {
         <ul className={ingredientsStyles.list} >
           {
             buns.map((bun) => (
-              <Ingredient props={bun} key={bun._id} />
+              <Ingredient ingredient={bun} key={bun._id} onClick={onClick} />
             ))
           }
         </ul>
@@ -64,7 +63,7 @@ const BurgerIngredients = () => {
         <ul className={ingredientsStyles.list} >
           {
             sauces.map((sauce) => (
-              <Ingredient props={sauce} key={sauce._id} />
+              <Ingredient ingredient={sauce} key={sauce._id} onClick={onClick} />
             ))
           }
         </ul>
@@ -73,7 +72,7 @@ const BurgerIngredients = () => {
         <ul className={ingredientsStyles.list} >
           {
             mains.map((main) => (
-              <Ingredient props={main} key={main._id} />
+              <Ingredient ingredient={main} key={main._id} onClick={onClick} />
             ))
           }
         </ul>
@@ -82,9 +81,10 @@ const BurgerIngredients = () => {
   )
 }
 
+
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.number.isRequired,
+  ingredients: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     proteins: PropTypes.number.isRequired,

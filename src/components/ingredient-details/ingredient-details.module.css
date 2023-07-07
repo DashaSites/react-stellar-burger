@@ -1,0 +1,45 @@
+.container {
+  padding: 52px 40px 50px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.heading {
+  align-self: start;
+}
+
+.image {
+  width: 520px;
+  height: 240px;
+  margin-bottom: 16px;
+}
+
+.title {
+  width: 520px;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.description {
+  outline: 1px solid seagreen;
+  display: flex;
+  column-gap: 20px;
+}
+
+.quality {
+  width: 112px;
+}
+
+.measurementUnit {
+  color: #8585AD;
+  text-align: center;
+}
+
+.amount {
+  color: #8585AD;
+  text-align: center;
+}
+

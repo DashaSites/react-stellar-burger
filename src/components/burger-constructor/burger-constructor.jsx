@@ -1,80 +1,90 @@
 import constructorStyles from "./burger-constructor.module.css";
-import { ConstructorElement, Counter, DragIcon, CurrencyIcon, LockIcon, DeleteIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { data } from "../../utils/data.js";
+import { ConstructorElement, Counter, DragIcon, CurrencyIcon, LockIcon, DeleteIcon, Button, CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../ingredient/ingredient.jsx";
 import PropTypes from "prop-types";
 
-const BurgerConstructor = () => {
+const BurgerConstructor = ({ ingredients }) => {
+  // Найдем в данных (если они загрузились) хоть одну булку:
+  const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
+
  
-  // Найдем в массиве data хоть одну булку и назовем ее bunElement:
-  const bunElement = data.find((item) => item.type === "bun");
- 
-  // Из data вытащим массив всех ингредиентов, кроме булок:
-  const mainsAndSaucesElements = data.filter((item) => item.type !== "bun");
+  // Из данных вытащим массив всех ингредиентов, кроме булок:
+  const mainsAndSaucesElements = ingredients.filter((item) => item.type !== "bun");
   
 
 
   return (
+
     <section className={constructorStyles.constructorSection}>
 
-      <div className={constructorStyles.elementsList}>        
-        {
-          <div className={constructorStyles.fixedElement}>
-            <ConstructorElement 
-              type="top"
-              isLocked={true}
-              text={`${bunElement.name} (верх)`}
-              price={bunElement.price}
-              thumbnail={bunElement.image}
-            />
-          </div>
-        }
-        <ul className={`${constructorStyles.transposableElements} custom-scroll`}> {/* Список начинок и соусов */}
-          {
-            mainsAndSaucesElements.map((element) => {
-              return (
-                <li className={constructorStyles.transposableElement} key={element._id}>
-                  <DragIcon type="primary" />
-                  <ConstructorElement 
-                    text={`${element.name} (верх)`}
-                    price={element.price}
-                    thumbnail={element.image}
-                  />
-                </li>
-              )
-            })
-          }
-        </ul>  
-        {
-          <div className={constructorStyles.fixedElement}>
-            <ConstructorElement 
-              type="bottom"
-              isLocked={true}
-              text={`${bunElement.name} (низ)`}
-              price={bunElement.price}
-              thumbnail={bunElement.image}
-            />
-          </div>
-        }
-      </div>
-
-      <div className={constructorStyles.resultCorner}> {/* Итоги: счетчик и кнопка заказа */}
-        <div className={constructorStyles.resultCounter}>
-          <span className="text text_type_digits-medium">610</span>
-          <CurrencyIcon type="primary" />
+    <div className={constructorStyles.elementsList}>        
+      {
+        <div className={constructorStyles.fixedElement}>
+          <ConstructorElement 
+            type="top"
+            isLocked={true}
+            text={`${bunElement.name} (верх)`}
+            price={bunElement.price}
+            thumbnail={bunElement.image}
+          />
         </div>
-        <Button htmlType="button" type="primary" size="large">
-          Оформить заказ
-        </Button>
-      </div>
+      }
+      <ul className={`${constructorStyles.transposableElements} custom-scroll`}> {/* Список начинок и соусов */}
+        {
+          mainsAndSaucesElements.map((element) => {
+            return (
+              <li className={constructorStyles.transposableElement} key={element._id}>
+                <DragIcon type="primary" />
+                <ConstructorElement 
+                  text={element.name}
+                  price={element.price}
+                  thumbnail={element.image}
+                />
+              </li>
+            )
+          })
+        }
+      </ul>  
+      {
+        <div className={constructorStyles.fixedElement}>
+          <ConstructorElement 
+            type="bottom"
+            isLocked={true}
+            text={`${bunElement.name} (низ)`}
+            price={bunElement.price}
+            thumbnail={bunElement.image}
+          />
+        </div>
+      }
+    </div>
 
-    </section>
+    <div className={constructorStyles.resultCorner}> {/* Итоги: счетчик и кнопка заказа */}
+      <div className={constructorStyles.resultCounter}>
+        <span className="text text_type_digits-medium">610</span>
+        <CurrencyIcon type="primary" />
+      </div>
+      <Button htmlType="button" type="primary" size="large">
+        Оформить заказ
+      </Button>
+    </div>
+    
+    {/*
+    <div className={constructorStyles.testModal}>
+      <button type="button" className={constructorStyles.closeButton}>
+        <CloseIcon type="primary" />
+      </button>
+    </div>
+    */}
+    
+
+  </section>
   )
 }
 
+
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.number.isRequired,
+  ingredients: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     proteins: PropTypes.number.isRequired,
@@ -88,6 +98,7 @@ BurgerConstructor.propTypes = {
     __v: PropTypes.number.isRequired
   }))
 }
+
 
 
 export default BurgerConstructor;
