@@ -1,22 +1,17 @@
 import constructorStyles from "./burger-constructor.module.css";
-import { ConstructorElement, Counter, DragIcon, CurrencyIcon, LockIcon, DeleteIcon, Button, CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import Ingredient from "../ingredient/ingredient.jsx";
+import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 
 const BurgerConstructor = ({ ingredients, onButtonClick }) => {
   // Найдем в данных (если они загрузились) хоть одну булку:
   const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
 
- 
-  // Из данных вытащим массив всех ингредиентов, кроме булок:
+  // Из данных вытащим массив всех остальных ингредиентов, кроме булок:
   const mainsAndSaucesElements = ingredients.filter((item) => item.type !== "bun");
   
 
-
   return (
-
     <section className={`${constructorStyles.constructorSection} pt-25`}>
-
     <div className={`${constructorStyles.elementsList} mb-10`}>        
       {
         <div className={constructorStyles.fixedElement}>
@@ -57,8 +52,7 @@ const BurgerConstructor = ({ ingredients, onButtonClick }) => {
         </div>
       }
     </div>
-
-    <div className={constructorStyles.resultCorner}> {/* Итоги: счетчик и кнопка заказа */}
+    <div className={constructorStyles.resultCorner}>
       <div className={`${constructorStyles.resultCounter} mr-10`}>
         <span className="text text_type_digits-medium">610</span>
         <CurrencyIcon type="primary" />
@@ -74,21 +68,21 @@ const BurgerConstructor = ({ ingredients, onButtonClick }) => {
 
 BurgerConstructor.propTypes = {
   ingredients: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired
-  }))
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    type: PropTypes.string,
+    proteins: PropTypes.number,
+    fat: PropTypes.number,
+    carbohydrates: PropTypes.number,
+    calories: PropTypes.number,
+    price: PropTypes.number,
+    image: PropTypes.string,
+    image_mobile: PropTypes.string,
+    image_large: PropTypes.string,
+    __v: PropTypes.number
+  })).isRequired,
+  onButtonClick: PropTypes.func.isRequired
 }
-
 
 
 export default BurgerConstructor;

@@ -29,7 +29,6 @@ const App = () => {
 
 
   // Настраиваю состояние и работу модальных окон
-  
   // стейт для модального окна IngredientDetails 
   const [
     isIngredientDetailsOpened, 
@@ -68,23 +67,19 @@ const App = () => {
         <BurgerIngredients ingredients={ingredients} onElementClick={handleClickIngredient} />
         <BurgerConstructor ingredients={ingredients} onButtonClick={handleClickOrderButton} />
       </main>
-      {isIngredientDetailsOpened // компонент с ингредиентом открыт?
-        ? (
+        {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
           <Modal onCloseClick={closeModals} onEscKeydown={handleEscKeydown}>
             <IngredientDetails ingredient={ingredientToShow} />          
           </Modal>
-        )
-        : isOrderDetailsOpened // компонент с заказом открыт?
-        ? (
+        )} 
+        {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
           <Modal onCloseClick={closeModals} onEscKeydown={handleEscKeydown}>
             <OrderDetails />         
           </Modal>
-        )
-        : 
-        null
-        }
+        )} 
     </div>
   );
 }
+
 
 export default App;

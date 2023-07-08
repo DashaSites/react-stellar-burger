@@ -9,26 +9,25 @@ const BurgerIngredients = ({ ingredients, onElementClick }) => {
   // Подключаем табы: изначально стейт принимает таб, выбранный по умолчанию
   const [current, setCurrent] = React.useState("bun");
 
-
   // Отматываем на соответствующий раздел при клике на таб
   const setTab = (clickedTab) => {
-    setCurrent(clickedTab); // кликнутый там устанавливаем в стейт
-    const selectTab = document.getElementById(clickedTab); // ищем элемент с айди, равным названию таба
+    setCurrent(clickedTab); // кликнутый таб устанавливаем в стейт
+    const selectTab = document.getElementById(clickedTab); // ищем элемент с айди, совпадающим с названием таба
     if (selectTab) { // если такой элемент найден, то
       return selectTab.scrollIntoView({behaviour: "smooth"}); // скроллим до него
     }
   }
 
 
-  const buns = ingredients.filter((element) => { // Вытаскиваем из всех данных массив булок
+  const buns = ingredients.filter((element) => { // вытаскиваем из всех данных массив булок
     return element.type === "bun";
   });
   
-  const sauces = ingredients.filter((element) => { // Вытаскиваем из всех данных массив соусов
+  const sauces = ingredients.filter((element) => { // вытаскиваем из всех данных массив соусов
     return element.type === "sauce";
   });
 
-  const mains = ingredients.filter((element) => { // Вытаскиваем из всех данных массив начинок
+  const mains = ingredients.filter((element) => { // вытаскиваем из всех данных массив начинок
     return element.type === "main";
   });
 
@@ -50,7 +49,7 @@ const BurgerIngredients = ({ ingredients, onElementClick }) => {
 
       <div className={`${ingredientsStyles.wrapper} mt-10 mb-10 custom-scroll`}>
 
-        <h2 className="text text_type_main-medium" id="bun">Булки</h2> {/* Раздел с булками */}
+        <h2 className="text text_type_main-medium" id="bun">Булки</h2> {/* раздел с булками */}
         <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`} >
           {
             buns.map((bun) => (
@@ -59,7 +58,7 @@ const BurgerIngredients = ({ ingredients, onElementClick }) => {
           }
         </ul>
 
-        <h2 className="text text_type_main-medium" id="sauce">Соусы</h2> {/* Раздел с соусами */}
+        <h2 className="text text_type_main-medium" id="sauce">Соусы</h2> {/* раздел с соусами */}
         <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`} >
           {
             sauces.map((sauce) => (
@@ -68,7 +67,7 @@ const BurgerIngredients = ({ ingredients, onElementClick }) => {
           }
         </ul>
 
-        <h2 className="text text_type_main-medium" id="main">Начинки</h2> {/* Раздел с начинками */}
+        <h2 className="text text_type_main-medium" id="main">Начинки</h2> {/* раздел с начинками */}
         <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`} >
           {
             mains.map((main) => (
@@ -76,6 +75,7 @@ const BurgerIngredients = ({ ingredients, onElementClick }) => {
             ))
           }
         </ul>
+
       </div>
     </section>
   )
@@ -84,25 +84,20 @@ const BurgerIngredients = ({ ingredients, onElementClick }) => {
 
 BurgerIngredients.propTypes = {
   ingredients: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired
-  }))
-}
-
-// короткая версия:
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.object),
-  onClick: PropTypes.func.isRequired
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    type: PropTypes.string,
+    proteins: PropTypes.number,
+    fat: PropTypes.number,
+    carbohydrates: PropTypes.number,
+    calories: PropTypes.number,
+    price: PropTypes.number,
+    image: PropTypes.string,
+    image_mobile: PropTypes.string,
+    image_large: PropTypes.string,
+    __v: PropTypes.number
+  })).isRequired,
+  onElementClick: PropTypes.func.isRequired
 }
 
 
