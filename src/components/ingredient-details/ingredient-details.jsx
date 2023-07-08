@@ -1,4 +1,5 @@
 import ingredientDetailsStyles from "./ingredient-details.module.css";
+import PropTypes from "prop-types";
 
 const IngredientDetails = ({ ingredient }) => {
   return (
@@ -6,8 +7,8 @@ const IngredientDetails = ({ ingredient }) => {
       <h2 className={`${ingredientDetailsStyles.heading} text text_type_main-large`}>
         Детали ингредиента
       </h2>
-      <img className={ingredientDetailsStyles.image} src={ingredient.image} />
-      <h3 className={`${ingredientDetailsStyles.title} text text_type_main-medium`}>
+      <img className={`${ingredientDetailsStyles.image} mb-4`} src={ingredient.image} />
+      <h3 className={`${ingredientDetailsStyles.title} text text_type_main-medium mb-8`}>
         {ingredient.name}
       </h3>
       <div className={ingredientDetailsStyles.description}>
@@ -46,6 +47,11 @@ const IngredientDetails = ({ ingredient }) => {
       </div>
     </article>
   )
+}
+
+
+IngredientDetails.propTypes = {
+  ingredient: PropTypes.object.isRequired
 }
 
 export default IngredientDetails;

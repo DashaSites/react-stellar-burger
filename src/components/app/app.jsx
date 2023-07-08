@@ -5,6 +5,7 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients.jsx";
 import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
 import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
+import OrderDetails from "../order-details/order-details.jsx";
 
 const App = () => {
   
@@ -27,7 +28,7 @@ const App = () => {
   }, []);
 
 
-  // Настраиваем состояние и работу модальных окон
+  // Настраиваю состояние и работу модальных окон
   
   // стейт для модального окна IngredientDetails 
   const [
@@ -41,35 +42,47 @@ const App = () => {
     setIsOrderDetailsOpened
   ] = React.useState(false);
 
-  // универсальная функция, которая закрывает все модальные окна по клику на крестик
-  // ей же я пользуюсь и при клике на оверлей
+  // закрываю оба модальных окна по клику на крестик + по клику на оверлей
   const closeModals = () => { 
     setIsIngredientDetailsOpened(false);
     setIsOrderDetailsOpened(false);
   }
 
-  const handleEscClick = (event) => {
-    console.log(event);
+  const handleEscKeydown = (event) => {
     event.key === "Escape" && closeModals();
   }
   
-  const handleClickOnIngredient = (ingredient) => {
+  const handleClickIngredient = (ingredient) => {
     setIngredientToShow(ingredient);
     setIsIngredientDetailsOpened(true);
+  }
+
+  const handleClickOrderButton = () => {
+    setIsOrderDetailsOpened(true);
   }
 
   return (
     <div className={appStyles.app}>
       <AppHeader />
       <main className={appStyles.main}>
-        <BurgerIngredients ingredients={ingredients} onClick={handleClickOnIngredient} />
-        <BurgerConstructor ingredients={ingredients} />
+        <BurgerIngredients ingredients={ingredients} onElementClick={handleClickIngredient} />
+        <BurgerConstructor ingredients={ingredients} onButtonClick={handleClickOrderButton} />
       </main>
-      {isIngredientDetailsOpened && (
-        <Modal onCloseClick={closeModals} onEscClick={handleEscClick}>
-          <IngredientDetails ingredient={ingredientToShow} />
-        </Modal>
-      )}
+      {isIngredientDetailsOpened // компонент с ингредиентом открыт?
+        ? (
+          <Modal onCloseClick={closeModals} onEscKeydown={handleEscKeydown}>
+            <IngredientDetails ingredient={ingredientToShow} />          
+          </Modal>
+        )
+        : isOrderDetailsOpened // компонент с заказом открыт?
+        ? (
+          <Modal onCloseClick={closeModals} onEscKeydown={handleEscKeydown}>
+            <OrderDetails />         
+          </Modal>
+        )
+        : 
+        null
+        }
     </div>
   );
 }

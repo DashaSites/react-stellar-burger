@@ -20,8 +20,7 @@
   gap: 8px;
 }
 
-.headerLink { 
-  padding: 16px 20px;
+.headerLink {
   border-radius: 40px;
   box-shadow: 0px 1px .5px 0px #000;
   cursor: pointer;

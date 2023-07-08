@@ -1,13 +1,13 @@
-import { useState } from "react";
+import React from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../ingredient/ingredient.jsx";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-const BurgerIngredients = ({ ingredients, onClick }) => {
+const BurgerIngredients = ({ ingredients, onElementClick }) => {
 
   // Подключаем табы: изначально стейт принимает таб, выбранный по умолчанию
-  const [current, setCurrent] = useState('bun');
+  const [current, setCurrent] = React.useState("bun");
 
 
   // Отматываем на соответствующий раздел при клике на таб
@@ -35,7 +35,7 @@ const BurgerIngredients = ({ ingredients, onClick }) => {
 
   return (
     <section className={ingredientsStyles.ingredientsSection}>
-      <h1 className="text text_type_main-large mb-4">Соберите бургер</h1>
+      <h1 className="text text_type_main-large mt-8 mb-5">Соберите бургер</h1>
       <div style={{ display: 'flex' }}>
         <Tab value="bun" active={current === 'bun'} onClick={setTab}>
           Булки
@@ -48,31 +48,31 @@ const BurgerIngredients = ({ ingredients, onClick }) => {
         </Tab>
       </div>
 
-      <div className={`${ingredientsStyles.wrapper} mb-10 custom-scroll`}>
+      <div className={`${ingredientsStyles.wrapper} mt-10 mb-10 custom-scroll`}>
 
         <h2 className="text text_type_main-medium" id="bun">Булки</h2> {/* Раздел с булками */}
-        <ul className={ingredientsStyles.list} >
+        <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`} >
           {
             buns.map((bun) => (
-              <Ingredient ingredient={bun} key={bun._id} onClick={onClick} />
+              <Ingredient ingredient={bun} key={bun._id} onClick={onElementClick} />
             ))
           }
         </ul>
 
         <h2 className="text text_type_main-medium" id="sauce">Соусы</h2> {/* Раздел с соусами */}
-        <ul className={ingredientsStyles.list} >
+        <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`} >
           {
             sauces.map((sauce) => (
-              <Ingredient ingredient={sauce} key={sauce._id} onClick={onClick} />
+              <Ingredient ingredient={sauce} key={sauce._id} onClick={onElementClick} />
             ))
           }
         </ul>
 
         <h2 className="text text_type_main-medium" id="main">Начинки</h2> {/* Раздел с начинками */}
-        <ul className={ingredientsStyles.list} >
+        <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`} >
           {
             mains.map((main) => (
-              <Ingredient ingredient={main} key={main._id} onClick={onClick} />
+              <Ingredient ingredient={main} key={main._id} onClick={onElementClick} />
             ))
           }
         </ul>
@@ -97,6 +97,12 @@ BurgerIngredients.propTypes = {
     image_large: PropTypes.string.isRequired,
     __v: PropTypes.number.isRequired
   }))
+}
+
+// короткая версия:
+BurgerIngredients.propTypes = {
+  ingredients: PropTypes.arrayOf(PropTypes.object),
+  onClick: PropTypes.func.isRequired
 }
 
 

@@ -3,7 +3,7 @@ import { ConstructorElement, Counter, DragIcon, CurrencyIcon, LockIcon, DeleteIc
 import Ingredient from "../ingredient/ingredient.jsx";
 import PropTypes from "prop-types";
 
-const BurgerConstructor = ({ ingredients }) => {
+const BurgerConstructor = ({ ingredients, onButtonClick }) => {
   // Найдем в данных (если они загрузились) хоть одну булку:
   const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
 
@@ -15,9 +15,9 @@ const BurgerConstructor = ({ ingredients }) => {
 
   return (
 
-    <section className={constructorStyles.constructorSection}>
+    <section className={`${constructorStyles.constructorSection} pt-25`}>
 
-    <div className={constructorStyles.elementsList}>        
+    <div className={`${constructorStyles.elementsList} mb-10`}>        
       {
         <div className={constructorStyles.fixedElement}>
           <ConstructorElement 
@@ -33,7 +33,7 @@ const BurgerConstructor = ({ ingredients }) => {
         {
           mainsAndSaucesElements.map((element) => {
             return (
-              <li className={constructorStyles.transposableElement} key={element._id}>
+              <li className={`${constructorStyles.transposableElement} mt-4`} key={element._id}>
                 <DragIcon type="primary" />
                 <ConstructorElement 
                   text={element.name}
@@ -59,24 +59,14 @@ const BurgerConstructor = ({ ingredients }) => {
     </div>
 
     <div className={constructorStyles.resultCorner}> {/* Итоги: счетчик и кнопка заказа */}
-      <div className={constructorStyles.resultCounter}>
+      <div className={`${constructorStyles.resultCounter} mr-10`}>
         <span className="text text_type_digits-medium">610</span>
         <CurrencyIcon type="primary" />
       </div>
-      <Button htmlType="button" type="primary" size="large">
+      <Button htmlType="button" type="primary" size="large" onClick={onButtonClick}>
         Оформить заказ
       </Button>
     </div>
-    
-    {/*
-    <div className={constructorStyles.testModal}>
-      <button type="button" className={constructorStyles.closeButton}>
-        <CloseIcon type="primary" />
-      </button>
-    </div>
-    */}
-    
-
   </section>
   )
 }

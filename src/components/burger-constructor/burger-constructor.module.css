@@ -1,10 +1,8 @@
 .constructorSection {
   max-width: 600px;
-  padding-top: 100px;
 }
 
 .elementsList {
-  margin-bottom: 40px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -23,8 +21,6 @@
 }
 
 .transposableElement {
-  padding: 0;
-  margin-top: 16px;
   display: flex;
   align-items: center;
   column-gap: 8px;
@@ -45,7 +41,6 @@
   display: flex;
   align-items: center;
   column-gap: 9px;
-  margin-right: 40px;
 }
 
 

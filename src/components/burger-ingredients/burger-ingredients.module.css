@@ -1,12 +1,10 @@
 .ingredientsSection {
     max-width: 600px;
-    padding-top: 40px;
 }
 
 .list {
     list-style: none;
     padding: 0;
-    margin: 24px 24px 40px 16px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px 32px;

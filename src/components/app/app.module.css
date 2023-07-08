@@ -9,6 +9,6 @@
 .main {
   display: flex;
   justify-content: space-between;
-  gap: 56px;
+  gap: 40px;
   margin: 0 auto;
 }
