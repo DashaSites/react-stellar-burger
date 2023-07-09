@@ -34,7 +34,8 @@ const Modal = ({ onCloseClick, onEscKeydown, children }) => {
 
 Modal.propTypes = {
   onCloseClick: PropTypes.func.isRequired,
-  onEscKeydown: PropTypes.func.isRequired
+  onEscKeydown: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired
 }
 
 
