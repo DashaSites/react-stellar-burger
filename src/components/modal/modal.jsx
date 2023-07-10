@@ -7,18 +7,23 @@ import PropTypes from "prop-types";
 
 const modalsContainer = document.querySelector("#modals");
 
-const Modal = ({ onCloseClick, onEscKeydown, children }) => {
+const Modal = ({ onCloseClick, closeModals, children }) => {
+
+  const handleEscKeydown = (event) => {
+    event.key === "Escape" && closeModals();
+  }
 
   React.useEffect(() => {
-    document.addEventListener("keydown", onEscKeydown);
+    document.addEventListener("keydown", handleEscKeydown);
 
     return () => {
-      document.removeEventListener("keydown", onEscKeydown);
+      document.removeEventListener("keydown", handleEscKeydown);
     };
   }, []); 
 
+
   return ReactDOM.createPortal(
-    <>
+    <div>
       <div className={modalStyles.theModal}>
         <button type="button" className={modalStyles.closeButton}>
           <CloseIcon type="primary" onClick={onCloseClick} />
@@ -26,7 +31,7 @@ const Modal = ({ onCloseClick, onEscKeydown, children }) => {
         {children}
       </div>   
       <ModalOverlay onClick={onCloseClick} />
-    </>,
+    </div>,
     modalsContainer
   ) 
 }
@@ -34,7 +39,7 @@ const Modal = ({ onCloseClick, onEscKeydown, children }) => {
 
 Modal.propTypes = {
   onCloseClick: PropTypes.func.isRequired,
-  onEscKeydown: PropTypes.func.isRequired,
+  closeModals: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired
 }
 

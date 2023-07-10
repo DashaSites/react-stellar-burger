@@ -47,9 +47,11 @@ const App = () => {
     setIsOrderDetailsOpened(false);
   }
 
-  const handleEscKeydown = (event) => {
-    event.key === "Escape" && closeModals();
-  }
+
+  //const handleEscKeydown = (event) => {
+  //  event.key === "Escape" && closeModals();
+  // }
+
   
   const handleClickIngredient = (ingredient) => {
     setIngredientToShow(ingredient);
@@ -68,12 +70,12 @@ const App = () => {
         <BurgerConstructor ingredients={ingredients} onButtonClick={handleClickOrderButton} />
       </main>
         {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
-          <Modal onCloseClick={closeModals} onEscKeydown={handleEscKeydown}>
+          <Modal onCloseClick={closeModals} closeModals={closeModals}>
             <IngredientDetails ingredient={ingredientToShow} />          
           </Modal>
         )} 
         {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
-          <Modal onCloseClick={closeModals} onEscKeydown={handleEscKeydown}>
+          <Modal onCloseClick={closeModals} closeModals={closeModals}>
             <OrderDetails />         
           </Modal>
         )} 
