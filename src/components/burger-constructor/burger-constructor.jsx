@@ -1,9 +1,15 @@
+import React, { useContext } from 'react';
 import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import ingredientPropType from "../../utils/prop-types.js";
+import { IngredientsContext } from '../../services/appContext.js'; //  NEW
 
-const BurgerConstructor = ({ ingredients, onButtonClick }) => {
+
+const BurgerConstructor = ({ onButtonClick }) => { // УБРАТЬ ПРОПС ingredients
+
+  const { ingredients } = useContext(IngredientsContext); // NEW
+
   // Найдем в данных (если они загрузились) хоть одну булку:
   const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
 

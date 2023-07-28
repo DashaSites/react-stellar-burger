@@ -7,10 +7,14 @@ import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
 import getIngredients from "../../utils/burger-api.js";
+import { IngredientsContext } from '../../services/appContext.js'; //  NEW
 
 const App = () => {
+  // СТЕЙТ, КОТОРЫЙ Я ПЕРЕНЕСЛА В КОНТЕКСТ
+  const [ingredients, setIngredients] = React.useState([]); 
   
-  const [ingredients, setIngredients] = React.useState([]);
+  // const [ingredients, setIngredients] = React.useState([]); ЭТО БЫЛО РАНЬШЕ
+
   const [ingredientToShow, setIngredientToShow] = React.useState({});
 
   // Достаю данные через запрос к api: импортирую сюда запрос и ответ из burger-api.js
@@ -57,7 +61,9 @@ const App = () => {
       <AppHeader />
       <main className={appStyles.main}>
         <BurgerIngredients ingredients={ingredients} onElementClick={handleClickIngredient} />
-        <BurgerConstructor ingredients={ingredients} onButtonClick={handleClickOrderButton} />
+        <IngredientsContext.Provider value={{ingredients, setIngredients}}> {/* NEW */}
+          <BurgerConstructor onButtonClick={handleClickOrderButton} />
+        </IngredientsContext.Provider> {/* NEW */}
       </main>
         {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
           <Modal onCloseClick={closeModals} closeModals={closeModals}>
