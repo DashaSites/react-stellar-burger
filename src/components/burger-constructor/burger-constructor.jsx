@@ -1,20 +1,43 @@
-import React, { useContext } from 'react';
+import React, { useContext, useReducer, useEffect } from 'react';
 import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import ingredientPropType from "../../utils/prop-types.js";
 import { IngredientsContext } from '../../services/appContext.js'; //  NEW
 
+function reducer(state, action) {
+  if (action.type === 'ingredientsLoaded') {
 
-const BurgerConstructor = ({ onButtonClick }) => { // УБРАТЬ ПРОПС ingredients
+    const loadedIngredients = action.payload.loadedIngredients;
+
+    const newSum = loadedIngredients.reduce((sum, currentIngredient) => {
+      return sum + currentIngredient.price;
+    }, 0)
+
+    const newState = { sum: newSum };
+    return newState;
+  }
+}
+
+
+const BurgerConstructor = ({ onButtonClick }) => { 
 
   const { ingredients } = useContext(IngredientsContext); // NEW
+
+  const [state, dispatch] = useReducer(reducer, { sum: 0 });
 
   // Найдем в данных (если они загрузились) хоть одну булку:
   const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
 
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок:
   const mainsAndSaucesElements = ingredients.filter((item) => item.type !== "bun");
+
+  useEffect(() => {
+    dispatch({
+      type: 'ingredientsLoaded',
+      payload: { loadedIngredients: [bunElement, ...mainsAndSaucesElements, bunElement] }
+    });
+  }, [ingredients]);
   
 
   return (
@@ -61,7 +84,7 @@ const BurgerConstructor = ({ onButtonClick }) => { // УБРАТЬ ПРОПС in
     </div>
     <div className={constructorStyles.resultCorner}>
       <div className={`${constructorStyles.resultCounter} mr-10`}>
-        <span className="text text_type_digits-medium">610</span>
+        <span className="text text_type_digits-medium">{state.sum}</span>
         <CurrencyIcon type="primary" />
       </div>
       <Button htmlType="button" type="primary" size="large" onClick={onButtonClick}>
