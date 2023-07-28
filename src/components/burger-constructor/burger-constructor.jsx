@@ -8,7 +8,7 @@ import { IngredientsContext } from '../../services/appContext.js'; //  NEW
 function reducer(state, action) {
   if (action.type === 'ingredientsLoaded') {
 
-    const loadedIngredients = action.payload.loadedIngredients;
+    const loadedIngredients = action.payload.loadedIngredients; // достаем из dispatch используемые ингредиенты
 
     const newSum = loadedIngredients.reduce((sum, currentIngredient) => {
       return sum + currentIngredient.price;
@@ -22,9 +22,9 @@ function reducer(state, action) {
 
 const BurgerConstructor = ({ onButtonClick }) => { 
 
-  const { ingredients } = useContext(IngredientsContext); // NEW
+  const { ingredients } = useContext(IngredientsContext); // Получаем ингредиенты из контекста
 
-  const [state, dispatch] = useReducer(reducer, { sum: 0 });
+  const [state, dispatch] = useReducer(reducer, { sum: 0 }); // Инициализируем редьюсер
 
   // Найдем в данных (если они загрузились) хоть одну булку:
   const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
@@ -32,6 +32,8 @@ const BurgerConstructor = ({ onButtonClick }) => {
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок:
   const mainsAndSaucesElements = ingredients.filter((item) => item.type !== "bun");
 
+  // При первом рендере вызываем редьюсер
+  // в обновленный стейт он запишет массив из всех используемых в этом компоненте ингредиентов 
   useEffect(() => {
     dispatch({
       type: 'ingredientsLoaded',
