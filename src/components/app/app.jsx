@@ -7,16 +7,15 @@ import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
 import { getIngredients, getOrderDetails } from "../../utils/burger-api.js";
-import { IngredientsContext } from '../../services/appContext.js'; //  NEW
+import { IngredientsContext, OrderNumberContext } from '../../services/appContext.js'; //  NEW
 
 const App = () => {
-  // СТЕЙТ, КОТОРЫЙ Я ПЕРЕНЕСЛА В КОНТЕКСТ
-  
+
   const [ingredients, setIngredients] = React.useState([]); 
 
   const [ingredientToShow, setIngredientToShow] = React.useState({});
 
-  const [orderNumber, setOrderNumber] = React.useState('');
+  const [orderNumber, setOrderNumber] = React.useState(''); // стейт для номера заказа
 
   // Достаю данные через запрос к api: импортирую сюда запрос и ответ из burger-api.js
   // и обрабатываю эти данные дальше (записываю их в стейт)
@@ -59,8 +58,8 @@ const App = () => {
 
   const handleClickOrderButton = () => {
     setIsOrderDetailsOpened(true);
-    getOrderDetails(ingredientsIdArray) // Используем массив id для запроса к серверу
-    .then(res => setOrderNumber(res.order.number))
+    getOrderDetails(ingredientsIdArray) // Прокинем массив id в запросе к серверу
+    .then(res => setOrderNumber(res.order.number)) // Полученный от сервера номер заказа сохраняем в специальный стейт
     .catch(err => console.log(err));
   }
 
@@ -69,9 +68,9 @@ const App = () => {
       <AppHeader />
       <main className={appStyles.main}>
         <BurgerIngredients ingredients={ingredients} onElementClick={handleClickIngredient} />
-        <IngredientsContext.Provider value={{ingredients, setIngredients}}> {/* NEW */}
+        <IngredientsContext.Provider value={{ingredients, setIngredients}}> {/* сохраняю стейт в контекст */}
           <BurgerConstructor onButtonClick={handleClickOrderButton} />
-        </IngredientsContext.Provider> {/* NEW */}
+        </IngredientsContext.Provider>
       </main>
         {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
           <Modal onCloseClick={closeModals} closeModals={closeModals}>
@@ -80,7 +79,9 @@ const App = () => {
         )} 
         {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
           <Modal onCloseClick={closeModals} closeModals={closeModals}>
-            <OrderDetails orderNumber={orderNumber} />         
+            <OrderNumberContext.Provider value={{orderNumber, setOrderNumber}}> {/* сохраняю стейт в контекст */}
+              <OrderDetails orderNumber={orderNumber} />  
+            </OrderNumberContext.Provider>       
           </Modal>
         )} 
     </div>

@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import ingredientPropType from "../../utils/prop-types.js";
 import { IngredientsContext } from '../../services/appContext.js'; //  NEW
 
+
+// Функция-редьюсер для расчета суммы в счетчике заказа
 function reducer(state, action) {
   if (action.type === 'ingredientsLoaded') {
 
@@ -22,9 +24,9 @@ function reducer(state, action) {
 
 const BurgerConstructor = ({ onButtonClick }) => { 
 
-  const { ingredients } = useContext(IngredientsContext); // Получаем ингредиенты из контекста
+  const { ingredients } = useContext(IngredientsContext); // Извлекаем ингредиенты из контекста
 
-  const [state, dispatch] = useReducer(reducer, { sum: 0 }); // Инициализируем редьюсер
+  const [state, dispatch] = useReducer(reducer, { sum: 0 }); // Получаем из редьюсера state и dispatch
 
   // Найдем в данных (если они загрузились) хоть одну булку:
   const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
@@ -32,7 +34,7 @@ const BurgerConstructor = ({ onButtonClick }) => {
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок:
   const mainsAndSaucesElements = ingredients.filter((item) => item.type !== "bun");
 
-  // При первом рендере вызываем редьюсер
+  // При первом рендере вызываем редьюсер:
   // в обновленный стейт он запишет массив из всех используемых в этом компоненте ингредиентов 
   useEffect(() => {
     dispatch({
@@ -99,7 +101,6 @@ const BurgerConstructor = ({ onButtonClick }) => {
 
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
   onButtonClick: PropTypes.func.isRequired
 }
 

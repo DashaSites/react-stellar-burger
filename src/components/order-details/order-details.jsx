@@ -1,5 +1,6 @@
 import orderDetailsStyles from "./order-details.module.css";
 import iconDone from "../../images/done.svg";
+import PropTypes from "prop-types";
 
 const OrderDetails = ({ orderNumber }) => {
   return (
@@ -12,5 +13,11 @@ const OrderDetails = ({ orderNumber }) => {
     </article>
   )
 }
+
+
+OrderDetails.propTypes = {
+  orderNumber: PropTypes.number.isRequired
+}
+
 
 export default OrderDetails;
