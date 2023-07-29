@@ -6,16 +6,17 @@ import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
 import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
-import getIngredients from "../../utils/burger-api.js";
+import { getIngredients, getOrderDetails } from "../../utils/burger-api.js";
 import { IngredientsContext } from '../../services/appContext.js'; //  NEW
 
 const App = () => {
   // СТЕЙТ, КОТОРЫЙ Я ПЕРЕНЕСЛА В КОНТЕКСТ
-  const [ingredients, setIngredients] = React.useState([]); 
   
-  // const [ingredients, setIngredients] = React.useState([]); ЭТО БЫЛО РАНЬШЕ
+  const [ingredients, setIngredients] = React.useState([]); 
 
   const [ingredientToShow, setIngredientToShow] = React.useState({});
+
+  const [orderNumber, setOrderNumber] = React.useState('');
 
   // Достаю данные через запрос к api: импортирую сюда запрос и ответ из burger-api.js
   // и обрабатываю эти данные дальше (записываю их в стейт)
@@ -49,11 +50,18 @@ const App = () => {
   // Обработка кликов //
   const handleClickIngredient = (ingredient) => {
     setIngredientToShow(ingredient);
+    setIngredients([...ingredients, ingredient]); // добавляем кликнутый ингредиент в конструктор бургера
+    
     setIsIngredientDetailsOpened(true);
   }
+  // Соберем id всех ингредиентов конструктора в массив
+  const ingredientsIdArray = ingredients.map(ingredient => ingredient._id);
 
   const handleClickOrderButton = () => {
     setIsOrderDetailsOpened(true);
+    getOrderDetails(ingredientsIdArray) // Используем массив id для запроса к серверу
+    .then(res => setOrderNumber(res.order.number))
+    .catch(err => console.log(err));
   }
 
   return (
@@ -72,7 +80,7 @@ const App = () => {
         )} 
         {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
           <Modal onCloseClick={closeModals} closeModals={closeModals}>
-            <OrderDetails />         
+            <OrderDetails orderNumber={orderNumber} />         
           </Modal>
         )} 
     </div>
