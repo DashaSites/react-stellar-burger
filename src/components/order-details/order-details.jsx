@@ -1,8 +1,13 @@
+import React, { useContext } from "react";
 import orderDetailsStyles from "./order-details.module.css";
 import iconDone from "../../images/done.svg";
 import PropTypes from "prop-types";
+import { OrderNumberContext } from '../../services/appContext.js';
 
-const OrderDetails = ({ orderNumber }) => {
+const OrderDetails = () => {
+
+  const { orderNumber } = useContext(OrderNumberContext); // ПОЧЕМУ В СКОБКАХ ЗАРАБОТАЛО, А ДО ТОГО НЕТ?
+
   return (
     <article className={orderDetailsStyles.container}>
       <h2 className={`${orderDetailsStyles.number} text text_type_digits-large mb-8`}>{orderNumber}</h2>
@@ -15,9 +20,9 @@ const OrderDetails = ({ orderNumber }) => {
 }
 
 
-OrderDetails.propTypes = {
-  orderNumber: PropTypes.number.isRequired
-}
+//OrderDetails.propTypes = {
+//  orderNumber: PropTypes.number.isRequired
+//}
 
 
 export default OrderDetails;

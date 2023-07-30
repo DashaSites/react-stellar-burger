@@ -15,7 +15,7 @@ const App = () => {
 
   const [ingredientToShow, setIngredientToShow] = React.useState({});
 
-  const [orderNumber, setOrderNumber] = React.useState(''); // стейт для номера заказа
+  const [orderNumber, setOrderNumber] = React.useState(0); // стейт для номера заказа
 
   // Достаю данные через запрос к api: импортирую сюда запрос и ответ из burger-api.js
   // и обрабатываю эти данные дальше (записываю их в стейт)
@@ -49,7 +49,7 @@ const App = () => {
   // Обработка кликов //
   const handleClickIngredient = (ingredient) => {
     setIngredientToShow(ingredient);
-    setIngredients([...ingredients, ingredient]); // добавляем кликнутый ингредиент в конструктор бургера
+    //setIngredients([...ingredients, ingredient]); // добавляем кликнутый ингредиент в конструктор бургера
     
     setIsIngredientDetailsOpened(true);
   }

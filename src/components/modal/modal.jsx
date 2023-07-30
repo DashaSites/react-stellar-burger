@@ -40,7 +40,7 @@ const Modal = ({ onCloseClick, closeModals, children }) => {
 Modal.propTypes = {
   onCloseClick: PropTypes.func.isRequired,
   closeModals: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired
+  children: PropTypes.any.isRequired
 }
 
 

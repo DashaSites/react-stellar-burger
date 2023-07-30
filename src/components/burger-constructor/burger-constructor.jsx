@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useEffect } from 'react';
+import React, { useContext, useReducer, useEffect, useMemo } from 'react';
 import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
@@ -11,7 +11,6 @@ function reducer(state, action) {
   if (action.type === 'ingredientsLoaded') {
 
     const loadedIngredients = action.payload.loadedIngredients; // достаем из dispatch используемые ингредиенты
-
     const newSum = loadedIngredients.reduce((sum, currentIngredient) => {
       return sum + currentIngredient.price;
     }, 0)
@@ -28,21 +27,35 @@ const BurgerConstructor = ({ onButtonClick }) => {
 
   const [state, dispatch] = useReducer(reducer, { sum: 0 }); // Получаем из редьюсера state и dispatch
 
+
   // Найдем в данных (если они загрузились) хоть одну булку:
   const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
 
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок:
   const mainsAndSaucesElements = ingredients.filter((item) => item.type !== "bun");
 
-  // При первом рендере вызываем редьюсер:
-  // в обновленный стейт он запишет массив из всех используемых в этом компоненте ингредиентов 
+  //При первом рендере вызываем редьюсер:
+  //в обновленный стейт он запишет массив из всех используемых в этом компоненте ингредиентов 
   useEffect(() => {
+    
     dispatch({
       type: 'ingredientsLoaded',
       payload: { loadedIngredients: [bunElement, ...mainsAndSaucesElements, bunElement] }
     });
   }, [ingredients]);
-  
+
+
+
+//  const orderCost = useMemo(() => {
+//    const priceSaucesAndMains = mainsAndSaucesElements.reduce((sum, currentIngredient) => {
+//      return sum + currentIngredient.price;
+//    }, 0);
+
+//    return priceSaucesAndMains + bunElement.price * 2;
+//  }, [bunElement, mainsAndSaucesElements]);
+
+
+
 
   return (
     <section className={`${constructorStyles.constructorSection} pt-25`}>
