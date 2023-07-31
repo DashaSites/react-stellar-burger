@@ -4,7 +4,7 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../ingredient/ingredient.jsx";
 import PropTypes from "prop-types";
 import ingredientPropType from "../../utils/prop-types.js";
-//import { IngredientsContext } from '../../services/appContext.js'; //  NEW
+//import { IngredientsContext } from '../../services/appContext.js'; // NEW
 
 const BurgerIngredients = ({ ingredients, onElementClick }) => {
 

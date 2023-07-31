@@ -2,7 +2,6 @@ import React, { useContext, useReducer, useEffect, useMemo } from 'react';
 import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import ingredientPropType from "../../utils/prop-types.js";
 import { IngredientsContext } from '../../services/appContext.js'; //  NEW
 
 
@@ -45,7 +44,6 @@ const BurgerConstructor = ({ onButtonClick }) => {
   }, [ingredients]);
 
 
-
 //  const orderCost = useMemo(() => {
 //    const priceSaucesAndMains = mainsAndSaucesElements.reduce((sum, currentIngredient) => {
 //      return sum + currentIngredient.price;
@@ -53,8 +51,6 @@ const BurgerConstructor = ({ onButtonClick }) => {
 
 //    return priceSaucesAndMains + bunElement.price * 2;
 //  }, [bunElement, mainsAndSaucesElements]);
-
-
 
 
   return (

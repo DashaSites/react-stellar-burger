@@ -21,27 +21,31 @@ const App = () => {
 
   const [orderNumber, setOrderNumber] = React.useState(0); // стейт для номера заказа
 
+  const contextValue = React.useMemo(() => {
+    return { ingredients, setIngredients };
+  }, [ingredients, setIngredients]);
+
 
   const getFetchedIngredientsFromApi = () => {
-    setIsLoading(true);
+    setIsLoading(true); // см. рендер, где я установила этот флажок
 
     getIngredients()
     .then((res) => {
       setIngredients(res.data);
-      setIsLoading(false);
-      setError(false);
+      setIsLoading(false); // см. рендер
+      setError(false); // см. рендер
     })
     .catch((err) => {
       console.log(err)
-      setIsLoading(false);
-      setError(true);
+      setIsLoading(false); // см. рендер
+      setError(true); // см. рендер
     });
   }
 
   // Достаю данные через запрос к api: импортирую сюда запрос и ответ из burger-api.js
   // и обрабатываю эти данные дальше (записываю их в стейт)
   React.useEffect(() => {
-   getFetchedIngredientsFromApi(); // вспомогательная функция, чтобы в ней повесить флажки isLoading и isError
+   getFetchedIngredientsFromApi(); // вспомогательная функция, чтобы в ней повесить флажок isError
   }, []);
 
 
@@ -75,11 +79,22 @@ const App = () => {
   // Соберем id всех ингредиентов конструктора в массив
   const ingredientsIdArray = ingredients.map(ingredient => ingredient._id);
 
+
+  const getFetchedOrderDetailsFromApi = () => {
+    getOrderDetails(ingredientsIdArray) // Прокинем массив id в запросе к серверу
+    .then((res) => {
+      setOrderNumber(res.order.number);
+      setError(false); // см. рендер
+    }) // Полученный от сервера номер заказа сохраняем в специальный стейт
+    .catch((err) => {
+      console.log(err)
+      setError(true); // см. рендер
+    });
+  }
+
   const handleClickOrderButton = () => {
     setIsOrderDetailsOpened(true);
-    getOrderDetails(ingredientsIdArray) // Прокинем массив id в запросе к серверу
-    .then(res => setOrderNumber(res.order.number)) // Полученный от сервера номер заказа сохраняем в специальный стейт
-    .catch(err => console.log(err));
+    getFetchedOrderDetailsFromApi(); // вспомогательная функция, чтобы в ней повесить флажок isError
   }
 
   return (
@@ -89,7 +104,7 @@ const App = () => {
         {isError && "Что-то пошло не так"}
         {isLoading && "Загрузка..."}
         {!isError && !isLoading && 
-          <IngredientsContext.Provider value={{ingredients, setIngredients}}> {/* сохраняю стейт в контекст */}
+          <IngredientsContext.Provider value={contextValue}> {/* сохраняю стейт в контекст */}
             {ingredients.length > 0 &&
               <BurgerIngredients ingredients={ingredients} onElementClick={handleClickIngredient} />
             }
@@ -106,9 +121,12 @@ const App = () => {
         )} 
         {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
           <Modal onCloseClick={closeModals} closeModals={closeModals}>
-            <OrderNumberContext.Provider value={{orderNumber, setOrderNumber}}> {/* сохраняю стейт в контекст */}
-              <OrderDetails orderNumber={orderNumber} />  
-            </OrderNumberContext.Provider>       
+            {isError && "Что-то пошло не так"}
+            {!isError &&
+              <OrderNumberContext.Provider value={{orderNumber, setOrderNumber}}> {/* сохраняю стейт в контекст */}
+                <OrderDetails orderNumber={orderNumber} />  
+              </OrderNumberContext.Provider> 
+            }      
           </Modal>
         )} 
     </div>
