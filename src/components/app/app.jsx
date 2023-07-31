@@ -13,16 +13,16 @@ const App = () => {
 
   const [ingredients, setIngredients] = React.useState([]); 
 
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(true); // флажок для рендера данных только тогда, когда получили их от api
 
-  const [isError, setError] = React.useState(false);
+  const [isError, setError] = React.useState(false); // флажок об ошибке для отображения, если данные не загрузились с api
 
   const [ingredientToShow, setIngredientToShow] = React.useState({});
 
   const [orderNumber, setOrderNumber] = React.useState(0); // стейт для номера заказа
 
 
-  const getFetchedIngredients = () => {
+  const getFetchedIngredientsFromApi = () => {
     setIsLoading(true);
 
     getIngredients()
@@ -41,7 +41,7 @@ const App = () => {
   // Достаю данные через запрос к api: импортирую сюда запрос и ответ из burger-api.js
   // и обрабатываю эти данные дальше (записываю их в стейт)
   React.useEffect(() => {
-   getFetchedIngredients();
+   getFetchedIngredientsFromApi(); // вспомогательная функция, чтобы в ней повесить флажки isLoading и isError
   }, []);
 
 
@@ -86,10 +86,18 @@ const App = () => {
     <div className={appStyles.app}>
       <AppHeader />
       <main className={appStyles.main}>
-        <IngredientsContext.Provider value={{ingredients, setIngredients}}> {/* сохраняю стейт в контекст */}
-          <BurgerIngredients ingredients={ingredients} onElementClick={handleClickIngredient} />
-          <BurgerConstructor onButtonClick={handleClickOrderButton} />
+        {isError && "Что-то пошло не так"}
+        {isLoading && "Загрузка..."}
+        {!isError && !isLoading && 
+          <IngredientsContext.Provider value={{ingredients, setIngredients}}> {/* сохраняю стейт в контекст */}
+            {ingredients.length > 0 &&
+              <BurgerIngredients ingredients={ingredients} onElementClick={handleClickIngredient} />
+            }
+            {ingredients.length > 0 &&
+              <BurgerConstructor onButtonClick={handleClickOrderButton} />
+            }
         </IngredientsContext.Provider>
+        }
       </main>
         {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
           <Modal onCloseClick={closeModals} closeModals={closeModals}>
