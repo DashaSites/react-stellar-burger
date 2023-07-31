@@ -1,15 +1,57 @@
+import React, { useContext, useReducer, useEffect, useMemo } from 'react';
 import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import ingredientPropType from "../../utils/prop-types.js";
+import { IngredientsContext } from '../../services/appContext.js'; //  NEW
 
-const BurgerConstructor = ({ ingredients, onButtonClick }) => {
+
+// Функция-редьюсер для расчета суммы в счетчике заказа
+function reducer(state, action) {
+  if (action.type === 'ingredientsLoaded') {
+
+    const loadedIngredients = action.payload.loadedIngredients; // достаем из dispatch используемые ингредиенты
+    const newSum = loadedIngredients.reduce((sum, currentIngredient) => {
+      return sum + currentIngredient.price;
+    }, 0)
+
+    const newState = { sum: newSum };
+    return newState;
+  }
+}
+
+
+const BurgerConstructor = ({ onButtonClick }) => { 
+
+  const { ingredients } = useContext(IngredientsContext); // Извлекаем ингредиенты из контекста
+
+  const [state, dispatch] = useReducer(reducer, { sum: 0 }); // Получаем из редьюсера state и dispatch
+
+
   // Найдем в данных (если они загрузились) хоть одну булку:
   const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
 
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок:
   const mainsAndSaucesElements = ingredients.filter((item) => item.type !== "bun");
-  
+
+  //При первом рендере вызываем редьюсер:
+  //в обновленный стейт он запишет массив из всех используемых в этом компоненте ингредиентов 
+  useEffect(() => {
+    
+    dispatch({
+      type: 'ingredientsLoaded',
+      payload: { loadedIngredients: [bunElement, ...mainsAndSaucesElements, bunElement] }
+    });
+  }, [ingredients]);
+
+
+//  const orderCost = useMemo(() => {
+//    const priceSaucesAndMains = mainsAndSaucesElements.reduce((sum, currentIngredient) => {
+//      return sum + currentIngredient.price;
+//    }, 0);
+
+//    return priceSaucesAndMains + bunElement.price * 2;
+//  }, [bunElement, mainsAndSaucesElements]);
+
 
   return (
     <section className={`${constructorStyles.constructorSection} pt-25`}>
@@ -55,7 +97,7 @@ const BurgerConstructor = ({ ingredients, onButtonClick }) => {
     </div>
     <div className={constructorStyles.resultCorner}>
       <div className={`${constructorStyles.resultCounter} mr-10`}>
-        <span className="text text_type_digits-medium">610</span>
+        <span className="text text_type_digits-medium">{state.sum}</span>
         <CurrencyIcon type="primary" />
       </div>
       <Button htmlType="button" type="primary" size="large" onClick={onButtonClick}>
@@ -68,7 +110,6 @@ const BurgerConstructor = ({ ingredients, onButtonClick }) => {
 
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
   onButtonClick: PropTypes.func.isRequired
 }
 
