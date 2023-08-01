@@ -5,9 +5,13 @@ import Ingredient from "../ingredient/ingredient.jsx";
 import PropTypes from "prop-types";
 import ingredientPropType from "../../utils/prop-types.js";
 //import { IngredientsContext } from '../../services/appContext.js'; // NEW
+import { useSelector } from 'react-redux';
+import { ingredientsSelector } from '../../services/selectors/ingredients-selector.js';
 
-const BurgerIngredients = ({ ingredients, onElementClick }) => {
+const BurgerIngredients = ({ onElementClick }) => {
 
+  const ingredients = useSelector(ingredientsSelector);
+  
   // Подключаем табы: изначально стейт принимает таб, выбранный по умолчанию
   const [current, setCurrent] = React.useState("bun");
 

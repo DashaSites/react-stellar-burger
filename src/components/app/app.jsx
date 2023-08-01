@@ -8,22 +8,27 @@ import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
 import { getIngredients, getOrderDetails } from "../../utils/burger-api.js";
 import { IngredientsContext, OrderNumberContext } from '../../services/appContext.js'; //  NEW
+import { INGREDIENTS_LOADED } from '../../services/reducers/rootReducer.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { ingredientsSelector } from '../../services/selectors/ingredients-selector.js';
 
 const App = () => {
 
-  const [ingredients, setIngredients] = React.useState([]); 
-
   const [isLoading, setIsLoading] = React.useState(true); // флажок для рендера данных только тогда, когда получили их от api
 
-  const [isError, setError] = React.useState(false); // флажок об ошибке для отображения, если данные не загрузились с api
+  const [isError, setIsError] = React.useState(false); // флажок об ошибке для отображения, если данные не загрузились с api
 
   const [ingredientToShow, setIngredientToShow] = React.useState({});
 
   const [orderNumber, setOrderNumber] = React.useState(0); // стейт для номера заказа
 
-  const contextValue = React.useMemo(() => {
-    return { ingredients, setIngredients };
-  }, [ingredients, setIngredients]);
+
+
+
+  const dispatch = useDispatch();
+
+  const ingredients = useSelector(ingredientsSelector);
+
 
 
   const getFetchedIngredientsFromApi = () => {
@@ -31,14 +36,20 @@ const App = () => {
 
     getIngredients()
     .then((res) => {
-      setIngredients(res.data);
-      setIsLoading(false); // см. рендер
-      setError(false); // см. рендер
+
+      dispatch({
+        type: INGREDIENTS_LOADED,
+        payload: res.data
+      })
+
+      //setIngredients(res.data);
+      //setIsLoading(false); // см. рендер
+      //setIsError(false); // см. рендер
     })
     .catch((err) => {
       console.log(err)
       setIsLoading(false); // см. рендер
-      setError(true); // см. рендер
+      setIsError(true); // см. рендер
     });
   }
 
@@ -84,11 +95,11 @@ const App = () => {
     getOrderDetails(ingredientsIdArray) // Прокинем массив id в запросе к серверу
     .then((res) => {
       setOrderNumber(res.order.number);
-      setError(false); // см. рендер
+      setIsError(false); // см. рендер
     }) // Полученный от сервера номер заказа сохраняем в специальный стейт
     .catch((err) => {
       console.log(err)
-      setError(true); // см. рендер
+      setIsError(true); // см. рендер
     });
   }
 
@@ -104,14 +115,14 @@ const App = () => {
         {isError && "Что-то пошло не так"}
         {isLoading && "Загрузка..."}
         {!isError && !isLoading && 
-          <IngredientsContext.Provider value={contextValue}> {/* сохраняю стейт в контекст */}
+          <>
             {ingredients.length > 0 &&
-              <BurgerIngredients ingredients={ingredients} onElementClick={handleClickIngredient} />
+              <BurgerIngredients onElementClick={handleClickIngredient} />
             }
             {ingredients.length > 0 &&
               <BurgerConstructor onButtonClick={handleClickOrderButton} />
             }
-        </IngredientsContext.Provider>
+          </>
         }
       </main>
         {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
