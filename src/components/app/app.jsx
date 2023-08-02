@@ -7,25 +7,29 @@ import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
 import { getIngredients, getOrderDetails } from "../../utils/burger-api.js";
-import { OrderNumberContext } from '../../services/appContext.js'; //  NEW
+import { OrderNumberContext } from '../../services/appContext.js'; 
 import { LOAD_INGREDIENTS_REQUEST, LOAD_INGREDIENTS_SUCCESS, LOAD_INGREDIENTS_ERROR } from '../../services/actions/ingredientsActions.js';
+import { INGREDIENT_POPUP_OPENED, INGREDIENT_POPUP_CLOSED } from '../../services/actions/ingredientDetailsActions.js';
+import { GET_ORDER_DETAILS_REQUEST, GET_ORDER_DETAILS_SUCCESS, GET_ORDER_DETAILS_ERROR } from '../../services/actions/orderDetailsActions.js';
+
 import { useSelector, useDispatch } from 'react-redux';
 
 
 const App = () => {
 
-  const [ingredientToShow, setIngredientToShow] = React.useState({});
+  //const [ingredientToShow, setIngredientToShow] = React.useState({});
 
   const [orderNumber, setOrderNumber] = React.useState(0); // стейт для номера заказа
 
 
-
-  //const ingredients = useSelector(ingredientsSelector);
   const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
+  
+  const ingredientDetails = useSelector(state => state.ingredientDetailsState);
+
   const dispatch = useDispatch();
 
   
-  function getFetchedIngredientsFromApi() {
+  function getFetchedIngredientsFromApi() { // функция с мидлваром
     return (dispatch) => {
         // флажок о начале загрузки
         dispatch({
@@ -40,14 +44,13 @@ const App = () => {
               })
         }).catch((err) => {
             console.log(err);
-            // Если сервер не вернул данных, также отправляем экшен об ошибке
+            // Если сервер не вернул данных, отправляем экшен об ошибке
             dispatch({
                 type: LOAD_INGREDIENTS_ERROR
             })
         })
     }
   }
-
 
 
   // Достаю данные через запрос к api: импортирую сюда запрос и ответ из burger-api.js
@@ -76,20 +79,63 @@ const App = () => {
   const closeModals = () => { 
     setIsIngredientDetailsOpened(false);
     setIsOrderDetailsOpened(false);
+
+    dispatch({
+      type: INGREDIENT_POPUP_CLOSED
+    });
   }
 
-  // Обработка кликов //
+  // Обработка кликов по ингредиенту
   const handleClickIngredient = (ingredient) => {
-    setIngredientToShow(ingredient);
+    //setIngredientToShow(ingredient);
     //setIngredients([...ingredients, ingredient]); // добавляем кликнутый ингредиент в конструктор бургера
-    
+    dispatch({ 
+      type: INGREDIENT_POPUP_OPENED,
+      payload: {
+        id: ingredient._id,
+        src: ingredient.image,        
+        name: ingredient.name,
+        calories: ingredient.calories,
+        proteins: ingredient.proteins,
+        fat: ingredient.fat,
+        carbohydrates: ingredient.carbohydrates
+      } 
+     });
     setIsIngredientDetailsOpened(true);
   }
   // Соберем id всех ингредиентов конструктора в массив
   const ingredientsIdArray = ingredients.map(ingredient => ingredient._id);
 
 
-  const getFetchedOrderDetailsFromApi = () => {
+
+  //// ЗАРПОС К СЕРВЕРУ ЗА НОМЕРОМ ЗАКАЗА СТАЛ ФУНКЦИЕЙ С МИДЛВАРОМ 
+  const getFetchedOrderDetailsFromApi = () => { 
+    return (dispatch) => {
+      // флажок о начале загрузки
+      dispatch({
+          type: GET_ORDER_DETAILS_REQUEST
+      })
+
+      getOrderDetails(ingredientsIdArray) // Прокинем массив id в запросе к серверу
+      .then((res) => {
+          dispatch({
+              type: GET_ORDER_DETAILS_SUCCESS, 
+              payload: res.order.number
+            })
+      }).catch((err) => {
+          console.log(err);
+          // Если сервер не вернул данных, отправляем экшен об ошибке
+          dispatch({
+              type: GET_ORDER_DETAILS_ERROR
+          })
+      })
+    }   
+  }
+
+  
+  //// БЫЛО
+  {/*
+  const getFetchedOrderDetailsFromApi = () => { // ЗДЕСЬ СДЕЛАТЬ ФУНКЦИЮ С МИДЛВАРОМ
     getOrderDetails(ingredientsIdArray) // Прокинем массив id в запросе к серверу
     .then((res) => {
       setOrderNumber(res.order.number);
@@ -100,10 +146,11 @@ const App = () => {
       //setIsError(true); // см. рендер
     });
   }
+  */}
 
-  const handleClickOrderButton = () => {
+  const handleClickOrderButton = () => { // Вызов dispatch
     setIsOrderDetailsOpened(true);
-    getFetchedOrderDetailsFromApi(); // вспомогательная функция, чтобы в ней повесить флажок isError
+    dispatch(getFetchedOrderDetailsFromApi()); // вспомогательная функция, чтобы в ней повесить флажок isError
   }
 
   return (
@@ -113,13 +160,13 @@ const App = () => {
       {isError && "Что-то пошло не так"}
       {isLoading && "Загрузка..."}
 
-{/*
+    {/*
       {
         ingredients.length > 0
         ? <p>Data downloaded from api</p>
         : <p>There is a problem</p>
       }
-      */}
+    */}
 
       
       {!isError && !isLoading && 
@@ -132,13 +179,10 @@ const App = () => {
           }
         </>
       }
-      
-
-
       </main>
         {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
           <Modal onCloseClick={closeModals} closeModals={closeModals}>
-            <IngredientDetails ingredient={ingredientToShow} />          
+            <IngredientDetails ingredient={ingredientDetails} />          
           </Modal>
         )} 
         {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:

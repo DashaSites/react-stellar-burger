@@ -2,21 +2,20 @@ import React, { useContext, useReducer, useEffect, useMemo } from 'react';
 import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { bunSelector, middleIngredientsSelector, sumSelector } from '../../services/selector/constructorSelectors.js';
-
-
 
 
 
 const BurgerConstructor = ({ onButtonClick }) => { 
 
-  // Найдем в данных (если они загрузились) хоть одну булку:
+  // Найдем в данных (если они загрузились) хоть одну булку - передаем ее сюда из селектора
   const bunElement = useSelector(bunSelector);
 
-  // Из данных вытащим массив всех остальных ингредиентов, кроме булок:
+  // Из данных вытащим массив всех остальных ингредиентов, кроме булок: передаем его сюда из селектора
   const mainsAndSaucesElements = useSelector(middleIngredientsSelector);
 
+  // Передаем из селектора текущую стоимость заказа (сумму цены ингредиентов)
   const sumOfSelectedIngredients = useSelector(sumSelector);
 
 

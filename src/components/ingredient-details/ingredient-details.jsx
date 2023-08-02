@@ -1,16 +1,21 @@
 import ingredientDetailsStyles from "./ingredient-details.module.css";
-import PropTypes from "prop-types";
-import ingredientPropType from "../../utils/prop-types.js";
+//import PropTypes from "prop-types";
+//import ingredientPropType from "../../utils/prop-types.js";
+import { useSelector } from 'react-redux';
 
-const IngredientDetails = ({ ingredient }) => {
+const IngredientDetails = () => {
+
+  const ingredientDetails = useSelector(state => state.ingredientDetailsState);
+
+
   return (
     <article className={ingredientDetailsStyles.container}>
       <h2 className={`${ingredientDetailsStyles.heading} text text_type_main-large`}>
         Детали ингредиента
       </h2>
-      <img className={`${ingredientDetailsStyles.image} mb-4`} src={ingredient.image} />
+      <img className={`${ingredientDetailsStyles.image} mb-4`} src={ingredientDetails.imageLarge} />
       <h3 className={`${ingredientDetailsStyles.title} text text_type_main-medium mb-8`}>
-        {ingredient.name}
+        {ingredientDetails.name}
       </h3>
       <div className={ingredientDetailsStyles.description}>
         <div className={ingredientDetailsStyles.quality}>
@@ -18,7 +23,7 @@ const IngredientDetails = ({ ingredient }) => {
             Калории,ккал
           </p>
           <p className={`${ingredientDetailsStyles.amount} text text_type_digits-default`}>
-            {ingredient.calories}
+            {ingredientDetails.calories}
           </p>
         </div>
         <div className={ingredientDetailsStyles.quality}>
@@ -26,7 +31,7 @@ const IngredientDetails = ({ ingredient }) => {
             Белки, г
           </p>
           <p className={`${ingredientDetailsStyles.amount} text text_type_digits-default`}>
-            {ingredient.proteins}
+            {ingredientDetails.proteins}
           </p>
         </div>
         <div className={ingredientDetailsStyles.quality}>
@@ -34,7 +39,7 @@ const IngredientDetails = ({ ingredient }) => {
             Жиры, г
           </p>
           <p className={`${ingredientDetailsStyles.amount} text text_type_digits-default`}>
-            {ingredient.fat}
+            {ingredientDetails.fat}
           </p>
         </div>
         <div className={ingredientDetailsStyles.quality}>
@@ -42,7 +47,7 @@ const IngredientDetails = ({ ingredient }) => {
             Углеводы, г
           </p>
           <p className={`${ingredientDetailsStyles.amount} text text_type_digits-default`}>
-            {ingredient.carbohydrates}
+            {ingredientDetails.carbohydrates}
           </p>
         </div>
       </div>
@@ -51,9 +56,9 @@ const IngredientDetails = ({ ingredient }) => {
 }
 
 
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropType.isRequired
-}
+//IngredientDetails.propTypes = {
+//  ingredient: ingredientPropType.isRequired
+//}
 
 
 export default IngredientDetails;

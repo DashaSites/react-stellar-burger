@@ -8,7 +8,7 @@ const initialState = {
 }
 
 
-// 1) Редьюсер для загрузки с сервера ингредиентов
+// Редьюсер для получения списка ингредиентов в конструкторе бургера
 export const constructorReducer  = (state = initialState, action) => {
   switch (action.type) {
       case LOAD_INGREDIENTS_SUCCESS: {

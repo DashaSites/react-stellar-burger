@@ -2,11 +2,15 @@ import React, { useContext } from "react";
 import orderDetailsStyles from "./order-details.module.css";
 import iconDone from "../../images/done.svg";
 import PropTypes from "prop-types";
-import { OrderNumberContext } from '../../services/appContext.js';
+import { useSelector } from 'react-redux';
+//import { OrderNumberContext } from '../../services/appContext.js';
+
 
 const OrderDetails = () => {
 
-  const { orderNumber } = useContext(OrderNumberContext); // ПОЧЕМУ В СКОБКАХ ЗАРАБОТАЛО, А ДО ТОГО НЕТ?
+  //const { orderNumber } = useContext(OrderNumberContext);
+  const { orderNumber } = useSelector(state => state.orderDetailsState.orderNumber);
+
 
   return (
     <article className={orderDetailsStyles.container}>
