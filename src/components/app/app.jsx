@@ -7,10 +7,9 @@ import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
 import { getIngredients, getOrderDetails } from "../../utils/burger-api.js";
-import { IngredientsContext, OrderNumberContext } from '../../services/appContext.js'; //  NEW
-import { LOAD_INGREDIENTS_REQUEST, LOAD_INGREDIENTS_SUCCESS, LOAD_INGREDIENTS_ERROR } from '../../services/reducers/rootReducer.js';
+import { OrderNumberContext } from '../../services/appContext.js'; //  NEW
+import { LOAD_INGREDIENTS_REQUEST, LOAD_INGREDIENTS_SUCCESS, LOAD_INGREDIENTS_ERROR } from '../../services/actions/ingredientsActions.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { ingredientsSelector } from '../../services/store/index.js';
 
 
 const App = () => {

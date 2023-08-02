@@ -3,6 +3,7 @@ import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from 'react-redux';
+import { bunSelector, middleIngredientSelector } from '../../services/selector/constructorSelectors.js';
 
 
 // Функция-редьюсер для расчета суммы в счетчике заказа
@@ -22,16 +23,16 @@ function reducer(state, action) {
 
 const BurgerConstructor = ({ onButtonClick }) => { 
 
-  const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
+  const { ingredients } = useSelector(state => state.ingredientsState);
 
   const [state, dispatch] = useReducer(reducer, { sum: 0 }); // Получаем из редьюсера state и dispatch
 
 
   // Найдем в данных (если они загрузились) хоть одну булку:
-  const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
+  const bunElement = useSelector(bunSelector);
 
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок:
-  const mainsAndSaucesElements = ingredients.filter((item) => item.type !== "bun");
+  const mainsAndSaucesElements = useSelector(middleIngredientSelector);
 
   //При первом рендере вызываем редьюсер:
   //в обновленный стейт он запишет массив из всех используемых в этом компоненте ингредиентов 
