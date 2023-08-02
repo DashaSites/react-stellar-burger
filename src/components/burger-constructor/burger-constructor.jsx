@@ -3,55 +3,22 @@ import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from 'react-redux';
-import { bunSelector, middleIngredientSelector } from '../../services/selector/constructorSelectors.js';
+import { bunSelector, middleIngredientsSelector, sumSelector } from '../../services/selector/constructorSelectors.js';
 
 
-// Функция-редьюсер для расчета суммы в счетчике заказа
-function reducer(state, action) {
-  if (action.type === 'ingredientsLoaded') {
 
-    const loadedIngredients = action.payload.loadedIngredients; // достаем из dispatch используемые ингредиенты
-    const newSum = loadedIngredients.reduce((sum, currentIngredient) => {
-      return sum + currentIngredient.price;
-    }, 0)
-
-    const newState = { sum: newSum };
-    return newState;
-  }
-}
 
 
 const BurgerConstructor = ({ onButtonClick }) => { 
-
-  const { ingredients } = useSelector(state => state.ingredientsState);
-
-  const [state, dispatch] = useReducer(reducer, { sum: 0 }); // Получаем из редьюсера state и dispatch
-
 
   // Найдем в данных (если они загрузились) хоть одну булку:
   const bunElement = useSelector(bunSelector);
 
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок:
-  const mainsAndSaucesElements = useSelector(middleIngredientSelector);
+  const mainsAndSaucesElements = useSelector(middleIngredientsSelector);
 
-  //При первом рендере вызываем редьюсер:
-  //в обновленный стейт он запишет массив из всех используемых в этом компоненте ингредиентов 
-  useEffect(() => {
-    
-    dispatch({
-      type: 'ingredientsLoaded',
-      payload: { loadedIngredients: [bunElement, ...mainsAndSaucesElements, bunElement] }
-    });
-  }, [ingredients]);
+  const sumOfSelectedIngredients = useSelector(sumSelector);
 
-
-//  const orderCost = useMemo(() => {
-//    const priceSaucesAndMains = mainsAndSaucesElements.reduce((sum, currentIngredient) => {
-//      return sum + currentIngredient.price;
-//    }, 0);
-
-//    return priceSaucesAndMains + bunElement.price * 2;
-//  }, [bunElement, mainsAndSaucesElements]);
 
 
   return (
@@ -98,7 +65,7 @@ const BurgerConstructor = ({ onButtonClick }) => {
     </div>
     <div className={constructorStyles.resultCorner}>
       <div className={`${constructorStyles.resultCounter} mr-10`}>
-        <span className="text text_type_digits-medium">{state.sum}</span>
+        <span className="text text_type_digits-medium">{sumOfSelectedIngredients}</span>
         <CurrencyIcon type="primary" />
       </div>
       <Button htmlType="button" type="primary" size="large" onClick={onButtonClick}>
