@@ -5,13 +5,17 @@ import Ingredient from "../ingredient/ingredient.jsx";
 import PropTypes from "prop-types";
 import ingredientPropType from "../../utils/prop-types.js";
 //import { IngredientsContext } from '../../services/appContext.js'; // NEW
-import { useSelector } from 'react-redux';
-import { ingredientsSelector } from '../../services/selectors/ingredients-selector.js';
+import { useSelector, useDispatch } from 'react-redux';
+//import { ingredientsSelector } from '../../services/store/index.js';
+import { INGREDIENTS_LOADED } from '../../services/reducers/rootReducer.js';
 
 const BurgerIngredients = ({ onElementClick }) => {
 
-  const ingredients = useSelector(ingredientsSelector);
-  
+  const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
+
+
+  console.log(ingredients)
+
   // Подключаем табы: изначально стейт принимает таб, выбранный по умолчанию
   const [current, setCurrent] = React.useState("bun");
 
@@ -89,7 +93,7 @@ const BurgerIngredients = ({ onElementClick }) => {
 
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+  //ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
   onElementClick: PropTypes.func.isRequired
 }
 

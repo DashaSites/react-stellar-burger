@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/app/app";
 import { compose, legacy_createStore as createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import reportWebVitals from "./reportWebVitals";
 import { rootReducer } from './services/reducers/rootReducer.js';
@@ -13,8 +14,7 @@ const composeEnhancers =
     : compose;
 
 
-const enhancer = composeEnhancers();   
-
+const enhancer = composeEnhancers(applyMiddleware(thunk));  
 
 const store = createStore(rootReducer, enhancer);
 

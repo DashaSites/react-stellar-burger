@@ -2,7 +2,7 @@ import React, { useContext, useReducer, useEffect, useMemo } from 'react';
 import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { IngredientsContext } from '../../services/appContext.js'; //  NEW
+import { useSelector, useDispatch } from 'react-redux';
 
 
 // Функция-редьюсер для расчета суммы в счетчике заказа
@@ -22,7 +22,7 @@ function reducer(state, action) {
 
 const BurgerConstructor = ({ onButtonClick }) => { 
 
-  const { ingredients } = useContext(IngredientsContext); // Извлекаем ингредиенты из контекста
+  const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
 
   const [state, dispatch] = useReducer(reducer, { sum: 0 }); // Получаем из редьюсера state и dispatch
 

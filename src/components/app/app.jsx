@@ -8,15 +8,12 @@ import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
 import { getIngredients, getOrderDetails } from "../../utils/burger-api.js";
 import { IngredientsContext, OrderNumberContext } from '../../services/appContext.js'; //  NEW
-import { INGREDIENTS_LOADED } from '../../services/reducers/rootReducer.js';
+import { LOAD_INGREDIENTS_REQUEST, LOAD_INGREDIENTS_SUCCESS, LOAD_INGREDIENTS_ERROR } from '../../services/reducers/rootReducer.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { ingredientsSelector } from '../../services/selectors/ingredients-selector.js';
+import { ingredientsSelector } from '../../services/store/index.js';
+
 
 const App = () => {
-
-  const [isLoading, setIsLoading] = React.useState(true); // флажок для рендера данных только тогда, когда получили их от api
-
-  const [isError, setIsError] = React.useState(false); // флажок об ошибке для отображения, если данные не загрузились с api
 
   const [ingredientToShow, setIngredientToShow] = React.useState({});
 
@@ -24,40 +21,42 @@ const App = () => {
 
 
 
-
+  //const ingredients = useSelector(ingredientsSelector);
+  const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
   const dispatch = useDispatch();
 
-  const ingredients = useSelector(ingredientsSelector);
+  
+  function getFetchedIngredientsFromApi() {
+    return (dispatch) => {
+        // флажок о начале загрузки
+        dispatch({
+            type: LOAD_INGREDIENTS_REQUEST
+          })
 
-
-
-  const getFetchedIngredientsFromApi = () => {
-    setIsLoading(true); // см. рендер, где я установила этот флажок
-
-    getIngredients()
-    .then((res) => {
-
-      dispatch({
-        type: INGREDIENTS_LOADED,
-        payload: res.data
-      })
-
-      //setIngredients(res.data);
-      //setIsLoading(false); // см. рендер
-      //setIsError(false); // см. рендер
-    })
-    .catch((err) => {
-      console.log(err)
-      setIsLoading(false); // см. рендер
-      setIsError(true); // см. рендер
-    });
+        getIngredients()
+        .then((res) => {
+            dispatch({
+                type: LOAD_INGREDIENTS_SUCCESS, 
+                payload: res.data
+              })
+        }).catch((err) => {
+            console.log(err);
+            // Если сервер не вернул данных, также отправляем экшен об ошибке
+            dispatch({
+                type: LOAD_INGREDIENTS_ERROR
+            })
+        })
+    }
   }
+
+
 
   // Достаю данные через запрос к api: импортирую сюда запрос и ответ из burger-api.js
   // и обрабатываю эти данные дальше (записываю их в стейт)
-  React.useEffect(() => {
-   getFetchedIngredientsFromApi(); // вспомогательная функция, чтобы в ней повесить флажок isError
-  }, []);
+  React.useEffect(()=> {
+    dispatch(getFetchedIngredientsFromApi())
+}, [])
+  
 
 
   /// Настраиваю состояние и работу модальных окон ///
@@ -95,11 +94,11 @@ const App = () => {
     getOrderDetails(ingredientsIdArray) // Прокинем массив id в запросе к серверу
     .then((res) => {
       setOrderNumber(res.order.number);
-      setIsError(false); // см. рендер
+      //setIsError(false); // см. рендер
     }) // Полученный от сервера номер заказа сохраняем в специальный стейт
     .catch((err) => {
       console.log(err)
-      setIsError(true); // см. рендер
+      //setIsError(true); // см. рендер
     });
   }
 
@@ -112,18 +111,31 @@ const App = () => {
     <div className={appStyles.app}>
       <AppHeader />
       <main className={appStyles.main}>
-        {isError && "Что-то пошло не так"}
-        {isLoading && "Загрузка..."}
-        {!isError && !isLoading && 
-          <>
-            {ingredients.length > 0 &&
-              <BurgerIngredients onElementClick={handleClickIngredient} />
-            }
-            {ingredients.length > 0 &&
-              <BurgerConstructor onButtonClick={handleClickOrderButton} />
-            }
-          </>
-        }
+      {isError && "Что-то пошло не так"}
+      {isLoading && "Загрузка..."}
+
+{/*
+      {
+        ingredients.length > 0
+        ? <p>Data downloaded from api</p>
+        : <p>There is a problem</p>
+      }
+      */}
+
+      
+      {!isError && !isLoading && 
+        <>
+          {ingredients.length > 0 &&
+            <BurgerIngredients onElementClick={handleClickIngredient} />
+          }
+          {ingredients.length > 0 &&
+            <BurgerConstructor onButtonClick={handleClickOrderButton} />
+          }
+        </>
+      }
+      
+
+
       </main>
         {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
           <Modal onCloseClick={closeModals} closeModals={closeModals}>

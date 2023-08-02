@@ -1,38 +1,63 @@
 import { combineReducers } from 'redux';
 
-export const INGREDIENTS_LOADED = 'INGREDIENTS_LOADED';
+// экшены для редьюсера ingredientsReducer 
+export const LOAD_INGREDIENTS_REQUEST = 'LOAD_INGREDIENTS_REQUEST';
+export const LOAD_INGREDIENTS_SUCCESS = 'LOAD_INGREDIENTS_SUCCESS ';
+export const LOAD_INGREDIENTS_ERROR = 'LOAD_INGREDIENTS_ERROR';
 
-
+// initialState for ingredientsReducer
 const ingredientsInitialState = {
     ingredients: [],
-    isLoading: true,
+    isLoading: false,
     isError: false
 }
 
 
-// Редьюсер ***
-const ingredients = (state = ingredientsInitialState, action) => {
+// 1) Редьюсер для загрузки с сервера ингредиентов
+const ingredientsReducer = (state = ingredientsInitialState, action) => {
     switch (action.type) {
-        case INGREDIENTS_LOADED: {
+        case LOAD_INGREDIENTS_REQUEST: {
             return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case LOAD_INGREDIENTS_SUCCESS: {
+            return {
+                ...state,
                 ingredients: action.payload,
                 isLoading: false,
                 isError: false
             }
         }
-        default: return state
+        case LOAD_INGREDIENTS_ERROR: {
+            return {
+                ...state,
+                isLoading: false,
+                isError: true
+            }
+        }
+        default: {
+            return state;
+        }
     }
 }
 
-// Редьюсер ***
-//const BLA = (state, action) => {}
-
-// Редьюсер ***
-//const BLABLA = (state, action) => {}
-
 // Корневой редьюсер
 export const rootReducer = combineReducers({
-    ingredientsState: ingredients
-    // user, 
-    // collaboration 
+    ingredientsState: ingredientsReducer
 })
+
+
+
+// 2) Редьюсер для получения списка ингредиентов в конструкторе бургера
+const constructorReducer = (state, action) => {};
+
+// 3) Добавление данных об ингредиенте, просматриваемом в попапе
+const ingredientDetailsReducer = (state, action) => {}
+
+// 4) Получение и обновление номера заказа в попапе
+const orderDetailsReducer = (state, action) => {}
+
+
+
