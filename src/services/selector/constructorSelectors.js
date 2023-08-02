@@ -8,7 +8,9 @@ export function bunSelector(state) {
 
 export function middleIngredientsSelector(state) {
   const middleIngredientsIDs = state.constructorState.middleIngredientsIDs
-  return state.ingredientsState.ingredients.filter((item) => middleIngredientsIDs.includes(item.id))
+  //return state.ingredientsState.ingredients.filter((item) => middleIngredientsIDs.includes(item.id))
+  return state.ingredientsState.ingredients.filter((item) => item.type !== "bun");
+
 }
 
 export function sumSelector(state) {
