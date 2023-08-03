@@ -1,5 +1,6 @@
 import { INGREDIENT_POPUP_OPENED, INGREDIENT_POPUP_CLOSED } from '../actions/ingredientDetailsActions.js';
 
+// СОХРАНИТЬ СТЕЙТ В ВИДЕ ТОЛЬКО ОДНОГО АЙДИШНИКА, А ПОЛЯ ВЫТАСКИВАТЬ ПОТОМ ПО СЕЛЕКТОРУ
 
 //+ initialState for ingredientDetailsReducer
 const initialState = {

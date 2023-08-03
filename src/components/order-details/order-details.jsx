@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 const OrderDetails = () => {
 
   //const { orderNumber } = useContext(OrderNumberContext);
-  const { orderNumber } = useSelector(state => state.orderDetailsState.orderNumber);
+  const orderNumber = useSelector(state => state.orderDetailsState.orderNumber);
 
 
   return (

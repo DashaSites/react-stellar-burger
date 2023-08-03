@@ -7,7 +7,6 @@ import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
 import { getIngredients, getOrderDetails } from "../../utils/burger-api.js";
-import { OrderNumberContext } from '../../services/appContext.js'; 
 import { LOAD_INGREDIENTS_REQUEST, LOAD_INGREDIENTS_SUCCESS, LOAD_INGREDIENTS_ERROR } from '../../services/actions/ingredientsActions.js';
 import { INGREDIENT_POPUP_OPENED, INGREDIENT_POPUP_CLOSED } from '../../services/actions/ingredientDetailsActions.js';
 import { GET_ORDER_DETAILS_REQUEST, GET_ORDER_DETAILS_SUCCESS, GET_ORDER_DETAILS_ERROR } from '../../services/actions/orderDetailsActions.js';
@@ -19,7 +18,7 @@ const App = () => {
 
   //const [ingredientToShow, setIngredientToShow] = React.useState({});
 
-  const [orderNumber, setOrderNumber] = React.useState(0); // стейт для номера заказа
+  //const [orderNumber, setOrderNumber] = React.useState(0); // стейт для номера заказа
 
 
   const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
@@ -189,9 +188,7 @@ const App = () => {
           <Modal onCloseClick={closeModals} closeModals={closeModals}>
             {isError && "Что-то пошло не так"}
             {!isError &&
-              <OrderNumberContext.Provider value={{orderNumber, setOrderNumber}}> {/* сохраняю стейт в контекст */}
-                <OrderDetails orderNumber={orderNumber} />  
-              </OrderNumberContext.Provider> 
+                <OrderDetails />  
             }      
           </Modal>
         )} 
