@@ -1,5 +1,7 @@
 import { LOAD_INGREDIENTS_SUCCESS } from '../actions/ingredientsActions.js'
 
+export const DROP_INGREDIENT = 'DROP_INGREDIENT';
+
 
 // initialState for constructorReducer
 const initialState = {
@@ -17,9 +19,18 @@ export const constructorReducer  = (state = initialState, action) => {
         const middleIngedients = ingredients.filter((item) => item.type !== "bun");
 
           return {
-            bunIngredientID: bunElement.id,
-            middleIngredientsIDs: middleIngedients.map(item => item.id)
+            bunIngredientID: bunElement._id,
+            middleIngredientsIDs: middleIngedients.map(item => item._id)
           }
+      }
+      case DROP_INGREDIENT: {
+        const droppedIngredient = action.payload;
+
+        return {
+          ...state,
+          middleIngredientsIDs: [...state.middleIngredientsIDs, droppedIngredient._id]
+        }
+
       }
       default: {
           return state;

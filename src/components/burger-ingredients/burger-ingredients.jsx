@@ -4,10 +4,7 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../ingredient/ingredient.jsx";
 import PropTypes from "prop-types";
 import ingredientPropType from "../../utils/prop-types.js";
-//import { IngredientsContext } from '../../services/appContext.js'; // NEW
-import { useSelector, useDispatch } from 'react-redux';
-//import { ingredientsSelector } from '../../services/store/index.js';
-import { INGREDIENTS_LOADED } from '../../services/reducers/rootReducer.js';
+import { useSelector } from 'react-redux';
 
 const BurgerIngredients = ({ onElementClick }) => {
 

@@ -1,9 +1,14 @@
-import React, { useContext, useReducer, useEffect, useMemo } from 'react';
+import React, { useContext, useReducer, useEffect, useMemo, useState } from 'react';
 import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { bunSelector, middleIngredientsSelector, sumSelector } from '../../services/selector/constructorSelectors.js';
+import { useDrop } from 'react-dnd';
+import { DROP_INGREDIENT } from '../../services/reducers/constructorReducer.js'
+import { select } from '../../services/store/store.js';
+import { ingredientSelector } from '../../services/selector/ingredientsSelectors.js';
+
 
 
 
@@ -18,10 +23,42 @@ const BurgerConstructor = ({ onButtonClick }) => {
   // Передаем из селектора текущую стоимость заказа (сумму цены ингредиентов)
   const sumOfSelectedIngredients = useSelector(sumSelector);
 
+  const dispatch = useDispatch();
+
+
+
+  //// Перетаскиваю в конструктор ингредиенты
+
+  //const [mainsArray, setMainsArray] = useState([mainsAndSaucesElements]);
+
+
+  const [{ opacity }, dropRef] = useDrop({
+    accept: 'ingredient',
+    drop: (item) => {
+      const droppedIngredient = select(ingredientSelector(item.id));
+
+      dispatch({
+        type: DROP_INGREDIENT,
+        payload: droppedIngredient
+      });
+
+    },
+    collect: (monitor) => ({
+        opacity: monitor.isOver() ? 0.5 : 1
+    })
+})
+
+
+////
+
+
+
+
+
 
 
   return (
-    <section className={`${constructorStyles.constructorSection} pt-25`}>
+    <section className={`${constructorStyles.constructorSection} pt-25`} ref={dropRef} style={{ opacity }}>
     <div className={`${constructorStyles.elementsList} mb-10`}>        
       {
         <div className={constructorStyles.fixedElement}>
@@ -34,7 +71,7 @@ const BurgerConstructor = ({ onButtonClick }) => {
           />
         </div>
       }
-      <ul className={`${constructorStyles.transposableElements} custom-scroll`}> {/* Список начинок и соусов */}
+      <ul className={`${constructorStyles.transposableElements} custom-scroll`} ref={dropRef}> {/* Список начинок и соусов */}
         {
           mainsAndSaucesElements.map((element) => {
             return (

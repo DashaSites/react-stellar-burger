@@ -2,31 +2,22 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/app/app";
-import { compose, legacy_createStore as createStore, applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import reportWebVitals from "./reportWebVitals";
-import { rootReducer } from './services/reducers/rootReducer.js';
-
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
-
-
-const enhancer = composeEnhancers(applyMiddleware(thunk));  
-
-const store = createStore(rootReducer, enhancer);
-
+import { store } from "./services/store/store.js";
+import { HTML5Backend } from 'react-dnd-html5-backend' // Контекст для dnd
+import { DndProvider } from 'react-dnd'
 
 
 
 
 ReactDOM.render(
   <React.StrictMode>
+  <DndProvider backend={HTML5Backend}>
     <Provider store={store}>
-      <App />
-    </Provider>
+        <App />
+      </Provider>
+    </DndProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
