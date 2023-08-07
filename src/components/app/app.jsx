@@ -52,7 +52,7 @@ const App = () => {
   }
 
 
-  // Достаю данные через запрос к api: импортирую сюда запрос и ответ из burger-api.js
+  // Достаю данные через запрос к api (через функцию сверху): импортирую сюда запрос и ответ из burger-api.js
   // и обрабатываю эти данные дальше (записываю их в стейт)
   React.useEffect(()=> {
     dispatch(getFetchedIngredientsFromApi())
@@ -158,15 +158,6 @@ const App = () => {
       <main className={appStyles.main}>
       {isError && "Что-то пошло не так"}
       {isLoading && "Загрузка..."}
-
-    {/*
-      {
-        ingredients.length > 0
-        ? <p>Data downloaded from api</p>
-        : <p>There is a problem</p>
-      }
-    */}
-
       
       {!isError && !isLoading && 
         <>
@@ -178,6 +169,7 @@ const App = () => {
           }
         </>
       }
+
       </main>
         {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
           <Modal onCloseClick={closeModals} closeModals={closeModals}>

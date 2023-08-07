@@ -30,7 +30,6 @@ export const constructorReducer  = (state = initialState, action) => {
           ...state,
           middleIngredientsIDs: [...state.middleIngredientsIDs, droppedIngredient._id]
         }
-
       }
       default: {
           return state;

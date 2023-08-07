@@ -52,11 +52,6 @@ const BurgerConstructor = ({ onButtonClick }) => {
 ////
 
 
-
-
-
-
-
   return (
     <section className={`${constructorStyles.constructorSection} pt-25`} ref={dropRef} style={{ opacity }}>
     <div className={`${constructorStyles.elementsList} mb-10`}>        
