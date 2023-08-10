@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../ingredient/ingredient.jsx";
@@ -39,6 +39,48 @@ const BurgerIngredients = ({ onElementClick }) => {
   });
 
 
+
+
+////////// Подсветка табов при скролле
+
+  //const tabsRef = useRef(null); // Табы
+
+  const containerRef = useRef(null);
+
+  const bunsRef = useRef(null); // Заголовок раздела "Булки"
+
+  const saucesRef = useRef(null); // Заголовок раздела "Соусы"
+
+  const mainsRef = useRef(null); // Заголовок раздела "Начинки"
+
+  const handleScroll = () => {
+
+    const containerPosition = containerRef.current.getBoundingClientRect();
+
+    const bunsPositionY = bunsRef.current.getBoundingClientRect().y;
+
+    const saucesPositionY = saucesRef.current.getBoundingClientRect().y;
+
+    const mainsPositionY = mainsRef.current.getBoundingClientRect().y;
+    
+
+    if (Math.abs(bunsPositionY) < Math.abs(saucesPositionY) && Math.abs(bunsPositionY) < Math.abs(mainsPositionY)) {
+      if (current !== "bun") {
+        setCurrent("bun");
+      }
+    } else if (Math.abs(saucesPositionY) < Math.abs(bunsPositionY) && Math.abs(saucesPositionY) < Math.abs(mainsPositionY)) {
+      if (current !== "sauce") {
+        setCurrent("sauce");
+      }
+    } else {
+      if (current !== "main") {
+        setCurrent("main");
+      }
+    }
+ 
+    }
+
+
   return (
     <section className={ingredientsStyles.ingredientsSection}>
       <h1 className="text text_type_main-large mt-8 mb-5">Соберите бургер</h1>
@@ -54,10 +96,10 @@ const BurgerIngredients = ({ onElementClick }) => {
         </Tab>
       </div>
 
-      <div className={`${ingredientsStyles.wrapper} mt-10 mb-10 custom-scroll`}>
+      <div className={`${ingredientsStyles.wrapper} mt-10 mb-10 custom-scroll`} onScroll={handleScroll} ref={containerRef}>
 
-        <h2 className="text text_type_main-medium" id="bun">Булки</h2> {/* раздел с булками */}
-        <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`} >
+        <h2 className="text text_type_main-medium" id="bun" ref={bunsRef}>Булки</h2> {/* раздел с булками */}
+        <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`}>
           {
             buns.map((bun) => (
               <Ingredient ingredient={bun} key={bun._id} onClick={onElementClick} />
@@ -65,8 +107,8 @@ const BurgerIngredients = ({ onElementClick }) => {
           }
         </ul>
 
-        <h2 className="text text_type_main-medium" id="sauce">Соусы</h2> {/* раздел с соусами */}
-        <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`} >
+        <h2 className="text text_type_main-medium" id="sauce" ref={saucesRef}>Соусы</h2> {/* раздел с соусами */}
+        <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`}>
           {
             sauces.map((sauce) => (
               <Ingredient ingredient={sauce} key={sauce._id} onClick={onElementClick} />
@@ -74,8 +116,8 @@ const BurgerIngredients = ({ onElementClick }) => {
           }
         </ul>
 
-        <h2 className="text text_type_main-medium" id="main">Начинки</h2> {/* раздел с начинками */}
-        <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`} >
+        <h2 className="text text_type_main-medium" id="main" ref={mainsRef}>Начинки</h2> {/* раздел с начинками */}
+        <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`}>
           {
             mains.map((main) => (
               <Ingredient ingredient={main} key={main._id} onClick={onElementClick} />

@@ -9,7 +9,7 @@ const ingredientsInitialState = {
 }
 
 
-// 1) Редьюсер для загрузки с сервера ингредиентов
+// 1) Редьюсер для загрузки ингредиентов с сервера
 export const ingredientsReducer = (state = ingredientsInitialState, action) => {
   switch (action.type) {
       case LOAD_INGREDIENTS_REQUEST: {

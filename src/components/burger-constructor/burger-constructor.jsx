@@ -31,7 +31,6 @@ const BurgerConstructor = ({ onButtonClick }) => {
 
   //const [mainsArray, setMainsArray] = useState([mainsAndSaucesElements]);
 
-
   const [{ opacity }, dropRef] = useDrop({
     accept: 'ingredient',
     drop: (item) => {
@@ -47,9 +46,11 @@ const BurgerConstructor = ({ onButtonClick }) => {
         opacity: monitor.isOver() ? 0.5 : 1
     })
 })
-
-
 ////
+
+const deleteIngredient = () => {
+  console.log('To be able to delete me, you need to install unique keys to all constructor elements, then write a special action, and call here its dispatch. You probably need to create a special reducer for it. You will delete me by filtering all "ingredients" and leaving only those ingredients in the array, which keys will not equal to this key')
+}
 
 
   return (
@@ -68,7 +69,7 @@ const BurgerConstructor = ({ onButtonClick }) => {
       }
       <ul className={`${constructorStyles.transposableElements} custom-scroll`} ref={dropRef}> {/* Список начинок и соусов */}
         {
-          mainsAndSaucesElements.map((element) => {
+          mainsAndSaucesElements.map((element, index) => {
             return (
               <li className={`${constructorStyles.transposableElement} mt-4`} key={element._id}>
                 <DragIcon type="primary" />
@@ -76,6 +77,7 @@ const BurgerConstructor = ({ onButtonClick }) => {
                   text={element.name}
                   price={element.price}
                   thumbnail={element.image}
+                  handleClose={() => deleteIngredient()} // Зачем здесь использовать именно колбэк? 
                 />
               </li>
             )
