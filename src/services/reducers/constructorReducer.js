@@ -5,7 +5,7 @@ export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
 
 export const DROP_INGREDIENT_BUN = 'DROP_INGREDIENT_BUN';
 export const DROP_INGREDIENT_MIDDLE = 'DROP_INGREDIENT_MIDDLE';
-
+export const MOVE_INGREDIENT = 'MOVE_INGREDIENT';
 
 // initialState for constructorReducer
 const initialState = {
@@ -66,6 +66,24 @@ export const constructorReducer  = (state = initialState, action) => {
           middleIngredients: state.middleIngredients.filter(
             (middleIngredient) => middleIngredient.key !== action.payload
           )
+        }
+      }
+      case MOVE_INGREDIENT: {
+        const dragIndex = action.payload.dragIndex;
+        const hoverIndex = action.payload.hoverIndex;
+
+        const middleIngredients = state.middleIngredients;
+
+        const movedIngredient = middleIngredients[dragIndex];
+
+        middleIngredients.splice(dragIndex, 1); // что драгается
+        middleIngredients.splice(hoverIndex, 0, movedIngredient); // что дропается
+    
+
+
+        return {
+          ...state,
+          middleIngredients: middleIngredients
         }
       }
       default: {

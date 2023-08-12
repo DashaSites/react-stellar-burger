@@ -1,11 +1,11 @@
-import React, { useContext, useReducer, useEffect, useMemo, useState, useRef } from 'react';
+import React, { useContext, useReducer, useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import constructorStyles from "./burger-constructor.module.css";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from 'react-redux';
 import { bunSelector, middleIngredientsSelector, sumSelector } from '../../services/selector/constructorSelectors.js';
 import { useDrag, useDrop } from 'react-dnd';
-import { DELETE_INGREDIENT, DROP_INGREDIENT_MIDDLE, DROP_INGREDIENT_BUN } from '../../services/reducers/constructorReducer.js'
+import { DELETE_INGREDIENT, DROP_INGREDIENT_MIDDLE, DROP_INGREDIENT_BUN, MOVE_INGREDIENT } from '../../services/reducers/constructorReducer.js'
 import { select } from '../../services/store/store.js';
 import { ingredientSelector } from '../../services/selector/ingredientsSelectors.js';
 import { v4 as uuidv4 } from "uuid";
@@ -136,6 +136,21 @@ drag(drop(ref));
 
 
 
+const moveIngredient = useCallback((dragIndex, hoverIndex) => {
+    dispatch({
+      type: MOVE_INGREDIENT,
+      payload: {
+        dragIndex: dragIndex,
+        hoverIndex: hoverIndex
+      }
+    });
+}, [])
+
+
+
+
+
+
   return (
     <section className={`${constructorStyles.constructorSection} pt-25`} ref={dropRef} style={{ opacity }}>
     <div className={`${constructorStyles.elementsList} mb-10`}>        
@@ -152,9 +167,9 @@ drag(drop(ref));
       }
       <ul className={`${constructorStyles.transposableElements} custom-scroll`} ref={dropRef}> {/* Список начинок и соусов */}
         {
-          mainsAndSaucesElements.map((element) => {  // НИЖЕ ДОБАВИТЬ KEY
+          mainsAndSaucesElements.map((element, index) => { 
             return ( // Для сортировки к элементу <li> ниже привязать ref={drag} и style={{ ...style, opacity }}
-              <MiddleConstructorElement element={element} key={element.key} />
+              <MiddleConstructorElement element={element} key={element.key} index={index} moveIngredient={moveIngredient} />
             )
           })
           
