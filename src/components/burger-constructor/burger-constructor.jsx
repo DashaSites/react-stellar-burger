@@ -9,7 +9,8 @@ import { DELETE_INGREDIENT, DROP_INGREDIENT_MIDDLE, DROP_INGREDIENT_BUN } from '
 import { select } from '../../services/store/store.js';
 import { ingredientSelector } from '../../services/selector/ingredientsSelectors.js';
 import { v4 as uuidv4 } from "uuid";
-import { deleteIngredient, dropIngredientWithUuid } from '../../services/actions/ingredientsActions.js';  
+import { deleteIngredient, dropIngredientWithUuid } from '../../services/actions/ingredientsActions.js';
+import { MiddleConstructorElement } from '../middle-constructor-element/middle-constructor-element.jsx';
 
 
 
@@ -153,18 +154,7 @@ drag(drop(ref));
         {
           mainsAndSaucesElements.map((element) => {  // НИЖЕ ДОБАВИТЬ KEY
             return ( // Для сортировки к элементу <li> ниже привязать ref={drag} и style={{ ...style, opacity }}
-              <li className={`${constructorStyles.transposableElement} mt-4`} key={element.key}>
-                <DragIcon type="primary" />
-                <ConstructorElement 
-                  text={element.name}
-                  price={element.price}
-                  thumbnail={element.image}
-                  // НАСТРОИЛА УДАЛЕНИЕ ТОЛЬКО ОДНОГО ИНГР-ТА - ПО ЕГО _id.
-                  // А НАДО НАСТРОИТЬ УДАЛЕНИЕ ВСЕХ ИНГРЕДИЕНТОВ, ТО ЕСТЬ
-                  // ПЕРЕДАВАТЬ ТУТ С ЭКШЕН-КРИЕЙТОРОМ НЕ _ID, А КЛЮЧ UUID
-                  handleClose={() => dispatch(deleteIngredient(element.key))} 
-                />
-              </li>
+              <MiddleConstructorElement element={element} key={element.key} />
             )
           })
           
