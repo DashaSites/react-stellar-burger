@@ -1,13 +1,12 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import constructorStyles from "../burger-constructor/burger-constructor.module.css";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { deleteIngredient } from '../../services/actions/ingredientsActions.js';
-import { useRef } from 'react'
 
 
-
-
+// Type для useDrag и accept для useDrop в одной переменной
 const dndType = "sortedIngredient"; 
 
 
@@ -15,10 +14,9 @@ export const MiddleConstructorElement = ({ element, index, moveIngredient }) => 
 
   const dispatch = useDispatch();
 
+  
+  const ref = useRef(null);
 
-
-
-  const ref = useRef(null)
   const [{ handlerId }, drop] = useDrop({
     accept: dndType,
     collect(monitor) {
@@ -78,9 +76,6 @@ export const MiddleConstructorElement = ({ element, index, moveIngredient }) => 
   })
   const opacity = isDragging ? 0 : 1
   drag(drop(ref))
-
-
-
 
 
 

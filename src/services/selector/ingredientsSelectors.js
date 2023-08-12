@@ -9,5 +9,4 @@ export function ingredientSelector(id) {
     return ingredient;
 
   }
-
 }

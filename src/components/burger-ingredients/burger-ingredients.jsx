@@ -37,7 +37,6 @@ const BurgerIngredients = ({ onElementClick }) => {
 
 
 
-
 ////////// Подсветка табов при скролле
 
   //const tabsRef = useRef(null); // Табы
@@ -74,8 +73,7 @@ const BurgerIngredients = ({ onElementClick }) => {
         setCurrent("main");
       }
     }
- 
-    }
+  }
 
 
   return (

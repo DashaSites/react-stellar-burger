@@ -1,11 +1,12 @@
-import { LOAD_INGREDIENTS_SUCCESS } from '../actions/ingredientsActions.js'
+import { 
+  LOAD_INGREDIENTS_SUCCESS, 
+  DELETE_INGREDIENT,
+  DROP_INGREDIENT_BUN,
+  DROP_INGREDIENT_MIDDLE,
+  MOVE_INGREDIENT
+} from '../actions/ingredientsActions.js'
 import { v4 as uuidv4 } from "uuid";
 
-export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
-
-export const DROP_INGREDIENT_BUN = 'DROP_INGREDIENT_BUN';
-export const DROP_INGREDIENT_MIDDLE = 'DROP_INGREDIENT_MIDDLE';
-export const MOVE_INGREDIENT = 'MOVE_INGREDIENT';
 
 // initialState for constructorReducer
 const initialState = {
@@ -31,7 +32,6 @@ export const constructorReducer  = (state = initialState, action) => {
                 key: uuidv4()
               }
             })
-            // ПОСЛЕ ЭТОГО ЭТИМ ИНГРЕДИЕНТАМ НАДО ГДЕ-ТО ЗДЕСЬ ДОБАВИТЬ УНИКАЛЬНЫЕ АЙДИ
           }
       }
       case DROP_INGREDIENT_BUN: {
@@ -49,13 +49,10 @@ export const constructorReducer  = (state = initialState, action) => {
         return {
           ...state,
           // перетаскиваемые начинки и соусы падают в середину конструктора
-        
           middleIngredients: [...state.middleIngredients, { 
             id: droppedIngredientMiddle._id,
             key: droppedIngredientMiddle.key
-           }] 
-      
-          
+           }]    
         }
       }
       case DELETE_INGREDIENT: {
@@ -76,11 +73,10 @@ export const constructorReducer  = (state = initialState, action) => {
 
         const movedIngredient = middleIngredients[dragIndex];
 
-        middleIngredients.splice(dragIndex, 1); // что драгается
-        middleIngredients.splice(hoverIndex, 0, movedIngredient); // что дропается
+        // Сплайсом видоизменяю массив ингредиентов в два подхода:
+        middleIngredients.splice(dragIndex, 1); // то, что драгается
+        middleIngredients.splice(hoverIndex, 0, movedIngredient); // то, что дропается
     
-
-
         return {
           ...state,
           middleIngredients: middleIngredients

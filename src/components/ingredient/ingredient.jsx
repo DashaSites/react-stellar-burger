@@ -10,7 +10,7 @@ import { useDrag } from 'react-dnd';
 
 const Ingredient = ({ ingredient, onClick }) => {
 
-  // Вытаскиваю в стейт из стора айдишники булок и ингредиентов, которые сейчас лежат в конструкторе
+  // Вытаскиваю в стейт из стора айдишники тех булок и ингредиентов, которые сейчас лежат в конструкторе
   const { bunIngredientID, middleIngredients } = useSelector(state => state.constructorState);
 
   const [{ opacity }, dragRef] = useDrag(
@@ -28,7 +28,6 @@ const Ingredient = ({ ingredient, onClick }) => {
   // Счетчик для соусов и начинок, которые уже выбраны, т.е. находятся в конструкторе
   const middleIngredientsCounter = useMemo(
     () => {
-      //  ПОТОМ ПЕРЕНЕСТИ ЭТО ОПРЕДЕЛЕНИЕ В СЕЛЕКТОР (ПО ПРИМЕРУ, ГДЕ ИНГРЕДИЕНТ ОПРЕДЕЛЯЕТСЯ ПО АЙДИШНИКУ)!
       const middleIngredientsIDArray = middleIngredients.filter((middleIngredient) => middleIngredient.id === ingredient._id);
       return middleIngredientsIDArray.length;
 

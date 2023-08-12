@@ -10,15 +10,10 @@ import { getIngredients, getOrderDetails } from "../../utils/burger-api.js";
 import { LOAD_INGREDIENTS_REQUEST, LOAD_INGREDIENTS_SUCCESS, LOAD_INGREDIENTS_ERROR } from '../../services/actions/ingredientsActions.js';
 import { INGREDIENT_POPUP_OPENED, INGREDIENT_POPUP_CLOSED } from '../../services/actions/ingredientDetailsActions.js';
 import { GET_ORDER_DETAILS_REQUEST, GET_ORDER_DETAILS_SUCCESS, GET_ORDER_DETAILS_ERROR } from '../../services/actions/orderDetailsActions.js';
-
 import { useSelector, useDispatch } from 'react-redux';
 
 
 const App = () => {
-
-  //const [ingredientToShow, setIngredientToShow] = React.useState({});
-
-  //const [orderNumber, setOrderNumber] = React.useState(0); // стейт для номера заказа
 
   // Ингредиенты, загруженные с сервера
   const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
@@ -85,6 +80,7 @@ const App = () => {
     });
   }
 
+
   // Обработка кликов по ингредиенту
   const handleClickIngredient = (ingredient) => {
     //setIngredientToShow(ingredient);
@@ -104,12 +100,11 @@ const App = () => {
     setIsIngredientDetailsOpened(true);
   }
 
-  // Соберем id всех ингредиентов конструктора(?) в массив
+  // Соберем id всех ингредиентов конструктора в массив
   const ingredientsIdArray = ingredients.map(ingredient => ingredient._id);
 
 
-
-  //// ЗАПРОС К СЕРВЕРУ ЗА НОМЕРОМ ЗАКАЗА: ТЕПЕРЬ В ВИДЕ ФУНКЦИИ С МИДЛВАРОМ
+  //// Запрос к серверу за номером заказа (функция с мидлваром)
   const getFetchedOrderDetailsFromApi = () => { 
     return (dispatch) => {
       // флажок о начале загрузки
@@ -133,26 +128,12 @@ const App = () => {
     }   
   }
 
-  
-  //// БЫЛО
-  {/*
-  const getFetchedOrderDetailsFromApi = () => { // ЗДЕСЬ СДЕЛАТЬ ФУНКЦИЮ С МИДЛВАРОМ
-    getOrderDetails(ingredientsIdArray) // Прокинем массив id в запросе к серверу
-    .then((res) => {
-      setOrderNumber(res.order.number);
-      //setIsError(false); // см. рендер
-    }) // Полученный от сервера номер заказа сохраняем в специальный стейт
-    .catch((err) => {
-      console.log(err)
-      //setIsError(true); // см. рендер
-    });
-  }
-  */}
 
   const handleClickOrderButton = () => { // Вызов dispatch
     setIsOrderDetailsOpened(true);
     dispatch(getFetchedOrderDetailsFromApi()); // вспомогательная функция, чтобы в ней повесить флажок isError
   }
+
 
   return (
     <div className={appStyles.app}>
