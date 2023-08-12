@@ -11,7 +11,7 @@ import { useDrag } from 'react-dnd';
 const Ingredient = ({ ingredient, onClick }) => {
 
   // Вытаскиваю в стейт из стора айдишники булок и ингредиентов, которые сейчас лежат в конструкторе
-  const { bunIngredientID, middleIngredientsIDs } = useSelector((state) => state.constructorState);
+  const { bunIngredientID, middleIngredients } = useSelector(state => state.constructorState);
 
   const [{ opacity }, dragRef] = useDrag(
     () => ({
@@ -25,21 +25,17 @@ const Ingredient = ({ ingredient, onClick }) => {
   )
 
  
-  // Счетчик для начинок, которые находятся в конструкторе
+  // Счетчик для соусов и начинок, которые уже выбраны, т.е. находятся в конструкторе
   const middleIngredientsCounter = useMemo(
     () => {
-      const middleIngredientsIDArray = middleIngredientsIDs.filter((id) => id === ingredient._id);
+      //  ПОТОМ ПЕРЕНЕСТИ ЭТО ОПРЕДЕЛЕНИЕ В СЕЛЕКТОР (ПО ПРИМЕРУ, ГДЕ ИНГРЕДИЕНТ ОПРЕДЕЛЯЕТСЯ ПО АЙДИШНИКУ)!
+      const middleIngredientsIDArray = middleIngredients.filter((middleIngredient) => middleIngredient.id === ingredient._id);
       return middleIngredientsIDArray.length;
 
-  }, [ingredient, middleIngredientsIDs]);
+  }, [ingredient, middleIngredients]);
   
- 
-  // НАСЧЕТ БУЛОК. СЕЙЧАС ИХ В КОНСТРУКТОРЕ 2, И ИХ СТОИМОСТЬ ВКЛЮЧЕНА В ОБЩИЙ ПРАЙС.
-  // И МОЖНО ДОБАВЛЯТЬ НОВЫЕ БУЛКИ. НО НАДО СДЕЛАТЬ ТАК, ЧТОБЫ
-  // НОВАЯ БУЛКА, КОТОРУЮ ДРОПАЕМ В КОНСТРУКТОР, ВСТАВАЛА ТУДА ВМЕСТО ПРЕДЫДУЩЕЙ,
-  // И ЧТОБЫ ЭТО ОТРАЖАЛОСЬ НА СЧЕТЧИКАХ БУЛОК.
   
-  // Счетчик для булок, которые находятся в конструкторе
+  // Счетчик для булок, которые уже выбраны (лежат в конструкторе)
   const bunCounter = useMemo(
     () => {
       if (bunIngredientID === null) {

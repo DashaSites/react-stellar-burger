@@ -20,7 +20,7 @@ export const orderDetailsReducer = (state = initialState, action) => {
       case GET_ORDER_DETAILS_SUCCESS: {
           return {
               ...state,
-              orderNumber: action.payload, // ДОБАВИТЬ ЧТО-ТО ПОСЛЕ payload
+              orderNumber: action.payload,
               isError: false
           }
       }

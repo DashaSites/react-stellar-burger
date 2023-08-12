@@ -20,9 +20,10 @@ const App = () => {
 
   //const [orderNumber, setOrderNumber] = React.useState(0); // стейт для номера заказа
 
-
+  // Ингредиенты, загруженные с сервера
   const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
   
+  // Данные об ингредиенте, которые подгружаются в открытый попап с ингредиентом
   const ingredientDetails = useSelector(state => state.ingredientDetailsState);
 
   const dispatch = useDispatch();
@@ -102,12 +103,13 @@ const App = () => {
      });
     setIsIngredientDetailsOpened(true);
   }
-  // Соберем id всех ингредиентов конструктора в массив
+
+  // Соберем id всех ингредиентов конструктора(?) в массив
   const ingredientsIdArray = ingredients.map(ingredient => ingredient._id);
 
 
 
-  //// ЗАРПОС К СЕРВЕРУ ЗА НОМЕРОМ ЗАКАЗА СТАЛ ФУНКЦИЕЙ С МИДЛВАРОМ 
+  //// ЗАПРОС К СЕРВЕРУ ЗА НОМЕРОМ ЗАКАЗА: ТЕПЕРЬ В ВИДЕ ФУНКЦИИ С МИДЛВАРОМ
   const getFetchedOrderDetailsFromApi = () => { 
     return (dispatch) => {
       // флажок о начале загрузки

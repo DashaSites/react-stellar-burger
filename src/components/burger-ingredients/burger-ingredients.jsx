@@ -10,9 +10,6 @@ const BurgerIngredients = ({ onElementClick }) => {
 
   const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
 
-
-  console.log(ingredients)
-
   // Подключаем табы: изначально стейт принимает таб, выбранный по умолчанию
   const [current, setCurrent] = React.useState("bun");
 

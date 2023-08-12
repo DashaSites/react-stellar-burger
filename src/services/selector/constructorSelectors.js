@@ -8,10 +8,15 @@ import { ingredientSelector } from './ingredientsSelectors.js';
 
 // Элемент начинки, найденный через редьюсер для конструктора бургера
 export function middleIngredientsSelector(state) {
-  const middleIngredientsIDs = state.constructorState.middleIngredientsIDs
-  return middleIngredientsIDs.map(id => ingredientSelector(id)(state))
+  const middleIngredients = state.constructorState.middleIngredients
+  return middleIngredients.map(middleIngredient => {
 
-  //return state.ingredientsState.ingredients.filter((item) => middleIngredientsIDs.includes(item._id))
+    const ingredient = ingredientSelector(middleIngredient.id)(state);
+    return {
+      ...ingredient,
+      key: middleIngredient.key
+    }
+  })
 }
 
 // Селектор функции, которая подсчитывает текущую сумму заказа

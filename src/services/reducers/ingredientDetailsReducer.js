@@ -2,7 +2,7 @@ import { INGREDIENT_POPUP_OPENED, INGREDIENT_POPUP_CLOSED } from '../actions/ing
 
 // СОХРАНИТЬ СТЕЙТ В ВИДЕ ТОЛЬКО ОДНОГО АЙДИШНИКА, А ПОЛЯ ВЫТАСКИВАТЬ ПОТОМ ПО СЕЛЕКТОРУ
 
-//+ initialState for ingredientDetailsReducer
+// initialState for ingredientDetailsReducer
 const initialState = {
   ingredientID: null,
   imageLarge: "",
