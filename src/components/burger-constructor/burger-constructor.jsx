@@ -1,15 +1,14 @@
-import React, { useContext, useReducer, useEffect, useMemo, useState, useRef, useCallback } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import constructorStyles from "./burger-constructor.module.css";
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
+import { ConstructorElement, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from 'react-redux';
 import { bunSelector, middleIngredientsSelector, sumSelector } from '../../services/selector/constructorSelectors.js';
-import { useDrag, useDrop } from 'react-dnd';
-import { DELETE_INGREDIENT, DROP_INGREDIENT_MIDDLE, DROP_INGREDIENT_BUN, MOVE_INGREDIENT } from '../../services/actions/ingredientsActions';
+import { useDrop } from 'react-dnd';
+import { DROP_INGREDIENT_BUN, MOVE_INGREDIENT } from '../../services/actions/ingredientsActions';
 import { getFetchedOrderDetailsFromApi } from '../../services/actions/orderDetailsActions';
 import { select } from '../../services/store/store.js';
 import { ingredientSelector } from '../../services/selector/ingredientsSelectors.js';
-import { deleteIngredient, dropIngredientWithUuid } from '../../services/actions/ingredientsActions.js';
+import { dropIngredientWithUuid } from '../../services/actions/ingredientsActions.js';
 import { MiddleConstructorElement } from '../middle-constructor-element/middle-constructor-element.jsx';
 import Modal from "../modal/modal.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
@@ -46,7 +45,7 @@ const BurgerConstructor = () => {
   const [
     isOrderDetailsOpened, 
     setIsOrderDetailsOpened
-  ] = React.useState(false);
+  ] = useState(false);
 
 
   // Закрываю модальное окно по клику на крестик + по клику на оверлей
@@ -74,7 +73,7 @@ const BurgerConstructor = () => {
     drop: (item) => {
       const droppedIngredient = select(ingredientSelector(item.id)); // по айдишнику нашла ингредиент в сторе
 
-      if (droppedIngredient.type !== 'bun') { // если перетаскиваю не булку, то бросаю этот ингредиент в середину:
+      if (droppedIngredient.type !== 'bun') { // если перетаскиваю не булку, то бросаю этот ингредиент в середину (через экшен-криейтор):
         dispatch(
           dropIngredientWithUuid(droppedIngredient)
         );
@@ -163,10 +162,6 @@ const moveIngredient = useCallback((dragIndex, hoverIndex) => {
   )
 }
 
-
-BurgerConstructor.propTypes = {
-  //onButtonClick: PropTypes.func.isRequired
-}
 
 
 export default BurgerConstructor;

@@ -9,11 +9,12 @@ const modalsContainer = document.querySelector("#modals");
 
 const Modal = ({ onCloseClick, closeModals, children }) => {
 
-  const handleEscKeydown = (event) => {
-    event.key === "Escape" && closeModals();
-  }
-
   React.useEffect(() => {
+
+    const handleEscKeydown = (event) => {
+      event.key === "Escape" && closeModals();
+    }
+
     document.addEventListener("keydown", handleEscKeydown);
 
     return () => {

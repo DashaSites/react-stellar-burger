@@ -1,14 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import orderDetailsStyles from "./order-details.module.css";
 import iconDone from "../../images/done.svg";
-import PropTypes from "prop-types";
 import { useSelector } from 'react-redux';
-//import { OrderNumberContext } from '../../services/appContext.js';
 
 
 const OrderDetails = () => {
 
-  //const { orderNumber } = useContext(OrderNumberContext);
   const orderNumber = useSelector(state => state.orderDetailsState.orderNumber);
 
 
@@ -23,10 +20,6 @@ const OrderDetails = () => {
   )
 }
 
-
-//OrderDetails.propTypes = {
-//  orderNumber: PropTypes.number.isRequired
-//}
 
 
 export default OrderDetails;

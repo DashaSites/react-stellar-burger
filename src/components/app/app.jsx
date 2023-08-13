@@ -21,9 +21,8 @@ const App = () => {
   // и обрабатываю эти данные дальше (записываю в стейт)
   React.useEffect(() => {
     dispatch(getFetchedIngredientsFromApi())
-}, [])
+  }, [])
   
-
 
   return (
     <div className={appStyles.app}>

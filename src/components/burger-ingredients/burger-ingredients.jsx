@@ -10,7 +10,7 @@ import { INGREDIENT_POPUP_OPENED, INGREDIENT_POPUP_CLOSED } from '../../services
 
 const BurgerIngredients = () => {
 
-  const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
+  const { ingredients } = useSelector(state => state.ingredientsState);
 
   const dispatch = useDispatch();
 
@@ -42,8 +42,6 @@ const BurgerIngredients = () => {
 
 
 ////////// Подсветка табов при скролле
-
-  //const tabsRef = useRef(null); // Табы
 
   const containerRef = useRef(null);
 
@@ -172,6 +170,7 @@ const BurgerIngredients = () => {
     </section>
   )
 }
+
 
 
 export default BurgerIngredients;
