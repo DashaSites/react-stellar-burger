@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { getIngredients } from "../../utils/burger-api.js";
 
 // экшены для редьюсера ingredientsReducer 
 export const LOAD_INGREDIENTS_REQUEST = 'LOAD_INGREDIENTS_REQUEST';
@@ -26,5 +27,30 @@ export function dropIngredientWithUuid(droppedIngredient) {
   return {
     type: DROP_INGREDIENT_MIDDLE,
     payload: { ...droppedIngredient, key: uuidv4() }
+  }
+}
+
+
+// Запрос к серверу для начальной загрузки ингредиентов
+export function getFetchedIngredientsFromApi() { // функция с мидлваром
+  return (dispatch) => {
+      // флажок о начале загрузки
+      dispatch({
+          type: LOAD_INGREDIENTS_REQUEST
+        })
+
+      getIngredients()
+      .then((res) => {
+          dispatch({
+              type: LOAD_INGREDIENTS_SUCCESS, 
+              payload: res.data
+            })
+      }).catch((err) => {
+          console.log(err);
+          // Если сервер не вернул данных, отправляем экшен об ошибке
+          dispatch({
+              type: LOAD_INGREDIENTS_ERROR
+          })
+      })
   }
 }

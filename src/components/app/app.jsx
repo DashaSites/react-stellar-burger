@@ -6,10 +6,9 @@ import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
 import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
-import { getIngredients, getOrderDetails } from "../../utils/burger-api.js";
-import { LOAD_INGREDIENTS_REQUEST, LOAD_INGREDIENTS_SUCCESS, LOAD_INGREDIENTS_ERROR } from '../../services/actions/ingredientsActions.js';
+import { LOAD_INGREDIENTS_REQUEST, LOAD_INGREDIENTS_SUCCESS, LOAD_INGREDIENTS_ERROR, getFetchedIngredientsFromApi } from '../../services/actions/ingredientsActions.js';
 import { INGREDIENT_POPUP_OPENED, INGREDIENT_POPUP_CLOSED } from '../../services/actions/ingredientDetailsActions.js';
-import { GET_ORDER_DETAILS_REQUEST, GET_ORDER_DETAILS_SUCCESS, GET_ORDER_DETAILS_ERROR } from '../../services/actions/orderDetailsActions.js';
+import { GET_ORDER_DETAILS_REQUEST, GET_ORDER_DETAILS_SUCCESS, GET_ORDER_DETAILS_ERROR, getFetchedOrderDetailsFromApi } from '../../services/actions/orderDetailsActions.js';
 import { useSelector, useDispatch } from 'react-redux';
 
 
@@ -24,32 +23,10 @@ const App = () => {
   const dispatch = useDispatch();
 
   
-  function getFetchedIngredientsFromApi() { // функция с мидлваром
-    return (dispatch) => {
-        // флажок о начале загрузки
-        dispatch({
-            type: LOAD_INGREDIENTS_REQUEST
-          })
-
-        getIngredients()
-        .then((res) => {
-            dispatch({
-                type: LOAD_INGREDIENTS_SUCCESS, 
-                payload: res.data
-              })
-        }).catch((err) => {
-            console.log(err);
-            // Если сервер не вернул данных, отправляем экшен об ошибке
-            dispatch({
-                type: LOAD_INGREDIENTS_ERROR
-            })
-        })
-    }
-  }
 
 
-  // Достаю данные через запрос к api (через функцию сверху): импортирую сюда запрос и ответ из burger-api.js
-  // и обрабатываю эти данные дальше (записываю их в стейт)
+  // Достаю данные через запрос к api (через функцию в экшенах): импортирую сюда запрос и ответ из burger-api.js
+  // и обрабатываю эти данные дальше (записываю в стейт)
   React.useEffect(()=> {
     dispatch(getFetchedIngredientsFromApi())
 }, [])
@@ -104,34 +81,9 @@ const App = () => {
   const ingredientsIdArray = ingredients.map(ingredient => ingredient._id);
 
 
-  //// Запрос к серверу за номером заказа (функция с мидлваром)
-  const getFetchedOrderDetailsFromApi = () => { 
-    return (dispatch) => {
-      // флажок о начале загрузки
-      dispatch({
-          type: GET_ORDER_DETAILS_REQUEST
-      })
-
-      getOrderDetails(ingredientsIdArray) // Прокинем массив id в запросе к серверу
-      .then((res) => {
-          dispatch({
-              type: GET_ORDER_DETAILS_SUCCESS, 
-              payload: res.order.number
-            })
-      }).catch((err) => {
-          console.log(err);
-          // Если сервер не вернул данных, отправляем экшен об ошибке
-          dispatch({
-              type: GET_ORDER_DETAILS_ERROR
-          })
-      })
-    }   
-  }
-
-
   const handleClickOrderButton = () => { // Вызов dispatch
     setIsOrderDetailsOpened(true);
-    dispatch(getFetchedOrderDetailsFromApi()); // вспомогательная функция, чтобы в ней повесить флажок isError
+    dispatch(getFetchedOrderDetailsFromApi(ingredientsIdArray)); // вспомогательная функция, чтобы в ней повесить флажок isError
   }
 
 
@@ -141,15 +93,11 @@ const App = () => {
       <main className={appStyles.main}>
       {isError && "Что-то пошло не так"}
       {isLoading && "Загрузка..."}
-      
-      {!isError && !isLoading && 
+
+      {!isError && !isLoading && ingredients.length > 0 &&
         <>
-          {ingredients.length > 0 &&
-            <BurgerIngredients onElementClick={handleClickIngredient} />
-          }
-          {ingredients.length > 0 &&
-            <BurgerConstructor onButtonClick={handleClickOrderButton} />
-          }
+          <BurgerIngredients onElementClick={handleClickIngredient} />
+          <BurgerConstructor onButtonClick={handleClickOrderButton} />
         </>
       }
 
