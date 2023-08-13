@@ -2,13 +2,17 @@ import React, { useRef } from 'react';
 import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../ingredient/ingredient.jsx";
-import PropTypes from "prop-types";
-import ingredientPropType from "../../utils/prop-types.js";
-import { useSelector } from 'react-redux';
+import Modal from "../modal/modal.jsx";
+import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
+import { useSelector, useDispatch } from 'react-redux';
+import { INGREDIENT_POPUP_OPENED, INGREDIENT_POPUP_CLOSED } from '../../services/actions/ingredientDetailsActions.js';
 
-const BurgerIngredients = ({ onElementClick }) => {
+
+const BurgerIngredients = () => {
 
   const { ingredients, isLoading, isError } = useSelector(state => state.ingredientsState);
+
+  const dispatch = useDispatch();
 
   // Подключаем табы: изначально стейт принимает таб, выбранный по умолчанию
   const [current, setCurrent] = React.useState("bun");
@@ -76,6 +80,44 @@ const BurgerIngredients = ({ onElementClick }) => {
   }
 
 
+  // Настройка состояния и работы модалки IngredientDetails
+
+  // Стейт для модального окна IngredientDetails
+  const [
+    isIngredientDetailsOpened, 
+    setIsIngredientDetailsOpened
+  ] = React.useState(false);
+
+
+
+  // Закрываю модальное окно по клику на крестик + по клику на оверлей
+  const closeModals = () => { 
+    setIsIngredientDetailsOpened(false);
+  
+    dispatch({
+      type: INGREDIENT_POPUP_CLOSED
+    });
+  }
+
+
+  // Обработка кликов по ингредиенту
+  const handleClickIngredient = (ingredient) => {
+    dispatch({ 
+      type: INGREDIENT_POPUP_OPENED,
+      payload: {
+        id: ingredient._id,
+        src: ingredient.image,        
+        name: ingredient.name,
+        calories: ingredient.calories,
+        proteins: ingredient.proteins,
+        fat: ingredient.fat,
+        carbohydrates: ingredient.carbohydrates
+      } 
+    });
+    setIsIngredientDetailsOpened(true);
+  }
+
+
   return (
     <section className={ingredientsStyles.ingredientsSection}>
       <h1 className="text text_type_main-large mt-8 mb-5">Соберите бургер</h1>
@@ -97,7 +139,7 @@ const BurgerIngredients = ({ onElementClick }) => {
         <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`}>
           {
             buns.map((bun) => (
-              <Ingredient ingredient={bun} key={bun._id} onClick={onElementClick} />
+              <Ingredient ingredient={bun} key={bun._id} onClick={handleClickIngredient} />
             ))
           }
         </ul>
@@ -106,7 +148,7 @@ const BurgerIngredients = ({ onElementClick }) => {
         <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`}>
           {
             sauces.map((sauce) => (
-              <Ingredient ingredient={sauce} key={sauce._id} onClick={onElementClick} />
+              <Ingredient ingredient={sauce} key={sauce._id} onClick={handleClickIngredient} />
             ))
           }
         </ul>
@@ -115,20 +157,20 @@ const BurgerIngredients = ({ onElementClick }) => {
         <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`}>
           {
             mains.map((main) => (
-              <Ingredient ingredient={main} key={main._id} onClick={onElementClick} />
+              <Ingredient ingredient={main} key={main._id} onClick={handleClickIngredient} />
             ))
           }
         </ul>
-
       </div>
+
+      {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
+          <Modal onCloseClick={closeModals} closeModals={closeModals}>
+            <IngredientDetails />          
+          </Modal>
+      )} 
+
     </section>
   )
-}
-
-
-BurgerIngredients.propTypes = {
-  //ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
-  onElementClick: PropTypes.func.isRequired
 }
 
 

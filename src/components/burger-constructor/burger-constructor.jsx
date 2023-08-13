@@ -6,14 +6,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { bunSelector, middleIngredientsSelector, sumSelector } from '../../services/selector/constructorSelectors.js';
 import { useDrag, useDrop } from 'react-dnd';
 import { DELETE_INGREDIENT, DROP_INGREDIENT_MIDDLE, DROP_INGREDIENT_BUN, MOVE_INGREDIENT } from '../../services/actions/ingredientsActions';
+import { getFetchedOrderDetailsFromApi } from '../../services/actions/orderDetailsActions';
 import { select } from '../../services/store/store.js';
 import { ingredientSelector } from '../../services/selector/ingredientsSelectors.js';
 import { deleteIngredient, dropIngredientWithUuid } from '../../services/actions/ingredientsActions.js';
 import { MiddleConstructorElement } from '../middle-constructor-element/middle-constructor-element.jsx';
+import Modal from "../modal/modal.jsx";
+import OrderDetails from "../order-details/order-details.jsx";
 
 
 
-const BurgerConstructor = ({ onButtonClick }) => { 
+const BurgerConstructor = () => { 
+  
+  const { ingredients } = useSelector(state => state.ingredientsState);
+
+  const { isError } = useSelector(state => state.orderDetailsState);
   
   const dispatch = useDispatch();
 
@@ -22,9 +29,41 @@ const BurgerConstructor = ({ onButtonClick }) => {
 
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок: передаем его сюда из селектора
   const mainsAndSaucesElements = useSelector(middleIngredientsSelector);
+  
+  // Суммарное число ингредиентов-соусов и ингредиентов-начинок в конструкторе
+  const mainsAndSaucesElementsCount = mainsAndSaucesElements.length;
 
   // Передаем из селектора суммарную стоимость заказа на данный момент
-  const sumOfSelectedIngredients = useSelector(sumSelector);
+  const sumOfSelectedIngredients = useMemo(
+    () => {
+      return select(sumSelector)
+    }, [bunElement._id, mainsAndSaucesElementsCount]);
+
+
+  // Настраиваю состояние и работу модалки с заказом:
+
+  // Стейт модального окна OrderDetails
+  const [
+    isOrderDetailsOpened, 
+    setIsOrderDetailsOpened
+  ] = React.useState(false);
+
+
+  // Закрываю модальное окно по клику на крестик + по клику на оверлей
+  const closeModals = () => { 
+    setIsOrderDetailsOpened(false);
+  }
+
+
+  // Соберем id всех ингредиентов конструктора в массив
+  const ingredientsIdArray = ingredients.map(ingredient => ingredient._id);
+
+
+  // Создание заказа
+  const handleClickOrderButton = () => { // Вызов dispatch
+    setIsOrderDetailsOpened(true);
+    dispatch(getFetchedOrderDetailsFromApi(ingredientsIdArray)); // вспомогательная функция, чтобы в ней повесить флажок isError
+  }
 
 
 
@@ -68,55 +107,65 @@ const moveIngredient = useCallback((dragIndex, hoverIndex) => {
 
   return (
     <section className={`${constructorStyles.constructorSection} pt-25`} ref={dropRef} style={{ opacity }}>
-    <div className={`${constructorStyles.elementsList} mb-10`}>        
-      {
-        <div className={constructorStyles.fixedElement}>
-          <ConstructorElement 
-            type="top"
-            isLocked={true}
-            text={`${bunElement.name} (верх)`}
-            price={bunElement.price}
-            thumbnail={bunElement.image}
-          />
-        </div>
-      }
-      <ul className={`${constructorStyles.transposableElements} custom-scroll`} ref={dropRef}> {/* Список начинок и соусов */}
+      <div className={`${constructorStyles.elementsList} mb-10`}>        
         {
-          mainsAndSaucesElements.map((element, index) => { 
-            return ( // Вынесла ингредиент - элемент конструктора в отдельный компонент, а там уже описана логика сортировки
-              <MiddleConstructorElement element={element} key={element.key} index={index} moveIngredient={moveIngredient} />
-            )
-          }) 
+          <div className={constructorStyles.fixedElement}>
+            <ConstructorElement 
+              type="top"
+              isLocked={true}
+              text={`${bunElement.name} (верх)`}
+              price={bunElement.price}
+              thumbnail={bunElement.image}
+            />
+          </div>
         }
-      </ul>  
-      {
-        <div className={constructorStyles.fixedElement}>
-          <ConstructorElement 
-            type="bottom"
-            isLocked={true}
-            text={`${bunElement.name} (низ)`}
-            price={bunElement.price}
-            thumbnail={bunElement.image}
-          />
-        </div>
-      }
-    </div>
-    <div className={constructorStyles.resultCorner}>
-      <div className={`${constructorStyles.resultCounter} mr-10`}>
-        <span className="text text_type_digits-medium">{sumOfSelectedIngredients}</span>
-        <CurrencyIcon type="primary" />
+        <ul className={`${constructorStyles.transposableElements} custom-scroll`} ref={dropRef}> {/* Список начинок и соусов */}
+          {
+            mainsAndSaucesElements.map((element, index) => { 
+              return ( // Вынесла ингредиент - элемент конструктора в отдельный компонент, а там уже описана логика сортировки
+                <MiddleConstructorElement element={element} key={element.key} index={index} moveIngredient={moveIngredient} />
+              )
+            }) 
+          }
+        </ul>  
+        {
+          <div className={constructorStyles.fixedElement}>
+            <ConstructorElement 
+              type="bottom"
+              isLocked={true}
+              text={`${bunElement.name} (низ)`}
+              price={bunElement.price}
+              thumbnail={bunElement.image}
+            />
+          </div>
+        }
       </div>
-      <Button htmlType="button" type="primary" size="large" onClick={onButtonClick}>
-        Оформить заказ
-      </Button>
-    </div>
-  </section>
+      <div className={constructorStyles.resultCorner}>
+        <div className={`${constructorStyles.resultCounter} mr-10`}>
+          <span className="text text_type_digits-medium">{sumOfSelectedIngredients}</span>
+          <CurrencyIcon type="primary" />
+        </div>
+        <Button htmlType="button" type="primary" size="large" onClick={handleClickOrderButton}>
+          Оформить заказ
+        </Button>
+      </div>
+
+      {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
+        <Modal onCloseClick={closeModals} closeModals={closeModals}>
+          {isError && "Что-то пошло не так"}
+          {!isError &&
+            <OrderDetails />  
+          }      
+        </Modal>
+      )} 
+
+    </section>
   )
 }
 
 
 BurgerConstructor.propTypes = {
-  onButtonClick: PropTypes.func.isRequired
+  //onButtonClick: PropTypes.func.isRequired
 }
 
 

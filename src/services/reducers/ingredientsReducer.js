@@ -28,8 +28,7 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
       }
       case LOAD_INGREDIENTS_ERROR: {
           return {
-              ...state,
-              isLoading: false,
+            ...ingredientsInitialState,
               isError: true
           }
       }
