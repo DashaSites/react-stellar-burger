@@ -8,19 +8,17 @@ import PropTypes from "prop-types";
 const modalsContainer = document.querySelector("#modals");
 
 const Modal = ({ onCloseClick, closeModals, children }) => {
-
-  const handleEscKeydown = (event) => {
-    event.key === "Escape" && closeModals();
-  }
-
   React.useEffect(() => {
+    const handleEscKeydown = (event) => {
+      event.key === "Escape" && closeModals();
+    };
+
     document.addEventListener("keydown", handleEscKeydown);
 
     return () => {
       document.removeEventListener("keydown", handleEscKeydown);
     };
-  }, []); 
-
+  }, []);
 
   return ReactDOM.createPortal(
     <div>
@@ -29,19 +27,17 @@ const Modal = ({ onCloseClick, closeModals, children }) => {
           <CloseIcon type="primary" onClick={onCloseClick} />
         </button>
         {children}
-      </div>   
+      </div>
       <ModalOverlay onClick={onCloseClick} />
     </div>,
     modalsContainer
-  ) 
-}
-
+  );
+};
 
 Modal.propTypes = {
   onCloseClick: PropTypes.func.isRequired,
   closeModals: PropTypes.func.isRequired,
-  children: PropTypes.any.isRequired
-}
-
+  children: PropTypes.any.isRequired,
+};
 
 export default Modal;

@@ -1,117 +1,187 @@
-import React, { useContext, useReducer, useEffect, useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from "react";
 import constructorStyles from "./burger-constructor.module.css";
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-import { IngredientsContext } from '../../services/appContext.js'; //  NEW
+import {
+  ConstructorElement,
+  CurrencyIcon,
+  Button,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  bunSelector,
+  middleIngredientsSelector
+} from "../../services/selector/constructorSelectors.js";
+import { useDrop } from "react-dnd";
+import {
+  DROP_INGREDIENT_BUN,
+  MOVE_INGREDIENT,
+} from "../../services/actions/ingredientsActions";
+import { getFetchedOrderDetailsFromApi } from "../../services/actions/orderDetailsActions";
+import { select } from "../../services/store/store.js";
+import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
+import { dropIngredientWithUuid } from "../../services/actions/ingredientsActions.js";
+import { MiddleConstructorElement } from "../middle-constructor-element/middle-constructor-element.jsx";
+import Modal from "../modal/modal.jsx";
+import OrderDetails from "../order-details/order-details.jsx";
+
+const BurgerConstructor = () => {
+  const { ingredients } = useSelector((state) => state.ingredientsState);
+
+  const { isError } = useSelector((state) => state.orderDetailsState);
+
+  const dispatch = useDispatch();
+
+  // Найдем в данных (если они загрузились) хоть одну булку - передаем ее сюда из селектора
+  const bunElement = useSelector(bunSelector);
+
+  // Из данных вытащим массив всех остальных ингредиентов, кроме булок: передаем его сюда из селектора
+  const mainsAndSaucesElements = useSelector(middleIngredientsSelector);
+
+  // Суммарное число ингредиентов-соусов и ингредиентов-начинок в конструкторе
+  const mainsAndSaucesElementsCount = mainsAndSaucesElements.length;
 
 
-// Функция-редьюсер для расчета суммы в счетчике заказа
-function reducer(state, action) {
-  if (action.type === 'ingredientsLoaded') {
+  // Текущая стоимость заказа на данный момент
+  const totalOrderPrice = useMemo(() => {
 
-    const loadedIngredients = action.payload.loadedIngredients; // достаем из dispatch используемые ингредиенты
-    const newSum = loadedIngredients.reduce((sum, currentIngredient) => {
+    const selectedIngredients = [bunElement, ...mainsAndSaucesElements, bunElement];
+
+    const newSum = selectedIngredients.reduce((sum, currentIngredient) => {
       return sum + currentIngredient.price;
-    }, 0)
-
-    const newState = { sum: newSum };
-    return newState;
-  }
-}
-
-
-const BurgerConstructor = ({ onButtonClick }) => { 
-
-  const { ingredients } = useContext(IngredientsContext); // Извлекаем ингредиенты из контекста
-
-  const [state, dispatch] = useReducer(reducer, { sum: 0 }); // Получаем из редьюсера state и dispatch
-
-
-  // Найдем в данных (если они загрузились) хоть одну булку:
-  const bunElement = ingredients.length > 0 && ingredients.find((item) => item.type === "bun");
-
-  // Из данных вытащим массив всех остальных ингредиентов, кроме булок:
-  const mainsAndSaucesElements = ingredients.filter((item) => item.type !== "bun");
-
-  //При первом рендере вызываем редьюсер:
-  //в обновленный стейт он запишет массив из всех используемых в этом компоненте ингредиентов 
-  useEffect(() => {
+    }, 0);
+    return newSum;
     
+  }, [bunElement._id, mainsAndSaucesElementsCount]);
+
+
+
+  // Настраиваю состояние и работу модалки с заказом:
+
+  // Стейт модального окна OrderDetails
+  const [isOrderDetailsOpened, setIsOrderDetailsOpened] = useState(false);
+
+  // Закрываю модальное окно по клику на крестик + по клику на оверлей
+  const closeModals = () => {
+    setIsOrderDetailsOpened(false);
+  };
+
+  // Соберем id всех ингредиентов конструктора в массив
+  const ingredientsIdArray = ingredients.map((ingredient) => ingredient._id);
+
+  // Создание заказа
+  const handleClickOrderButton = () => {
+    // Вызов dispatch
+    setIsOrderDetailsOpened(true);
+    dispatch(getFetchedOrderDetailsFromApi(ingredientsIdArray)); // вспомогательная функция, чтобы в ней повесить флажок isError
+  };
+
+  ///// DND: Перетаскиваю ингредиенты в конструктор /////
+
+  const [{ opacity }, dropRef] = useDrop({
+    accept: "ingredient",
+    drop: (item) => {
+      const droppedIngredient = select(ingredientSelector(item.id)); // по айдишнику нашла ингредиент в сторе
+
+      if (droppedIngredient.type !== "bun") {
+        // если перетаскиваю не булку, то бросаю этот ингредиент в середину (через экшен-криейтор):
+        dispatch(dropIngredientWithUuid(droppedIngredient));
+      } else {
+        // а если перетаскиваю булку, то бросаю ингредиент на место булки:
+        dispatch({
+          type: DROP_INGREDIENT_BUN,
+          payload: droppedIngredient,
+        });
+      }
+    },
+    collect: (monitor) => ({
+      opacity: monitor.isOver() ? 0.5 : 1,
+    }),
+  });
+
+  /////
+
+  // Отправляю в редьюсер специальный экшен, чтобы сортировать ингредиенты (он взят из библиотеки dnd)
+  const moveIngredient = useCallback((dragIndex, hoverIndex) => {
     dispatch({
-      type: 'ingredientsLoaded',
-      payload: { loadedIngredients: [bunElement, ...mainsAndSaucesElements, bunElement] }
+      type: MOVE_INGREDIENT,
+      payload: {
+        dragIndex: dragIndex,
+        hoverIndex: hoverIndex,
+      },
     });
-  }, [ingredients]);
-
-
-//  const orderCost = useMemo(() => {
-//    const priceSaucesAndMains = mainsAndSaucesElements.reduce((sum, currentIngredient) => {
-//      return sum + currentIngredient.price;
-//    }, 0);
-
-//    return priceSaucesAndMains + bunElement.price * 2;
-//  }, [bunElement, mainsAndSaucesElements]);
-
+  }, []);
 
   return (
-    <section className={`${constructorStyles.constructorSection} pt-25`}>
-    <div className={`${constructorStyles.elementsList} mb-10`}>        
-      {
-        <div className={constructorStyles.fixedElement}>
-          <ConstructorElement 
-            type="top"
-            isLocked={true}
-            text={`${bunElement.name} (верх)`}
-            price={bunElement.price}
-            thumbnail={bunElement.image}
-          />
-        </div>
-      }
-      <ul className={`${constructorStyles.transposableElements} custom-scroll`}> {/* Список начинок и соусов */}
+    <section
+      className={`${constructorStyles.constructorSection} pt-25`}
+      ref={dropRef}
+      style={{ opacity }}
+    >
+      <div className={`${constructorStyles.elementsList} mb-10`}>
         {
-          mainsAndSaucesElements.map((element) => {
-            return (
-              <li className={`${constructorStyles.transposableElement} mt-4`} key={element._id}>
-                <DragIcon type="primary" />
-                <ConstructorElement 
-                  text={element.name}
-                  price={element.price}
-                  thumbnail={element.image}
-                />
-              </li>
-            )
-          })
+          <div className={constructorStyles.fixedElement}>
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={`${bunElement.name} (верх)`}
+              price={bunElement.price}
+              thumbnail={bunElement.image}
+            />
+          </div>
         }
-      </ul>  
-      {
-        <div className={constructorStyles.fixedElement}>
-          <ConstructorElement 
-            type="bottom"
-            isLocked={true}
-            text={`${bunElement.name} (низ)`}
-            price={bunElement.price}
-            thumbnail={bunElement.image}
-          />
-        </div>
-      }
-    </div>
-    <div className={constructorStyles.resultCorner}>
-      <div className={`${constructorStyles.resultCounter} mr-10`}>
-        <span className="text text_type_digits-medium">{state.sum}</span>
-        <CurrencyIcon type="primary" />
+        <ul
+          className={`${constructorStyles.transposableElements} custom-scroll`}
+          ref={dropRef}
+        >
+          {/* Список начинок и соусов */}
+          {mainsAndSaucesElements.map((element, index) => {
+            return (
+              // Вынесла ингредиент - элемент конструктора в отдельный компонент, а там уже описана логика сортировки
+              <MiddleConstructorElement
+                element={element}
+                key={element.key}
+                index={index}
+                moveIngredient={moveIngredient}
+              />
+            );
+          })}
+        </ul>
+        {
+          <div className={constructorStyles.fixedElement}>
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${bunElement.name} (низ)`}
+              price={bunElement.price}
+              thumbnail={bunElement.image}
+            />
+          </div>
+        }
       </div>
-      <Button htmlType="button" type="primary" size="large" onClick={onButtonClick}>
-        Оформить заказ
-      </Button>
-    </div>
-  </section>
-  )
-}
+      <div className={constructorStyles.resultCorner}>
+        <div className={`${constructorStyles.resultCounter} mr-10`}>
+          <span className="text text_type_digits-medium">
+            {totalOrderPrice}
+          </span>
+          <CurrencyIcon type="primary" />
+        </div>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={handleClickOrderButton}
+        >
+          Оформить заказ
+        </Button>
+      </div>
 
-
-BurgerConstructor.propTypes = {
-  onButtonClick: PropTypes.func.isRequired
-}
-
+      {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
+        <Modal onCloseClick={closeModals} closeModals={closeModals}>
+          {isError && "Что-то пошло не так"}
+          {!isError && <OrderDetails />}
+        </Modal>
+      )}
+    </section>
+  );
+};
 
 export default BurgerConstructor;

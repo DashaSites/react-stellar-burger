@@ -2,11 +2,22 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/app/app";
+import { Provider } from 'react-redux';
 import reportWebVitals from "./reportWebVitals";
+import { store } from "./services/store/store.js";
+import { HTML5Backend } from 'react-dnd-html5-backend' // Контекст для dnd
+import { DndProvider } from 'react-dnd'
+
+
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+  <DndProvider backend={HTML5Backend}>
+    <Provider store={store}>
+        <App />
+      </Provider>
+    </DndProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
