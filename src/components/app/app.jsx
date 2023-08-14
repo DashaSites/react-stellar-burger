@@ -7,7 +7,7 @@ import { getFetchedIngredientsFromApi } from "../../services/actions/ingredients
 import { useSelector, useDispatch } from "react-redux";
 
 const App = () => {
-  // Ингредиенты, загруженные с сервера
+    // Ингредиенты, загруженные с сервера
   const { ingredients, isLoading, isError } = useSelector(
     (state) => state.ingredientsState
   );

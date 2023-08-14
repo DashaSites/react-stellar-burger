@@ -137,7 +137,7 @@ const BurgerIngredients = () => {
       >
         <h2 className="text text_type_main-medium" id="bun" ref={bunsRef}>
           Булки
-        </h2>{" "}
+        </h2>
         {/* раздел с булками */}
         <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`}>
           {buns.map((bun) => (
@@ -150,7 +150,7 @@ const BurgerIngredients = () => {
         </ul>
         <h2 className="text text_type_main-medium" id="sauce" ref={saucesRef}>
           Соусы
-        </h2>{" "}
+        </h2>
         {/* раздел с соусами */}
         <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`}>
           {sauces.map((sauce) => (
@@ -163,7 +163,7 @@ const BurgerIngredients = () => {
         </ul>
         <h2 className="text text_type_main-medium" id="main" ref={mainsRef}>
           Начинки
-        </h2>{" "}
+        </h2>
         {/* раздел с начинками */}
         <ul className={`${ingredientsStyles.list} mt-8 mr-8 mb-10 ml-4`}>
           {mains.map((main) => (

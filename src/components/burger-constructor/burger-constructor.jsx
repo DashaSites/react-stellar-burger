@@ -123,7 +123,6 @@ const BurgerConstructor = () => {
           className={`${constructorStyles.transposableElements} custom-scroll`}
           ref={dropRef}
         >
-          {" "}
           {/* Список начинок и соусов */}
           {mainsAndSaucesElements.map((element, index) => {
             return (
