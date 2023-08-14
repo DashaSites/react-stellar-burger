@@ -8,8 +8,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import {
   bunSelector,
-  middleIngredientsSelector,
-  sumSelector,
+  middleIngredientsSelector
 } from "../../services/selector/constructorSelectors.js";
 import { useDrop } from "react-dnd";
 import {
@@ -40,10 +39,20 @@ const BurgerConstructor = () => {
   // Суммарное число ингредиентов-соусов и ингредиентов-начинок в конструкторе
   const mainsAndSaucesElementsCount = mainsAndSaucesElements.length;
 
-  // Передаем из селектора суммарную стоимость заказа на данный момент
-  const sumOfSelectedIngredients = useMemo(() => {
-    return select(sumSelector);
+
+  // Текущая стоимость заказа на данный момент
+  const totalOrderPrice = useMemo(() => {
+
+    const selectedIngredients = [bunElement, ...mainsAndSaucesElements, bunElement];
+
+    const newSum = selectedIngredients.reduce((sum, currentIngredient) => {
+      return sum + currentIngredient.price;
+    }, 0);
+    return newSum;
+    
   }, [bunElement._id, mainsAndSaucesElementsCount]);
+
+
 
   // Настраиваю состояние и работу модалки с заказом:
 
@@ -151,7 +160,7 @@ const BurgerConstructor = () => {
       <div className={constructorStyles.resultCorner}>
         <div className={`${constructorStyles.resultCounter} mr-10`}>
           <span className="text text_type_digits-medium">
-            {sumOfSelectedIngredients}
+            {totalOrderPrice}
           </span>
           <CurrencyIcon type="primary" />
         </div>

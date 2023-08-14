@@ -17,16 +17,3 @@ export function middleIngredientsSelector(state) {
     };
   });
 }
-
-// Селектор функции, которая подсчитывает текущую сумму заказа
-export function sumSelector(state) {
-  const bun = bunSelector(state);
-  const middleIngredients = middleIngredientsSelector(state);
-  const selectedIngredients = [bun, ...middleIngredients, bun];
-
-  const newSum = selectedIngredients.reduce((sum, currentIngredient) => {
-    return sum + currentIngredient.price;
-  }, 0);
-
-  return newSum;
-}
