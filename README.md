@@ -1,2 +1,7 @@
-# Каноническая работа проекта Stellar Burger 
-# Этап 2 Финальный проект. Написан весь JSX, приложение сверстано, работают два модальных окна и запрос к API.
+# Stellar Burger 
+
+# Online burger joint in outta space
+
+Written on JavaScript, React, React DND and Redux
+
+https://dashasites.github.io/react-stellar-burger/
