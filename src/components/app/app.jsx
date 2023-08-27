@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import appStyles from "./app.module.css";
 import AppHeader from "../app-header/app-header.jsx";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients.jsx";
@@ -35,6 +36,23 @@ const App = () => {
       </main>
     </div>
   );
+
+  /*
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route />
+        <Route />
+        <Route />
+        <Route />
+        <Route />
+        <Route />
+        <Route />
+      </Routes>
+    </BrowserRouter>
+  );
+  */
+ 
 };
 
 export default App;
