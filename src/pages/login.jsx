@@ -13,16 +13,17 @@ import { useNavigate } from "react-router-dom";
 export const LoginPage = () => { 
   return (
     <div className={loginStyles.formContainer}>
-      <form>
-        <h2>Вход</h2>
-        <fieldset>
+      <form className={loginStyles.form}>
+        <h2 className={`${loginStyles.headline} text text_type_main-medium mb-6`}>Вход</h2>
+        <fieldset className={loginStyles.inputItems}>
+         <EmailInput />
+
+         <PasswordInput />
 
         </fieldset>
 
-        <div>
-          <button>
-
-          </button>
+        <div className={loginStyles.button}>
+          <Button>Войти</Button>
         </div>
       </form>
 

@@ -1,30 +1,13 @@
 import React from "react";
 // Позже, при деплое на github.pages, изменить BrowserRouter на HashRouter
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import appStyles from "./app.module.css";
-import AppHeader from "../app-header/app-header.jsx";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients.jsx";
-import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
-import { getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
-import { useSelector, useDispatch } from "react-redux";
 import { Layout } from "../layout/layout.jsx";
-import { HomePage } from "../../pages/home.jsx"
+import { HomePage } from "../../pages/home/home.jsx"
 import { LoginPage } from "../../pages/login.jsx";
 import { PageNotFound } from "../../pages/page-not-found.jsx";
 
 const App = () => {
-    // Ингредиенты, загруженные с сервера
-  const { ingredients, isLoading, isError } = useSelector(
-    (state) => state.ingredientsState
-  );
 
-  const dispatch = useDispatch();
-
-  // Достаю данные через запрос к api (через функцию в экшенах): импортирую сюда запрос и ответ из burger-api.js
-  // и обрабатываю эти данные дальше (записываю в стейт)
-  React.useEffect(() => {
-    dispatch(getFetchedIngredientsFromApi());
-  }, []);
 
   return (
     <Router>
