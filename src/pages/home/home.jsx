@@ -1,12 +1,18 @@
 import React from "react";
-// Позже, при деплое на github.pages, изменить BrowserRouter на HashRouter
 import styles from "./home.module.css";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients.jsx";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor.jsx";
 import { getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
 import { useSelector, useDispatch } from "react-redux";
+import { isUserAuthorizedSelector } from "../../services/selector/authorizationSelectors.js";
+import { Navigate } from 'react-router-dom';
+
 
 export const HomePage = () => {
+
+  const isUserAuthorized = useSelector(isUserAuthorizedSelector);
+
+
     // Ингредиенты, загруженные с сервера
   const { ingredients, isLoading, isError } = useSelector(
     (state) => state.ingredientsState
@@ -19,6 +25,14 @@ export const HomePage = () => {
   React.useEffect(() => {
     dispatch(getFetchedIngredientsFromApi());
   }, []);
+
+  if(!isUserAuthorized) {
+    return (
+      <Navigate to="/login" />
+    )
+  }
+
+
 
 
 
