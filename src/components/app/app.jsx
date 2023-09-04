@@ -7,6 +7,7 @@ import { LoginPage } from "../../pages/login/login.jsx";
 import { RegisterPage } from "../../pages/register/register.jsx";
 import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password.jsx";
 import { ResetPasswordPage } from "../../pages/reset-password/reset-password.jsx";
+import { ProfilePage } from "../../pages/profile/profile.jsx";
 import { PageNotFound } from "../../pages/page-not-found.jsx";
 
 const App = () => {
@@ -27,6 +28,8 @@ const App = () => {
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
 
           <Route path="reset-password" element={<ResetPasswordPage />} />
+
+          <Route path="profile" element={<ProfilePage />} />
           
           <Route path="*" element={<PageNotFound />} />
         </Route>

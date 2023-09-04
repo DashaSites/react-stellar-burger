@@ -1,0 +1,57 @@
+.contentContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+  max-width: 920px;
+  padding-top: 120px; 
+  padding-left: 350px;
+}
+
+.navigationContainer {
+  width: 380px;
+}
+
+.navigationBlock {
+  display: grid;
+}
+
+.navigationItem {
+  text-decoration: none;
+  color: #8585AD;
+  margin-top: 17px;
+  margin-bottom: 17px;
+}
+
+.activeNavLink {
+  color: rgba(242, 242, 243, 1);
+}
+
+.description {
+  margin: 0;
+  padding: 0;
+  color: #8585AD;
+}
+
+
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  max-width: 480px;
+}
+
+.inputItems {
+  padding: 0;
+  border: none;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+

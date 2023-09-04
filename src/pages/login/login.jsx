@@ -5,12 +5,25 @@ import {
   PasswordInput,
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 
 // Страница авторизации
 export const LoginPage = () => { 
+
+  const navigate = useNavigate();
+
+
+  const registerButtonClickHandler = () => {
+    navigate("/register");
+  }
+
+  const restorePasswordButtonHandler =() => {
+    navigate("/forgot-password");
+  }
+
+
   return (
     <div className={loginStyles.formContainer}>
       <form className={loginStyles.form}>
@@ -34,7 +47,7 @@ export const LoginPage = () => {
           Вы — новый пользователь?
         </p>
 
-        <button className={`${loginStyles.navigationButton} text text_type_main-default`}>
+        <button className={`${loginStyles.navigationButton} text text_type_main-default`} onClick={registerButtonClickHandler}>
           Зарегистрироваться
         </button>
 
@@ -46,7 +59,7 @@ export const LoginPage = () => {
           Забыли пароль?
         </p>
 
-        <button className={`${loginStyles.navigationButton} text text_type_main-default`}>
+        <button className={`${loginStyles.navigationButton} text text_type_main-default`} onClick={restorePasswordButtonHandler}>
           Восстановить пароль
         </button>
 
