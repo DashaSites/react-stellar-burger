@@ -1,6 +1,5 @@
 import React from "react";
-// Позже, при деплое на github.pages, изменить BrowserRouter на HashRouter
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Layout } from "../layout/layout.jsx";
 import { HomePage } from "../../pages/home/home.jsx"
 import { LoginPage } from "../../pages/login/login.jsx";
@@ -8,13 +7,15 @@ import { RegisterPage } from "../../pages/register/register.jsx";
 import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password.jsx";
 import { ResetPasswordPage } from "../../pages/reset-password/reset-password.jsx";
 import { ProfilePage } from "../../pages/profile/profile.jsx";
-import { PageNotFound } from "../../pages/page-not-found.jsx";
+import { PageNotFound } from "../../pages/page-not-found/not-found.jsx";
 
 const App = () => {
 
+  // Здесь зачем-то потребуется хук useLocation. Он при вызове возвращает длинный объект
+  const location = useLocation();
+
 
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
 
@@ -34,7 +35,6 @@ const App = () => {
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
-    </Router>
   );
 
   /*
@@ -61,6 +61,13 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
+
+
 
 // 1) Оборачиваем App в BrowserRouter
 // 2) Создаем папку pages, и переносим в него нашу разметку из App в домашнюю страницу

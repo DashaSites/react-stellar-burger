@@ -7,6 +7,13 @@
   padding-left: 350px;
 }
 
+.navigationItem {
+  text-decoration: none;
+  color: #8585AD;
+  margin-top: 17px;
+  margin-bottom: 17px;
+}
+
 .navigationContainer {
   width: 380px;
 }
@@ -15,16 +22,11 @@
   display: grid;
 }
 
-.navigationItem {
-  text-decoration: none;
-  color: #8585AD;
-  margin-top: 17px;
-  margin-bottom: 17px;
-}
 
-.activeNavLink {
+:global(.active) {
   color: rgba(242, 242, 243, 1);
 }
+
 
 .description {
   margin: 0;

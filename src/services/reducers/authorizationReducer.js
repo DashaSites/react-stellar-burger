@@ -2,7 +2,7 @@ import {
   USER_AUTHORIZED_SUCCESSFULLY
 } from "../actions/authorizationActions.js";
 
-// initialState for orderDetailsReducer
+// initialState for authorizationReducer
 const initialState = {
   isAuthorized: false,
   userName: null,

@@ -4,11 +4,23 @@ import {
   EmailInput,
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
-
+import { useNavigate } from "react-router-dom";
 
 
 
 export const ForgotPasswordPage = () => {
+
+  const navigate = useNavigate();
+
+  const loginButtonClickHandler = () => {
+    navigate("/login");
+  }
+
+  // Пользователь вводит в поле пароль и жмет на кнопку "Восстановить"
+  // Если имейл введен, происходит POST-запрос к эндпойнту: ...
+  // В случае успешного ответа пользователь направляется на роут /reset-password
+  // А на введенную почту приходит инструкция с кодом для восстановления пароля.
+
   return (
     <div className={styles.formContainer}>
       <form className={styles.form}>
@@ -31,7 +43,7 @@ export const ForgotPasswordPage = () => {
           Вспомнили пароль?
         </p>
 
-        <button className={`${styles.navigationButton} text text_type_main-default`}>
+        <button className={`${styles.navigationButton} text text_type_main-default`} onClick={loginButtonClickHandler}>
           Войти
         </button>
 

@@ -5,8 +5,18 @@ import {
   PasswordInput,
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useNavigate } from "react-router-dom";
+
+
 
 export const ResetPasswordPage = () => {
+
+  const navigate = useNavigate();
+
+  const loginButtonClickHandler = () => {
+    navigate("/login");
+  }
+
   return (
     <div className={styles.formContainer}>
       <form className={styles.form}>
@@ -32,7 +42,7 @@ export const ResetPasswordPage = () => {
           Вспомнили пароль?
         </p>
 
-        <button className={`${styles.navigationButton} text text_type_main-default`}>
+        <button className={`${styles.navigationButton} text text_type_main-default`} onClick={loginButtonClickHandler}>
           Войти
         </button>
 

@@ -30,9 +30,7 @@ export const HomePage = () => {
     return (
       <Navigate to="/login" />
     )
-  }
-
-
+   }
 
 
 

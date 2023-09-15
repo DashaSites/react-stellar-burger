@@ -14,9 +14,9 @@ export const ProfilePage = () => {
 
       <div className={styles.navigationContainer}>
         <nav className={`${styles.navigationBlock} mb-20`}>
-          <NavLink className={`${styles.navigationItem} text text_type_main-medium`}>Профиль</NavLink>
-          <NavLink className={`${styles.navigationItem} text text_type_main-medium`}>История заказов</NavLink>
-          <NavLink className={`${styles.navigationItem} text text_type_main-medium`}>Выход</NavLink>
+          <NavLink to="/profile" className={`${styles.navigationItem} text text_type_main-medium`}>Профиль</NavLink>
+          <NavLink to="/somepage" className={`${styles.navigationItem} text text_type_main-medium`}>История заказов</NavLink>
+          <NavLink to="/exitpage" className={`${styles.navigationItem} text text_type_main-medium`}>Выход</NavLink>
         </nav>
         <p className={`${styles.description} text text_type_main-small`}>В этом разделе вы можете изменить&nbsp;свои&nbsp;персональные данные</p>
       </div>

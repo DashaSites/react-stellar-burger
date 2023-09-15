@@ -12,7 +12,7 @@ export const RegisterPage = () => {
 
   const navigate = useNavigate();
 
-  const loginButtonClickHandler =() => {
+  const loginButtonClickHandler = () => {
     navigate("/login");
   }
 
