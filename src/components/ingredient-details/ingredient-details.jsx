@@ -1,10 +1,37 @@
+import React, { useEffect } from "react";
 import ingredientDetailsStyles from "./ingredient-details.module.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
+import { useParams } from 'react-router-dom';
+import { getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
+
 
 const IngredientDetails = () => {
-  const ingredientDetails = useSelector(
-    (state) => state.ingredientDetailsState
-  );
+
+  const { ingredientId } = useParams();
+
+  const ingredient = useSelector(ingredientSelector(ingredientId));
+
+  const dispatch = useDispatch();
+
+  // Достаю данные через запрос к api (через функцию в экшенах): импортирую сюда запрос и ответ из burger-api.js
+  // и обрабатываю эти данные дальше (записываю в стейт)
+
+  useEffect(() => {
+    if (!ingredient) {
+      dispatch(getFetchedIngredientsFromApi());
+    }
+  }, [ingredient]);
+
+
+  if (!ingredient) {
+    return <h1>Загрузка</h1>
+  }
+
+
+
+
+
 
   return (
     <article className={ingredientDetailsStyles.container}>
@@ -15,12 +42,12 @@ const IngredientDetails = () => {
       </h2>
       <img
         className={`${ingredientDetailsStyles.image} mb-4`}
-        src={ingredientDetails.imageLarge}
+        src={ingredient.image}
       />
       <h3
         className={`${ingredientDetailsStyles.title} text text_type_main-medium mb-8`}
       >
-        {ingredientDetails.name}
+        {ingredient.name}
       </h3>
       <div className={ingredientDetailsStyles.description}>
         <div className={ingredientDetailsStyles.quality}>
@@ -32,7 +59,7 @@ const IngredientDetails = () => {
           <p
             className={`${ingredientDetailsStyles.amount} text text_type_digits-default`}
           >
-            {ingredientDetails.calories}
+            {ingredient.calories}
           </p>
         </div>
         <div className={ingredientDetailsStyles.quality}>
@@ -44,7 +71,7 @@ const IngredientDetails = () => {
           <p
             className={`${ingredientDetailsStyles.amount} text text_type_digits-default`}
           >
-            {ingredientDetails.proteins}
+            {ingredient.proteins}
           </p>
         </div>
         <div className={ingredientDetailsStyles.quality}>
@@ -56,7 +83,7 @@ const IngredientDetails = () => {
           <p
             className={`${ingredientDetailsStyles.amount} text text_type_digits-default`}
           >
-            {ingredientDetails.fat}
+            {ingredient.fat}
           </p>
         </div>
         <div className={ingredientDetailsStyles.quality}>
@@ -68,7 +95,7 @@ const IngredientDetails = () => {
           <p
             className={`${ingredientDetailsStyles.amount} text text_type_digits-default`}
           >
-            {ingredientDetails.carbohydrates}
+            {ingredient.carbohydrates}
           </p>
         </div>
       </div>

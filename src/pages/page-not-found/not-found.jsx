@@ -11,12 +11,9 @@ export const PageNotFound = () => {
       <h1>404</h1>
 
       <div className={notFoundStyles.frame}>
-        <div></div>
-        <div></div>
-        <div></div>
+
       </div>
       <div className={notFoundStyles.caps}><img src="http://ademilter.com/caps.png" alt="" /></div>
-      <canvas id="canvas"></canvas>
     </>
   )
 }

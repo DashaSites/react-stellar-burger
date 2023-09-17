@@ -5,7 +5,6 @@ import BurgerConstructor from "../../components/burger-constructor/burger-constr
 import { getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
 import { useSelector, useDispatch } from "react-redux";
 import { isUserAuthorizedSelector } from "../../services/selector/authorizationSelectors.js";
-import { Navigate } from 'react-router-dom';
 
 
 export const HomePage = () => {
@@ -26,11 +25,11 @@ export const HomePage = () => {
     dispatch(getFetchedIngredientsFromApi());
   }, []);
 
-  if(!isUserAuthorized) {
-    return (
-      <Navigate to="/login" />
-    )
-   }
+  //if(!isUserAuthorized) {
+  //  return (
+  //    <Navigate to="/login" />
+  //  )
+  // }
 
 
 

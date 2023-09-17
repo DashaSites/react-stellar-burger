@@ -5,10 +5,7 @@ import Ingredient from "../ingredient/ingredient.jsx";
 import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  INGREDIENT_POPUP_OPENED,
-  INGREDIENT_POPUP_CLOSED,
-} from "../../services/actions/ingredientDetailsActions.js";
+
 
 const BurgerIngredients = () => {
   const { ingredients } = useSelector((state) => state.ingredientsState);
@@ -92,26 +89,11 @@ const BurgerIngredients = () => {
   // Закрываю модальное окно по клику на крестик + по клику на оверлей
   const closeModals = () => {
     setIsIngredientDetailsOpened(false);
-
-    dispatch({
-      type: INGREDIENT_POPUP_CLOSED,
-    });
   };
 
   // Обработка кликов по ингредиенту
   const handleClickIngredient = (ingredient) => {
-    dispatch({
-      type: INGREDIENT_POPUP_OPENED,
-      payload: {
-        id: ingredient._id,
-        src: ingredient.image,
-        name: ingredient.name,
-        calories: ingredient.calories,
-        proteins: ingredient.proteins,
-        fat: ingredient.fat,
-        carbohydrates: ingredient.carbohydrates,
-      },
-    });
+
     setIsIngredientDetailsOpened(true);
   };
 

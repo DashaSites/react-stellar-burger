@@ -8,12 +8,17 @@ import PropTypes from "prop-types";
 import ingredientPropType from "../../utils/prop-types.js";
 import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
+import { useLocation, Link, useParams } from 'react-router-dom';
 
 const Ingredient = ({ ingredient, onClick }) => {
   // Вытаскиваю в стейт из стора айдишники тех булок и ингредиентов, которые сейчас лежат в конструкторе
   const { bunIngredientID, middleIngredients } = useSelector(
     (state) => state.constructorState
   );
+
+  const location = useLocation();
+  const ingredientId = ingredient['_id'];
+ 
 
   const [{ opacity }, dragRef] = useDrag(
     () => ({
@@ -48,35 +53,45 @@ const Ingredient = ({ ingredient, onClick }) => {
   };
 
   return (
-    <li
-      className={ingredientStyles.box}
-      onClick={handleOnClick}
-      ref={dragRef}
-      style={{ opacity: opacity }}
+    <Link
+      key={ingredientId}
+      // Тут мы формируем динамический путь для нашего ингредиента
+      to={`/ingredients/${ingredientId}`}
+      // а также сохраняем в свойство background роут,
+      // на котором была открыта наша модалка
+      state={{ background: location }}
+      className={ingredientStyles.link}
     >
-      <img
-        src={ingredient.image}
-        alt="ингредиент"
-        className={ingredientStyles.image}
-      />
-      {ingredient.type === "bun" ? (
-        <Counter count={bunCounter} size="default" extraClass="m-1" />
-      ) : (
-        <Counter
-          count={middleIngredientsCounter}
-          size="default"
-          extraClass="m-1"
+      <li
+        className={ingredientStyles.box}
+        onClick={handleOnClick}
+        ref={dragRef}
+        style={{ opacity: opacity }}
+      >
+        <img
+          src={ingredient.image}
+          alt="ингредиент"
+          className={ingredientStyles.image}
         />
-      )}
+        {ingredient.type === "bun" ? (
+          <Counter count={bunCounter} size="default" extraClass="m-1" />
+        ) : (
+          <Counter
+            count={middleIngredientsCounter}
+            size="default"
+            extraClass="m-1"
+          />
+        )}
 
-      <div className={ingredientStyles.price}>
-        <p className="text text_type_digits-default">{ingredient.price}</p>
-        <CurrencyIcon type="primary" />
-      </div>
-      <p className={`${ingredientStyles.name} text text_type_main-default`}>
-        {ingredient.name}
-      </p>
-    </li>
+        <div className={ingredientStyles.price}>
+          <p className="text text_type_digits-default">{ingredient.price}</p>
+          <CurrencyIcon type="primary" />
+        </div>
+        <p className={`${ingredientStyles.name} text text_type_main-default`}>
+          {ingredient.name}
+        </p>
+      </li>
+    </Link>
   );
 };
 

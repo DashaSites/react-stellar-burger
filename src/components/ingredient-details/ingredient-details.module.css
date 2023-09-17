@@ -5,9 +5,11 @@
   align-items: center;
 }
 
+/*
 .heading {
-  align-self: start;
+   align-self: start;
 }
+*/
 
 .image {
   width: 520px;
