@@ -8,12 +8,9 @@ import { RegisterPage } from "../../pages/register/register.jsx";
 import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password.jsx";
 import { ResetPasswordPage } from "../../pages/reset-password/reset-password.jsx";
 import { ProfilePage } from "../../pages/profile/profile.jsx";
-import { Page404 } from "../../pages/page-not-found/page-404.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import Modal from "../modal/modal.jsx";
-//import { Ingredients } from "../../pages/ingredients/ingredients.jsx"; // ???????
-
-//import { PageNotFound } from "../../pages/page-not-found/not-found.jsx";
+import { PageNotFound } from "../../pages/page-not-found/not-found.jsx";
 
 const App = () => {
 
@@ -33,7 +30,7 @@ const App = () => {
   return (
     <>
       <AppHeader />
-      
+
       <Routes location={background || location}>
         <Route path="/" element={<HomePage />} />
         <Route path='/ingredients/:ingredientId'
@@ -52,7 +49,7 @@ const App = () => {
 
         <Route path="profile" element={<ProfilePage />} />
           
-        <Route path="*" element={<Page404 />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
 
       {background && (
@@ -102,10 +99,10 @@ export default App;
 
 
 
-// 1) Оборачиваем App в BrowserRouter
-// 2) Создаем папку pages, и переносим в него нашу разметку из App в домашнюю страницу
-// 3) Верстаем страницы 
-// 4) Реализуем функционал модалки
+// + 1) Оборачиваем App в BrowserRouter
+// + 2) Создаем папку pages, и переносим в него нашу разметку из App в домашнюю страницу
+// + 3) Верстаем страницы 
+// + 4) Реализуем функционал модалки
 // 5) В посте "Авторизация и работа с модалками" лежит код для обновления токенов, скопировать его оттуда
 
 

@@ -56,7 +56,6 @@
   background: -ms-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 19%, rgba(0, 0, 0, 0.9) 100%); /* IE10+ */
   background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 19%, rgba(0, 0, 0, 0.9) 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#00000000', endColorstr = '#e6000000', GradientType = 1); /* IE6-9 fallback on horizontal gradient */
-
 }
 
 
@@ -69,7 +68,7 @@
   }
 }
 
-h1 {
+.header {
   z-index: 3;
   position: absolute;
   font: bold 250px/250px Arial, sans-serif;

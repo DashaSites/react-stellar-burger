@@ -8,7 +8,7 @@ export const PageNotFound = () => {
 
   return (
     <>
-      <h1>404</h1>
+      <h1 className={notFoundStyles.header}>404</h1>
 
       <div className={notFoundStyles.frame}>
 
