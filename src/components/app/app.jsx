@@ -11,7 +11,7 @@ import { ProfilePage } from "../../pages/profile/profile.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import Modal from "../modal/modal.jsx";
 import { PageNotFound } from "../../pages/page-not-found/not-found.jsx";
-import Preloader from "../preloader/preloader.jsx";
+
 
 const App = () => {
 
