@@ -12,6 +12,12 @@ import { Navigate, useNavigate } from "react-router-dom";
 // Страница авторизации
 export const LoginPage = () => { 
 
+  // Пользователь вводит свои данные в форму
+  // Сделать запрос (dispatch + action)
+  // Запрос идет на сервер 
+  // После этого данные пользователя (res) вместе с двумя токенами записываем в хранилище
+  // (Оба токена записать в localStorage)
+
   const navigate = useNavigate();
 
 

@@ -5,6 +5,7 @@ import BurgerConstructor from "../../components/burger-constructor/burger-constr
 import { getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
 import { useSelector, useDispatch } from "react-redux";
 import { isUserAuthorizedSelector } from "../../services/selector/authorizationSelectors.js";
+import Preloader from "../../components/preloader/preloader.jsx";
 
 
 export const HomePage = () => {
@@ -37,7 +38,7 @@ export const HomePage = () => {
     <div className={styles.home}>
       <main className={styles.main}>
         {isError && "Что-то пошло не так"}
-        {isLoading && "Загрузка..."}
+        {isLoading && <Preloader />}
         {!isError && !isLoading && ingredients.length > 0 && (
           <>
             <BurgerIngredients />
