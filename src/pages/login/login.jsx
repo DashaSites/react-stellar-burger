@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import loginStyles from "./login.module.css";
 import {
   EmailInput,
@@ -6,6 +6,7 @@ import {
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Navigate, useNavigate } from "react-router-dom";
+import { loginUser } from "../../utils/burger-api.js";
 
 
 
@@ -30,6 +31,29 @@ export const LoginPage = () => {
   }
 
 
+
+  const [emailValue, setEmailValue] = useState("");
+
+  const [passwordValue, setPasswordValue] = useState("");
+
+
+
+  const onEmailChange = e => {
+    setEmailValue(e.target.value)
+  }
+
+  const onPasswordChange = e => {
+    setPasswordValue(e.target.value)
+  }
+
+
+
+
+  const handleLogin = () => {
+    loginUser(emailValue, passwordValue);
+  }
+
+
   return (
     <div className={loginStyles.formContainer}>
       <form className={loginStyles.form}>
@@ -37,12 +61,18 @@ export const LoginPage = () => {
         <h2 className={`${loginStyles.headline} text text_type_main-medium mb-6`}>Вход</h2>
         
         <fieldset className={loginStyles.inputItems}>
-         <EmailInput />
-         <PasswordInput />
+         <EmailInput 
+            onChange={onEmailChange}
+            value={emailValue}
+         />
+         <PasswordInput 
+          onChange={onPasswordChange}
+          value={passwordValue}
+         />
         </fieldset>
 
         <div className={`${loginStyles.loginButton} mt-6 mb-20`}>
-          <Button>Войти</Button>
+          <Button onClick={handleLogin}>Войти</Button>
         </div>
       
       </form>
