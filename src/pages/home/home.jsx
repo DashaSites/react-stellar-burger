@@ -13,14 +13,15 @@ export const HomePage = () => {
   const isUserAuthorized = useSelector(isUserAuthorizedSelector);
 
 
-    // Ингредиенты, загруженные с сервера
+    // Достаю из стора ингредиенты, загруженные с сервера
   const { ingredients, isLoading, isError } = useSelector(
     (state) => state.ingredientsState
   );
 
   const dispatch = useDispatch();
 
-  // Достаю данные через запрос к api (через функцию в экшенах): импортирую сюда запрос и ответ из burger-api.js
+  // Достаю данные через запрос к api (асинхронная функция из файла с экшенами:
+  // импортирую сюда запрос и ответ из burger-api.js
   // и обрабатываю эти данные дальше (записываю в стейт)
   React.useEffect(() => {
     dispatch(getFetchedIngredientsFromApi());

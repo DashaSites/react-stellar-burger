@@ -7,7 +7,7 @@ export const GET_ORDER_DETAILS_ERROR = 'GET_ORDER_DETAILS_ERROR';
 
 
 
-  // Запрос к серверу за номером заказа (функция с мидлваром)
+  // Асинхронный запрос к серверу за номером заказа (функция с мидлваром)
   export const getFetchedOrderDetailsFromApi = (array) => { 
     return (dispatch) => {
       // флажок о начале загрузки

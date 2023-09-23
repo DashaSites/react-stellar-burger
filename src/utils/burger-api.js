@@ -1,22 +1,22 @@
 
-const url = 'https://norma.nomoreparties.space/api';
+const API_URL = 'https://norma.nomoreparties.space/api';
 
 const checkReponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
 export const getIngredients = () => {
-  return fetch(`${url}/ingredients`, {
+  return fetch(`${API_URL}/ingredients`, {
       headers: {
         "Content-Type": "application/json"
       }
     })
     .then(res => checkReponse(res))
-  };
+};
 
 
 export const getOrderDetails = (idArray) => {
-  return fetch(`${url}/orders`, {
+  return fetch(`${API_URL}/orders`, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json"
@@ -29,8 +29,12 @@ export const getOrderDetails = (idArray) => {
 };
 
 
+//////////
+
+// Запрос для авторизации пользователя
+// Это неавторизованный запрос (без передачи на сервер токена)
 export const loginUser = (email, password) => {
-  return fetch(`${url}/auth/login`, {
+  return fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
@@ -41,12 +45,60 @@ export const loginUser = (email, password) => {
    })
   })
   .then(res => checkReponse(res))
-  .catch(res => alert('Неправильные данные. Проверьте или зарегистрируйтесь'))
+  //.catch(err => alert('Неправильные данные. Проверьте или зарегистрируйтесь'))
+};
+
+
+// Запрос для регистрации
+// Это неавторизованный запрос (без передачи на сервер токена)
+export const registerUser = (name, email, password) => {
+  return fetch(`${API_URL}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify({
+      "email": email, 
+      "password": password, 
+      "name": name 
+    })
+  })
+  .then(res => checkReponse(res))
+  // НИЖЕ - НОЧНОЙ ЭКСПЕРИМЕНТ
+  .then(res => {
+    return {
+      "success": true,
+      "user": {
+          "email": res.email,
+          "name": res.name
+      },
+      "accessToken": `Bearer ${res.accessToken}`,
+      "refreshToken": res.refreshToken
+    }
+  })
+  .catch(err => console.log(err))
 }
 
 
+// Запрос на получение данных пользователя
+// Он авторизованный (с передачей на сервер токена)
+export const getUser = () => {
+  return fetchWithRefresh(`${API_URL}/auth/user`, {
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      authorization: localStorage.getItem('accessToken') // КАК-ТО ТАК
+    }
+  });
+};
+
+// getUser()
+//   .then(() => {})
+//   .catch(() => ());
+
+
 export const refreshToken = () => {
-  return fetch(`${url}/auth/token`, {
+  return fetch(`${API_URL}/auth/token`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -58,7 +110,11 @@ export const refreshToken = () => {
 };
 
 
-// Использовать эту функцию для всех запросов, где нужно посылать токен, вместо фетча
+// Универсальная функция, внутри которой автоматически срабатывает обновление токена,
+// если он протух
+// Вызывать ее вместо fetch в других запросах, где есть токен авторизации
+// Это универсальная функция: как для запроса данных user, так и для 
+// других запросов, которые требуют авторизации
 export const fetchWithRefresh = async (url, options) => {
   try {
     const res = await fetch(url, options);

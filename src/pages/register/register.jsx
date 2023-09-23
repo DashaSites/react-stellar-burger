@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./register.module.css";
 import {
   Input,
@@ -7,6 +7,7 @@ import {
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../utils/burger-api.js";
 
 export const RegisterPage = () => {
 
@@ -17,6 +18,33 @@ export const RegisterPage = () => {
   }
 
 
+  const [nameValue, setNameValue] = useState("");
+
+  const onNameChange = e => {
+    setNameValue(e.target.value);
+  }
+
+
+  const [emailValue, setEmailValue] = useState("");
+  
+  const onEmailChange = e => {
+    e.preventDefault();
+    setEmailValue(e.target.value);
+  }
+
+
+  const [passwordValue, setPasswordValue] = useState("");
+
+  const onPasswordChange = e => {
+    e.preventDefault();
+    setPasswordValue(e.target.value);
+  }
+
+
+  const handleRegister = () => {
+    registerUser(nameValue, emailValue, passwordValue);
+  }
+
 
   return (
     <div className={styles.formContainer}>
@@ -25,13 +53,23 @@ export const RegisterPage = () => {
         <h2 className={`${styles.headline} text text_type_main-medium mb-6`}>Регистрация</h2>
         
         <fieldset className={styles.inputItems}>
-         <Input placeholder="Имя" />
-         <EmailInput />
-         <PasswordInput />
+         <Input 
+            placeholder="Имя"
+            onChange={onNameChange}
+            value={nameValue}
+         />
+         <EmailInput 
+            onChange={onEmailChange}
+            value={emailValue}  
+         />
+         <PasswordInput       
+            onChange={onPasswordChange}
+            value={passwordValue}
+         />
         </fieldset>
 
         <div className={`${styles.loginButton} mt-6 mb-20`}>
-          <Button>Зарегистрироваться</Button>
+          <Button onClick={handleRegister}>Зарегистрироваться</Button>
         </div>
       
       </form>

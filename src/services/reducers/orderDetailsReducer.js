@@ -28,7 +28,7 @@ export const orderDetailsReducer = (state = initialState, action) => {
     }
     case GET_ORDER_DETAILS_ERROR: {
       return {
-        ...initialState,
+        ...state,
         isError: true,
       };
     }

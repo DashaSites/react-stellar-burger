@@ -6,7 +6,9 @@ import {
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Navigate, useNavigate } from "react-router-dom";
-import { loginUser } from "../../utils/burger-api.js";
+// import { loginUser } from "../../utils/burger-api.js";
+import { useDispatch } from "react-redux";
+import { getFetchedAuthorizedUser } from "../../services/actions/authorizationActions.js";
 
 
 
@@ -20,6 +22,7 @@ export const LoginPage = () => {
   // (Оба токена записать в localStorage)
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
 
   const registerButtonClickHandler = () => {
@@ -39,24 +42,30 @@ export const LoginPage = () => {
 
 
   const onEmailChange = e => {
-    setEmailValue(e.target.value)
+    setEmailValue(e.target.value);
   }
 
   const onPasswordChange = e => {
-    setPasswordValue(e.target.value)
+    setPasswordValue(e.target.value);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(getFetchedAuthorizedUser(emailValue, passwordValue));
   }
 
 
+  //const handleLogin = () => {
 
+    //getFetchedAuthorizedUserFromApi(emailValue, passwordValue);
 
-  const handleLogin = () => {
-    loginUser(emailValue, passwordValue);
-  }
+    //loginUser(emailValue, passwordValue);
+  //}
 
 
   return (
     <div className={loginStyles.formContainer}>
-      <form className={loginStyles.form}>
+      <form className={loginStyles.form} onSubmit={handleSubmit}>
         
         <h2 className={`${loginStyles.headline} text text_type_main-medium mb-6`}>Вход</h2>
         
@@ -72,7 +81,7 @@ export const LoginPage = () => {
         </fieldset>
 
         <div className={`${loginStyles.loginButton} mt-6 mb-20`}>
-          <Button onClick={handleLogin}>Войти</Button>
+          <Button>Войти</Button>
         </div>
       
       </form>
