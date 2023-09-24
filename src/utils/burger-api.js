@@ -66,21 +66,51 @@ export const registerUser = (name, email, password) => {
 }
 
 
-// Запрос на получение данных пользователя
-// Он авторизованный (с передачей на сервер токена)
+// Запрос для выхода из системы
+// Это авторизованный запрос (с передачей на сервер токена)
+export const logoutUser = () => {
+  return fetchWithRefresh(`${API_URL}/auth/logout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify({
+      "token": localStorage.getItem('refreshToken')
+   })
+  })
+  .then(res => checkReponse(res))
+};
+
+
+// Авторизованный запрос на получение данных пользователя
 export const getUser = () => {
   return fetchWithRefresh(`${API_URL}/auth/user`, {
     method: "GET",
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      authorization: localStorage.getItem('accessToken') // КАК-ТО ТАК
+      authorization: localStorage.getItem('accessToken')
     }
   });
 };
 
-// getUser()
-//   .then(() => {})
-//   .catch(() => ());
+
+// Авторизованный запрос на редактирование данных пользователя
+// НАПИСАТЬ ФУНКЦИОНАЛЬНОСТЬ С ВЫЗОВОМ ЭТОЙ ФУНКЦИИ
+export const patchUser = (name, email, password) => {
+  return fetchWithRefresh(`${API_URL}/auth/user`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      authorization: localStorage.getItem('accessToken')
+    },
+    body: JSON.stringify({
+      "name": name,
+      "email": email,
+      "password": password
+   })
+  });
+}
+
 
 
 export const refreshToken = () => {

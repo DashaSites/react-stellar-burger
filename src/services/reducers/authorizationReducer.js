@@ -1,7 +1,13 @@
 import {
   AUTHORIZE_USER_REQUEST,
   AUTHORIZE_USER_SUCCESS,
-  AUTHORIZE_USER_ERROR
+  AUTHORIZE_USER_ERROR,
+  LOGOUT_USER_REQUEST,
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_ERROR,
+  GET_USER_DETAILS_REQUEST,
+  GET_USER_DETAILS_SUCCESS,
+  GET_USER_DETAILS_ERROR
 } from "../actions/authorizationActions.js";
 
 // initialState for authorizationReducer
@@ -29,10 +35,48 @@ export const authorizationReducer = (state = initialState, action) => {
         ...state,
         isAuthorized: true,
         userName: action.payload.userName,
-        userEmail: action.payload.userEmail // КАК ПОЛОЖИТЬ В localStorage ТОКЕНЫ?
+        userEmail: action.payload.userEmail
       };
     }
     case AUTHORIZE_USER_ERROR: {
+      return {
+        ...state,
+        isError: true
+      };
+    }
+    case LOGOUT_USER_REQUEST: {
+      return {
+        ...state,
+        isError: false
+      };
+    }
+    case LOGOUT_USER_SUCCESS: {
+      console.log(action.payload.message);
+      return {
+        ...state,
+        isAuthorized: false
+      };
+    }
+    case LOGOUT_USER_ERROR: {
+      return {
+        ...state,
+        isError: true
+      };
+    }
+    case GET_USER_DETAILS_REQUEST: {
+      return {
+        ...state,
+        isError: false
+      };
+    }
+    case GET_USER_DETAILS_SUCCESS: {
+      return {
+        ...state,
+        userName: action.payload.userName,
+        userEmail: action.payload.userEmail
+      };
+    }
+    case GET_USER_DETAILS_ERROR: {
       return {
         ...state,
         isError: true
