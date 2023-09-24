@@ -23,20 +23,7 @@ export const LoginPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-
-  const registerButtonClickHandler = () => {
-    navigate("/register");
-  }
-
-  const restorePasswordButtonHandler =() => {
-    navigate("/forgot-password");
-  }
-
-
-
   const [emailValue, setEmailValue] = useState("");
-
   const [passwordValue, setPasswordValue] = useState("");
 
 
@@ -49,23 +36,27 @@ export const LoginPage = () => {
     setPasswordValue(e.target.value);
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
     dispatch(getFetchedAuthorizedUser(emailValue, passwordValue));
+
+    setEmailValue("");
+    setPasswordValue("");
   }
 
 
-  //const handleLogin = () => {
+  const registerButtonClickHandler = () => {
+    navigate("/register");
+  }
 
-    //getFetchedAuthorizedUserFromApi(emailValue, passwordValue);
-
-    //loginUser(emailValue, passwordValue);
-  //}
+  const restorePasswordButtonHandler =() => {
+    navigate("/forgot-password");
+  }
 
 
   return (
     <div className={loginStyles.formContainer}>
-      <form className={loginStyles.form} onSubmit={handleSubmit}>
+      <form className={loginStyles.form} onSubmit={handleFormSubmit}>
         
         <h2 className={`${loginStyles.headline} text text_type_main-medium mb-6`}>Вход</h2>
         
@@ -81,7 +72,7 @@ export const LoginPage = () => {
         </fieldset>
 
         <div className={`${loginStyles.loginButton} mt-6 mb-20`}>
-          <Button>Войти</Button>
+          <Button htmlType="submit">Войти</Button>
         </div>
       
       </form>

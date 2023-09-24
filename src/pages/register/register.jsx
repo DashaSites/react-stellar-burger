@@ -8,32 +8,26 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../utils/burger-api.js";
+import { useDispatch } from "react-redux";
+import { getFetchedRegisteredUser } from "../../services/actions/registrationActions.js";
 
 export const RegisterPage = () => {
 
   const navigate = useNavigate();
-
-  const loginButtonClickHandler = () => {
-    navigate("/login");
-  }
-
-
+  const dispatch = useDispatch();
   const [nameValue, setNameValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
+
 
   const onNameChange = e => {
     setNameValue(e.target.value);
   }
 
-
-  const [emailValue, setEmailValue] = useState("");
-  
   const onEmailChange = e => {
     e.preventDefault();
     setEmailValue(e.target.value);
   }
-
-
-  const [passwordValue, setPasswordValue] = useState("");
 
   const onPasswordChange = e => {
     e.preventDefault();
@@ -41,14 +35,24 @@ export const RegisterPage = () => {
   }
 
 
-  const handleRegister = () => {
-    registerUser(nameValue, emailValue, passwordValue);
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    dispatch(getFetchedRegisteredUser(nameValue, emailValue, passwordValue));
+
+    setNameValue("");
+    setEmailValue("");
+    setPasswordValue("");
+  }
+
+
+  const loginButtonClickHandler = () => {
+    navigate("/login");
   }
 
 
   return (
     <div className={styles.formContainer}>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleFormSubmit}>
         
         <h2 className={`${styles.headline} text text_type_main-medium mb-6`}>Регистрация</h2>
         
@@ -69,7 +73,7 @@ export const RegisterPage = () => {
         </fieldset>
 
         <div className={`${styles.loginButton} mt-6 mb-20`}>
-          <Button onClick={handleRegister}>Зарегистрироваться</Button>
+          <Button htmlType="submit">Зарегистрироваться</Button>
         </div>
       
       </form>

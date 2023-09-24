@@ -29,7 +29,7 @@ export const getOrderDetails = (idArray) => {
 };
 
 
-//////////
+///// ЗАПРОСЫ, СВЯЗАННЫЕ С РОУТИНГОМ /////
 
 // Запрос для авторизации пользователя
 // Это неавторизованный запрос (без передачи на сервер токена)
@@ -45,7 +45,6 @@ export const loginUser = (email, password) => {
    })
   })
   .then(res => checkReponse(res))
-  //.catch(err => alert('Неправильные данные. Проверьте или зарегистрируйтесь'))
 };
 
 
@@ -64,19 +63,6 @@ export const registerUser = (name, email, password) => {
     })
   })
   .then(res => checkReponse(res))
-  // НИЖЕ - НОЧНОЙ ЭКСПЕРИМЕНТ
-  .then(res => {
-    return {
-      "success": true,
-      "user": {
-          "email": res.email,
-          "name": res.name
-      },
-      "accessToken": `Bearer ${res.accessToken}`,
-      "refreshToken": res.refreshToken
-    }
-  })
-  .catch(err => console.log(err))
 }
 
 

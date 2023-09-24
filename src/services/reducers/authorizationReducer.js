@@ -5,7 +5,8 @@ import {
 } from "../actions/authorizationActions.js";
 
 // initialState for authorizationReducer
-const initialState = {
+export const initialState = {
+  isRegistered: false,
   isAuthorized: false,
   userName: null,
   userEmail: null,
@@ -22,6 +23,8 @@ export const authorizationReducer = (state = initialState, action) => {
       };
     }
     case AUTHORIZE_USER_SUCCESS: {
+      localStorage.setItem('accessToken', action.payload.accessToken);
+      localStorage.setItem('refreshToken', action.payload.refreshToken);
       return {
         ...state,
         isAuthorized: true,
