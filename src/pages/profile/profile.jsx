@@ -3,8 +3,7 @@ import styles from "./profile.module.css";
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getFetchedUserDetails } from "../../services/actions/authorizationActions.js";
-import { getUserLoggedOut } from "../../services/actions/authorizationActions.js"
+import { getFetchedUserDetails, getUserLoggedOut, getEditedUserDetails } from "../../services/actions/authorizationActions.js";
 import { userNameSelector, userEmailSelector } from "../../services/selector/authorizationSelectors.js";
 
 
@@ -25,16 +24,6 @@ export const ProfilePage = () => {
   // Создаю реф, чтобы сохранить в нем текущий value пароля
   const passwordInputRef = useRef();
 
-
-  
-
-
-
-  //+ 1) Написать условие, что изменилась какая-либо информация в инпутах
-
-  //+ Если это условие произошло, должна появиться кнопка "Сохранить"
-  // При нажатии на эту кнопку должен произойти запрос к серверу patchUser
-  // Сервер должен обновить отредактированные данные профиля и записать их в стор
 
   useEffect(() => {
     dispatch(getFetchedUserDetails());
@@ -59,6 +48,8 @@ export const ProfilePage = () => {
     emailInputRef.current = userEmail;
   }, [userEmail]);
 
+  const currentUserEmail = emailInputRef.current;
+
 
   const handleLogoutClick = () => {
     dispatch(getUserLoggedOut());
@@ -66,17 +57,24 @@ export const ProfilePage = () => {
 
   const onNameChange = e => {
     setNameValue(e.target.value);
-    console.log('Name changed');
   }
 
   const onEmailChange = e => {
     setEmailValue(e.target.value);
-    console.log('Email changed');
   }
 
   const onPasswordChange = e => {
     setPasswordValue(e.target.value);
-    console.log('Password changed');
+  }
+
+  const handleSaveChanges = () => {
+    dispatch(getEditedUserDetails(nameValue, emailValue, passwordValue));
+  }
+
+  const handleReset = () => {
+    setNameValue(userName);
+    setEmailValue(userEmail);
+    setPasswordValue("");
   }
 
 
@@ -122,10 +120,22 @@ export const ProfilePage = () => {
           </fieldset>
           {hasInputChanged ? (
             <div className={styles.buttonContainer}>
-              <Button htmlType="button" type="primary" size="small" extraClass="ml-2">
+              <Button 
+                htmlType="button"
+                type="primary" 
+                size="medium"
+                extraClass="ml-2"
+                onClick={handleSaveChanges}
+              >  
                 Сохранить
               </Button>
-              <Button htmlType="button" type="primary" size="small" extraClass="ml-2">
+              <Button 
+                htmlType="button" 
+                type="primary" 
+                size="medium" 
+                extraClass="ml-2"
+                onClick={handleReset}
+              >
                 Отмена
               </Button>
               </div>
@@ -133,10 +143,5 @@ export const ProfilePage = () => {
         </form>
       </div>
     </div>
-
-    
-
-
-
   )
 }

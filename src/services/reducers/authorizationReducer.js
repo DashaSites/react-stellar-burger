@@ -7,7 +7,10 @@ import {
   LOGOUT_USER_ERROR,
   GET_USER_DETAILS_REQUEST,
   GET_USER_DETAILS_SUCCESS,
-  GET_USER_DETAILS_ERROR
+  GET_USER_DETAILS_ERROR,
+  EDIT_USER_DETAILS_REQUEST,
+  EDIT_USER_DETAILS_SUCCESS,
+  EDIT_USER_DETAILS_ERROR
 } from "../actions/authorizationActions.js";
 
 // initialState for authorizationReducer
@@ -78,6 +81,26 @@ export const authorizationReducer = (state = initialState, action) => {
       };
     }
     case GET_USER_DETAILS_ERROR: {
+      return {
+        ...state,
+        isError: true
+      };
+    }
+
+    case EDIT_USER_DETAILS_REQUEST: {
+      return {
+        ...state,
+        isError: false
+      };
+    }
+    case EDIT_USER_DETAILS_SUCCESS: {
+      return {
+        ...state,
+        userName: action.payload.updatedUserName,
+        userEmail: action.payload.updatedUserEmail
+      };
+    }
+    case EDIT_USER_DETAILS_ERROR: {
       return {
         ...state,
         isError: true

@@ -1,6 +1,4 @@
-import { loginUser } from "../../utils/burger-api.js";
-import { logoutUser } from "../../utils/burger-api.js";
-import { getUser } from "../../utils/burger-api.js";
+import { loginUser, logoutUser, getUser, patchUser } from "../../utils/burger-api.js";
 
 // Экшены для редьюсера authorizationReducer
 
@@ -16,6 +14,10 @@ export const LOGOUT_USER_ERROR = "LOGOUT_USER_ERROR";
 export const GET_USER_DETAILS_REQUEST = "GET_USER_DETAILS_REQUEST";
 export const GET_USER_DETAILS_SUCCESS = "GET_USER_DETAILS_SUCCESS";
 export const GET_USER_DETAILS_ERROR = "GET_USER_DETAILS_ERROR";
+
+export const EDIT_USER_DETAILS_REQUEST = "EDIT_USER_DETAILS_REQUEST";
+export const EDIT_USER_DETAILS_SUCCESS = "EDIT_USER_DETAILS_SUCCESS";
+export const EDIT_USER_DETAILS_ERROR = "EDIT_USER_DETAILS_ERROR";
 
 // Экшн-криейтор для создания экшена, который будет устанавливать флажок:
 // isAuthChecked в редьюсере ("была ли проверена авторизация")
@@ -105,6 +107,34 @@ export const getFetchedUserDetails = () => {
         // Если сервер не вернул данных, отправляем экшен об ошибке
         dispatch({
             type: GET_USER_DETAILS_ERROR
+        })
+    })
+  }   
+}
+
+
+// Асинхронный (с мидлваром) запрос к серверу для редактирования данных пользователя
+export const getEditedUserDetails = (name, email, password) => { 
+  return (dispatch) => {
+    // флажок о начале загрузки
+    dispatch({
+        type: EDIT_USER_DETAILS_REQUEST
+    })
+
+    patchUser(name, email, password)
+    .then((res) => {
+        dispatch({
+            type: EDIT_USER_DETAILS_SUCCESS,
+            payload: {
+              updatedUserEmail: res.user.email,
+              updatedUserName: res.user.name
+            },
+          })
+    }).catch((err) => {
+        console.log(err);
+        // Если сервер не вернул данных, отправляем экшен об ошибке
+        dispatch({
+            type: EDIT_USER_DETAILS_ERROR
         })
     })
   }   
