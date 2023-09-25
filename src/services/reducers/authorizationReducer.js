@@ -12,6 +12,7 @@ import {
 
 // initialState for authorizationReducer
 export const initialState = {
+  //isAuthChecked: false;
   isRegistered: false,
   isAuthorized: false,
   userName: null,

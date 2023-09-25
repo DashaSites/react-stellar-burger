@@ -3,17 +3,26 @@ import { logoutUser } from "../../utils/burger-api.js";
 import { getUser } from "../../utils/burger-api.js";
 
 // Экшены для редьюсера authorizationReducer
-export const AUTHORIZE_USER_REQUEST = 'AUTHORIZE_USER_REQUEST';
-export const AUTHORIZE_USER_SUCCESS = 'AUTHORIZE_USER_SUCCESS';
-export const AUTHORIZE_USER_ERROR = 'AUTHORIZE_USER_ERROR';
 
-export const LOGOUT_USER_REQUEST = 'LOGOUT_USER_REQUEST';
-export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS';
-export const LOGOUT_USER_ERROR = 'LOGOUT_USER_ERROR';
+export const SET_AUTH_CHECKED = "SET_AUTH_CHECKED";
+export const AUTHORIZE_USER_REQUEST = "AUTHORIZE_USER_REQUEST";
+export const AUTHORIZE_USER_SUCCESS = "AUTHORIZE_USER_SUCCESS";
+export const AUTHORIZE_USER_ERROR = "AUTHORIZE_USER_ERROR";
 
-export const GET_USER_DETAILS_REQUEST = 'GET_USER_DETAILS_REQUEST';
-export const GET_USER_DETAILS_SUCCESS = 'GET_USER_DETAILS_SUCCESS';
-export const GET_USER_DETAILS_ERROR = 'GET_USER_DETAILS_ERROR';
+export const LOGOUT_USER_REQUEST = "LOGOUT_USER_REQUEST";
+export const LOGOUT_USER_SUCCESS = "LOGOUT_USER_SUCCESS";
+export const LOGOUT_USER_ERROR = "LOGOUT_USER_ERROR";
+
+export const GET_USER_DETAILS_REQUEST = "GET_USER_DETAILS_REQUEST";
+export const GET_USER_DETAILS_SUCCESS = "GET_USER_DETAILS_SUCCESS";
+export const GET_USER_DETAILS_ERROR = "GET_USER_DETAILS_ERROR";
+
+// Экшн-криейтор для создания экшена, который будет устанавливать флажок:
+// isAuthChecked в редьюсере ("была ли проверена авторизация")
+//export const setAuthChecked = (value) = ({
+//  type: SET_AUTH_CHECKED,
+//  payload: value
+//}) 
 
 
 // Асинхронный запрос к серверу для авторизации пользователя (функция с мидлваром)

@@ -59,7 +59,6 @@ export const LoginPage = () => {
       <form className={loginStyles.form} onSubmit={handleFormSubmit}>
         
         <h2 className={`${loginStyles.headline} text text_type_main-medium mb-6`}>Вход</h2>
-        
         <fieldset className={loginStyles.inputItems}>
          <EmailInput 
             onChange={onEmailChange}
@@ -73,8 +72,7 @@ export const LoginPage = () => {
 
         <div className={`${loginStyles.loginButton} mt-6 mb-20`}>
           <Button htmlType="submit">Войти</Button>
-        </div>
-      
+        </div>      
       </form>
 
       <div className={`${loginStyles.navigationContainer} mb-4`}>

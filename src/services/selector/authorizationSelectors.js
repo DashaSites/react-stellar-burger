@@ -6,6 +6,19 @@ export function isUserAuthorizedSelector(state) {
   return isUserAuthorized;
 }
 
+// Имя текущего (авторизованного) пользователя
+export function userNameSelector(state) {
+  const userName = state.authorizationState.userName;
+  return userName;
+}
+
+// Имейл текущего (авторизованного) пользователя
+export function userEmailSelector(state) {
+  return state.authorizationState.userEmail;
+}
+
+
+
 
 
 
