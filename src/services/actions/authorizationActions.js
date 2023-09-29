@@ -21,17 +21,6 @@ export const SET_AUTH_CHECKED = "SET_AUTH_CHECKED";
 
 
 
-
-export const getFetchedUser = () => {
-  return (dispatch) => {
-    return getUser()
-      .then((res) => {
-        console.log("Есть пользователь")
-    });
-  };
-};
-
-
 // Экшн-криейтор для создания экшена, который будет в редьюсере 
 // устанавливать флажок isAuthChecked
 // (проверяет: "была ли этот пользователь проверен на наличие авторизации?")
@@ -45,11 +34,22 @@ export const setAuthChecked = (value) => ({
 export const checkUserAuth = () => {
   return (dispatch) => {
       if (localStorage.getItem("accessToken")) {
-        dispatch(getFetchedUser())
+        getUser()
             .catch(() => {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
              }) // независимо от того, получили мы данные пользователя или нет, флажок выставляем в true
+             .then((data) => {
+              dispatch({
+                type: AUTHORIZE_USER_SUCCESS,
+                payload: {
+                  accessToken: localStorage.getItem("accessToken"),
+                  refreshToken: localStorage.getItem("refreshToken"),
+                  userEmail: data.user.email,
+                  userName: data.user.name
+                },
+              });
+             })
             .finally(() => dispatch(setAuthChecked(true)));
       } else {
           dispatch(setAuthChecked(true));

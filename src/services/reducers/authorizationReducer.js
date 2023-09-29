@@ -67,6 +67,8 @@ export const authorizationReducer = (state = initialState, action) => {
     }
     case LOGOUT_USER_SUCCESS: {
       console.log(action.payload.message);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       return {
         ...state,
         isAuthorized: false,
