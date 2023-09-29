@@ -17,6 +17,13 @@ export function userEmailSelector(state) {
   return state.authorizationState.userEmail;
 }
 
+/// Селектор для компонента ProtectedRoute
+// Результат проверки (флажок): был ли данный пользователь проверен на авторизованность
+export function isAuthCheckedSelector(state) {
+  const isAuthChecked = state.authorizationState.isAuthChecked;
+  return isAuthChecked;
+}
+
 
 
 

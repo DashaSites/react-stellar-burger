@@ -5,8 +5,17 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useNavigate } from "react-router-dom";
 
 const AppHeader = () => {
+  const navigate = useNavigate();
+
+  const handleToProfileClick = () => {
+    navigate("/profile");
+  }
+
+
+
   return (
     <header className={headerStyles.appHeader}>
       <nav className={headerStyles.headerNavbar}>
@@ -40,7 +49,7 @@ const AppHeader = () => {
           className={`${headerStyles.headerLink} pt-4 pr-5 pb-4 pl-5`}
         >
           <ProfileIcon type="secondary" />
-          <p className={"text text_type_main-default text_color_inactive"}>
+          <p onClick={handleToProfileClick} className={"text text_type_main-default text_color_inactive"}>
             Личный кабинет
           </p>
         </a>

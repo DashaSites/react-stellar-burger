@@ -2,7 +2,6 @@ import { loginUser, logoutUser, getUser, patchUser } from "../../utils/burger-ap
 
 // Экшены для редьюсера authorizationReducer
 
-export const SET_AUTH_CHECKED = "SET_AUTH_CHECKED";
 export const AUTHORIZE_USER_REQUEST = "AUTHORIZE_USER_REQUEST";
 export const AUTHORIZE_USER_SUCCESS = "AUTHORIZE_USER_SUCCESS";
 export const AUTHORIZE_USER_ERROR = "AUTHORIZE_USER_ERROR";
@@ -18,16 +17,49 @@ export const GET_USER_DETAILS_ERROR = "GET_USER_DETAILS_ERROR";
 export const EDIT_USER_DETAILS_REQUEST = "EDIT_USER_DETAILS_REQUEST";
 export const EDIT_USER_DETAILS_SUCCESS = "EDIT_USER_DETAILS_SUCCESS";
 export const EDIT_USER_DETAILS_ERROR = "EDIT_USER_DETAILS_ERROR";
-
-// Экшн-криейтор для создания экшена, который будет устанавливать флажок:
-// isAuthChecked в редьюсере ("была ли проверена авторизация")
-//export const setAuthChecked = (value) = ({
-//  type: SET_AUTH_CHECKED,
-//  payload: value
-//}) 
+export const SET_AUTH_CHECKED = "SET_AUTH_CHECKED";
 
 
-// Асинхронный запрос к серверу для авторизации пользователя (функция с мидлваром)
+
+
+export const getFetchedUser = () => {
+  return (dispatch) => {
+    return getUser()
+      .then((res) => {
+        console.log("Есть пользователь")
+    });
+  };
+};
+
+
+// Экшн-криейтор для создания экшена, который будет в редьюсере 
+// устанавливать флажок isAuthChecked
+// (проверяет: "была ли этот пользователь проверен на наличие авторизации?")
+export const setAuthChecked = (value) => ({
+  type: SET_AUTH_CHECKED,
+  payload: value
+});
+
+
+// Проверочный запрос (асинхронный экшен)
+export const checkUserAuth = () => {
+  return (dispatch) => {
+      if (localStorage.getItem("accessToken")) {
+        dispatch(getFetchedUser())
+            .catch(() => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+             }) // независимо от того, получили мы данные пользователя или нет, флажок выставляем в true
+            .finally(() => dispatch(setAuthChecked(true)));
+      } else {
+          dispatch(setAuthChecked(true));
+      }
+  };
+};
+
+
+
+// Асинхронный запрос для логина (функция с мидлваром)
 export const getFetchedAuthorizedUser = (email, password) => { 
   return (dispatch) => {
     // флажок о начале загрузки
@@ -45,7 +77,8 @@ export const getFetchedAuthorizedUser = (email, password) => {
               userEmail: res.user.email,
               userName: res.user.name
             },
-          })
+          });
+          dispatch(setAuthChecked(true));
     }).catch((err) => {
         console.log(err);
         // Если сервер не вернул данных, отправляем экшен об ошибке
@@ -73,7 +106,7 @@ export const getUserLoggedOut = () => {
             payload: {
               message: res.message
             },
-          })
+          });
     }).catch((err) => {
         console.log(err);
         // Если сервер не вернул данных, отправляем экшен об ошибке
@@ -111,7 +144,6 @@ export const getFetchedUserDetails = () => {
     })
   }   
 }
-
 
 // Асинхронный (с мидлваром) запрос к серверу для редактирования данных пользователя
 export const getEditedUserDetails = (name, email, password) => { 

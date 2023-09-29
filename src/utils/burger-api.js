@@ -67,7 +67,7 @@ export const registerUser = (name, email, password) => {
 
 
 // Запрос для выхода из системы
-// Это авторизованный запрос (с передачей на сервер токена)
+// (это авторизованный запрос)
 export const logoutUser = () => {
   return fetchWithRefresh(`${API_URL}/auth/logout`, {
     method: 'POST',
@@ -78,7 +78,6 @@ export const logoutUser = () => {
       "token": localStorage.getItem('refreshToken')
    })
   })
-  .then(res => checkReponse(res))
 };
 
 

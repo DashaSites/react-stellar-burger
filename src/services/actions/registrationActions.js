@@ -1,4 +1,5 @@
 import { registerUser } from "../../utils/burger-api.js";
+import { SET_AUTH_CHECKED, setAuthChecked } from "./authorizationActions.js";
 
 // Экшены для редьюсера registrationReducer
 export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
@@ -24,7 +25,8 @@ export const getFetchedRegisteredUser = (name, email, password) => {
               userEmail: res.user.email,
               userName: res.user.name
             },
-          })
+          });
+          dispatch(setAuthChecked(true));
     }).catch((err) => {
         console.log(err);
         // Если сервер не вернул данных, отправляем экшен об ошибке

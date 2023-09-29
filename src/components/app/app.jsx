@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Layout } from "../layout/layout.jsx";
 import AppHeader from "../app-header/app-header.jsx";
@@ -11,6 +11,9 @@ import { ProfilePage } from "../../pages/profile/profile.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import Modal from "../modal/modal.jsx";
 import { PageNotFound } from "../../pages/page-not-found/not-found.jsx";
+import { useDispatch } from "react-redux";
+import { checkUserAuth } from "../../services/actions/authorizationActions.js";
+import { OnlyAuth, OnlyUnAuth } from "../protected-route-element/protected-route-element.jsx";
 
 
 const App = () => {
@@ -18,7 +21,14 @@ const App = () => {
   // Здесь потребуются хуки: useLocation - при вызове возвращает длинный объект...
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const background = location.state && location.state.background;
+
+
+  useEffect(() => { // При старте приложения делаю запрос, авторизован ли юзер
+    dispatch(checkUserAuth());
+  }, []);
+
 
   const handleModalClose = () => {
   // Возвращаемся к предыдущему пути при закрытии модалки
@@ -39,16 +49,23 @@ const App = () => {
 
 
 
+        {/* Авторизованный юзер не должен сюда попасть */}
+        {/*  <Route path="/login" element={<LoginPage />} /> */}
+        <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>} />} />
 
-        <Route path="/login" element={<LoginPage />} />
+        {/* Авторизованный юзер не должен сюда попасть */}
+        {/* <Route path="/register" element={<RegisterPage />} /> */}
+        <Route path="/register" element={<OnlyUnAuth component={<RegisterPage/>} />} />
 
-        <Route path="/register" element={<RegisterPage />} />
-
+        {/* Авторизованный юзер не должен сюда попасть */}
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
 
+        {/* Авторизованный юзер не должен сюда попасть */}
         <Route path="reset-password" element={<ResetPasswordPage />} />
 
-        <Route path="profile" element={<ProfilePage />} />
+        {/* Неавторизованный юзер не должен сюда попасть */}
+        {/* <Route path="profile" element={<ProfilePage />} /> */}
+        <Route path="profile" element={<OnlyAuth component={<ProfilePage/>} />} />
           
         <Route path="*" element={<PageNotFound />} />
       </Routes>

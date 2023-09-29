@@ -10,22 +10,33 @@ import {
   GET_USER_DETAILS_ERROR,
   EDIT_USER_DETAILS_REQUEST,
   EDIT_USER_DETAILS_SUCCESS,
-  EDIT_USER_DETAILS_ERROR
+  EDIT_USER_DETAILS_ERROR,
+  SET_AUTH_CHECKED
 } from "../actions/authorizationActions.js";
 
 // initialState for authorizationReducer
 export const initialState = {
-  //isAuthChecked: false;
   isRegistered: false,
   isAuthorized: false,
   userName: null,
   userEmail: null,
-  isError: false
+  isError: false,
+  isAuthChecked: false
 };
 
 // Авторизация в окне login
 export const authorizationReducer = (state = initialState, action) => {
   switch (action.type) {
+
+
+    case SET_AUTH_CHECKED: { 
+      return {
+        ...state,
+        isAuthChecked: action.payload
+      };
+    }
+
+
     case AUTHORIZE_USER_REQUEST: {
       return {
         ...state,
@@ -58,7 +69,9 @@ export const authorizationReducer = (state = initialState, action) => {
       console.log(action.payload.message);
       return {
         ...state,
-        isAuthorized: false
+        isAuthorized: false,
+        userName: null,
+        userEmail: null
       };
     }
     case LOGOUT_USER_ERROR: {
