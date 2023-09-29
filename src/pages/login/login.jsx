@@ -42,8 +42,6 @@ export const LoginPage = () => {
 
     setEmailValue("");
     setPasswordValue("");
-
-    navigate("/");
   }
 
 

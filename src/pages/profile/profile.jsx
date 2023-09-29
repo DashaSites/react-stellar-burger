@@ -53,7 +53,7 @@ export const ProfilePage = () => {
 
   const handleLogoutClick = () => {
     dispatch(getUserLoggedOut());
-    navigate("/");
+    navigate("/login", { replace: true });
   }
 
   const onNameChange = e => {
@@ -90,7 +90,7 @@ export const ProfilePage = () => {
         <nav className={`${styles.navigationBlock} mb-20`}>
           <NavLink to="/profile" className={`${styles.navigationItem} text text_type_main-medium`}>Профиль</NavLink>
           <NavLink className={`${styles.navigationItem} text text_type_main-medium`}>История заказов</NavLink>
-          <NavLink to="/" onClick={handleLogoutClick} className={`${styles.navigationItem} text text_type_main-medium`}>Выход</NavLink>
+          <NavLink onClick={handleLogoutClick} className={`${styles.navigationItem} text text_type_main-medium`}>Выход</NavLink>
         </nav>
         <p className={`${styles.description} text text_type_main-small`}>В этом разделе вы можете изменить&nbsp;свои&nbsp;персональные данные</p>
       </div>
