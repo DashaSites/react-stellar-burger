@@ -45,11 +45,12 @@ const AppHeader = () => {
           <Logo />
         </div>
         <a
+          onClick={handleToProfileClick}
           href="#"
           className={`${headerStyles.headerLink} pt-4 pr-5 pb-4 pl-5`}
         >
           <ProfileIcon type="secondary" />
-          <p onClick={handleToProfileClick} className={"text text_type_main-default text_color_inactive"}>
+          <p className={"text text_type_main-default text_color_inactive"}>
             Личный кабинет
           </p>
         </a>

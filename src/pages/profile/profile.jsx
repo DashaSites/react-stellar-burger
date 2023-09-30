@@ -81,6 +81,9 @@ export const ProfilePage = () => {
 
   // Для условие - показать кнопки, когда что-то меняется в любом из инпутов
   const hasInputChanged = userName !== nameValue || userEmail !== emailValue || passwordValue
+  
+  // Настраиваю стили для активных ссылок в панели навигации
+  const classNameFunc = ({ isActive }) => (isActive ? `${styles.activeLink} text text_type_main-medium` : `${styles.navigationLink} text text_type_main-medium`); 
 
 
   return (
@@ -88,9 +91,9 @@ export const ProfilePage = () => {
 
       <div className={styles.navigationContainer}>
         <nav className={`${styles.navigationBlock} mb-20`}>
-          <NavLink to="/profile" className={`${styles.navigationItem} text text_type_main-medium`}>Профиль</NavLink>
-          <NavLink className={`${styles.navigationItem} text text_type_main-medium`}>История заказов</NavLink>
-          <NavLink onClick={handleLogoutClick} className={`${styles.navigationItem} text text_type_main-medium`}>Выход</NavLink>
+          <NavLink to="/profile" className={classNameFunc}>Профиль</NavLink>
+          <NavLink to="someotherpage" className={classNameFunc}>История заказов</NavLink>
+          <NavLink onClick={handleLogoutClick} className={`${styles.navigationLink} text text_type_main-medium`}>Выход</NavLink>
         </nav>
         <p className={`${styles.description} text text_type_main-small`}>В этом разделе вы можете изменить&nbsp;свои&nbsp;персональные данные</p>
       </div>

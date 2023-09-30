@@ -7,7 +7,7 @@
   padding-left: 350px;
 }
 
-.navigationItem {
+.navigationLink {
   text-decoration: none;
   color: #8585AD;
   margin-top: 17px;
@@ -22,11 +22,19 @@
   display: grid;
 }
 
+.activeLink {
+  text-decoration: none;
+  color: rgba(242, 242, 243, 1);
+  margin-top: 17px;
+  margin-bottom: 17px;
+}
 
+
+/*
 :global(.active) {
   color: rgba(242, 242, 243, 1);
 }
-
+*/
 
 .description {
   margin: 0;
