@@ -10,6 +10,10 @@ import { useNavigate } from "react-router-dom";
 const AppHeader = () => {
   const navigate = useNavigate();
 
+  const handleToHomeClick = () => {
+    navigate("/");
+  }
+
   const handleToProfileClick = () => {
     navigate("/profile");
   }
@@ -22,6 +26,7 @@ const AppHeader = () => {
         <ul className={`${headerStyles.headerTabMenu} mt-4 mb-4`}>
           <li>
             <a
+              onClick={handleToHomeClick}
               href="#"
               className={`${headerStyles.headerLink} pt-4 pr-5 pb-4 pl-5`}
             >

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./profile.module.css";
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchedUserDetails, getUserLoggedOut, getEditedUserDetails } from "../../services/actions/authorizationActions.js";
 import { userNameSelector, userEmailSelector } from "../../services/selector/authorizationSelectors.js";
@@ -92,11 +92,13 @@ export const ProfilePage = () => {
       <div className={styles.navigationContainer}>
         <nav className={`${styles.navigationBlock} mb-20`}>
           <NavLink to="/profile" className={classNameFunc}>Профиль</NavLink>
-          <NavLink to="someotherpage" className={classNameFunc}>История заказов</NavLink>
+          <NavLink to="/profile/orders" className={classNameFunc}>История заказов</NavLink>
           <NavLink onClick={handleLogoutClick} className={`${styles.navigationLink} text text_type_main-medium`}>Выход</NavLink>
         </nav>
         <p className={`${styles.description} text text_type_main-small`}>В этом разделе вы можете изменить&nbsp;свои&nbsp;персональные данные</p>
       </div>
+
+      <Outlet /> {/* заглушка */}
 
       <div className={styles.formContainer}>
         <form className={styles.form}>        

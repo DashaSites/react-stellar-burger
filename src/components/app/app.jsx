@@ -50,11 +50,9 @@ const App = () => {
 
 
         {/* Авторизованный юзер не должен сюда попасть */}
-        {/*  <Route path="/login" element={<LoginPage />} /> */}
         <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>} />} />
 
         {/* Авторизованный юзер не должен сюда попасть */}
-        {/* <Route path="/register" element={<RegisterPage />} /> */}
         <Route path="/register" element={<OnlyUnAuth component={<RegisterPage/>} />} />
 
         {/* Авторизованный юзер не должен сюда попасть */}
@@ -64,8 +62,10 @@ const App = () => {
         <Route path="reset-password" element={<ResetPasswordPage />} />
 
         {/* Неавторизованный юзер не должен сюда попасть */}
-        {/* <Route path="profile" element={<ProfilePage />} /> */}
-        <Route path="profile" element={<OnlyAuth component={<ProfilePage/>} />} />
+        <Route path="/profile">
+          <Route index path="/profile" element={<OnlyAuth component={<ProfilePage/>} />} />
+          <Route path="profile/orders" />
+        </Route>
           
         <Route path="*" element={<PageNotFound />} />
       </Routes>
