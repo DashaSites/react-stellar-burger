@@ -5,15 +5,17 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate, Link, NavLink, useMatch, useResolvedPath } from "react-router-dom";
+import { useNavigate, Link, NavLink, useMatch, useLocation } from "react-router-dom";
 
 const AppHeader = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
   const isHome = useMatch("/");
+  const isIngredients = location.pathname.includes("ingredients");  
   const isProfile = useMatch("/profile");
   const isOrders = useMatch("/profile/orders");
-  const currentPath = useResolvedPath("").pathname; // получаю путь, который сейчас есть в адресной строке
+  //const currentPath = useResolvedPath("").pathname; // получаю путь, который сейчас есть в адресной строке
   
   //const currentPathHome = currentPath.includes("ingredients");
 
@@ -24,7 +26,7 @@ const AppHeader = () => {
         <ul className={`${headerStyles.headerTabMenu} mt-4 mb-4`}>
           <li>
             {
-              isHome ? (
+              isHome || isIngredients ? (
                 <NavLink
                   to="/"
                   className={`${headerStyles.headerLinkActive} pt-4 pr-5 pb-4 pl-5`}
