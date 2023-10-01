@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 const BurgerIngredients = () => {
   const { ingredients } = useSelector((state) => state.ingredientsState);
-
   const dispatch = useDispatch();
 
   // Подключаем табы: изначально стейт принимает таб, выбранный по умолчанию

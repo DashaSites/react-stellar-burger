@@ -10,9 +10,6 @@ import { useDispatch } from "react-redux";
 import { resetPassword } from "../../utils/burger-api.js";
 
 
-
-
-
 export const ResetPasswordPage = () => {
 
   const navigate = useNavigate();
@@ -34,10 +31,7 @@ export const ResetPasswordPage = () => {
 
   const handleResetPassFormSubmit = (event) => {
     event.preventDefault();
-
     getResetPasswordRequest();
-
-    //dispatch(GetPasswordReset(passwordValue, codeValue));
 
     setPasswordValue("");
     setCodeValue("");
@@ -51,7 +45,6 @@ export const ResetPasswordPage = () => {
       navigate("/login", { replace: true });
     }).catch((err) => {
         console.log(err);
-        // Если сервер не вернул данных, отправляем экшен об ошибке
     })
   }
 
@@ -63,12 +56,9 @@ export const ResetPasswordPage = () => {
 
   return (
     <div className={styles.formContainer}>
-      <form className={styles.form} onSubmit={handleResetPassFormSubmit}>
-        
-        <h2 className={`${styles.headline} text text_type_main-medium mb-6`}>Восстановление пароля</h2>
-        
-        <fieldset className={styles.inputItems}>
-         
+      <form className={styles.form} onSubmit={handleResetPassFormSubmit}>  
+        <h2 className={`${styles.headline} text text_type_main-medium mb-6`}>Восстановление пароля</h2> 
+        <fieldset className={styles.inputItems}>   
          <PasswordInput 
           placeholder="Введите новый пароль"
           onChange={onPasswordChange}
@@ -80,27 +70,20 @@ export const ResetPasswordPage = () => {
           onChange={onCodeChange}
           value={codeValue} 
         />
-
         </fieldset>
-
         <div className={`${styles.savePasswordButton} mt-6 mb-20`}>
           <Button htmlType="submit">Сохранить</Button>
         </div>
-      
       </form>
 
       <div className={`${styles.navigationContainer} mb-4`}>
-
         <p className={`${styles.navigationText} text text_type_main-default`}>
           Вспомнили пароль?
         </p>
-
         <button className={`${styles.navigationButton} text text_type_main-default`} onClick={loginButtonClickHandler}>
           Войти
         </button>
-
       </div>
-
     </div>
   )
 }

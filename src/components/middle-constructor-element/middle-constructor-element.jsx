@@ -7,6 +7,8 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { deleteIngredient } from "../../services/actions/ingredientsActions.js";
+import PropTypes from "prop-types";
+import { ingredientPropType } from "../../utils/prop-types.js";
 
 // Type для useDrag и accept для useDrop в одной переменной
 const dndType = "sortedIngredient";
@@ -97,4 +99,11 @@ export const MiddleConstructorElement = ({
       />
     </li>
   );
+};
+
+
+MiddleConstructorElement.propTypes = {
+  element: ingredientPropType.isRequired,
+  index: PropTypes.number.isRequired,
+  moveIngredient: PropTypes.func.isRequired
 };

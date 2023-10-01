@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import { isAuthCheckedSelector, userNameSelector } from "../../services/selector/authorizationSelectors.js";
 import Preloader from "../preloader/preloader.jsx";
+import PropTypes from "prop-types";
 
 
 //  МОЙ КОМПОНЕНТ
@@ -51,5 +52,11 @@ export const OnlyAuth = ProtectedRoute;
 export const OnlyUnAuth = ({ component }) => (
   <ProtectedRoute onlyUnAuth={true} component={component} />
 );
+
+
+ProtectedRoute.propTypes = {
+  onlyUnAuth: PropTypes.bool,
+  component: PropTypes.any.isRequired
+};
 
 export default ProtectedRoute;

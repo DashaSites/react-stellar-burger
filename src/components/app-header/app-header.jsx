@@ -16,7 +16,6 @@ const AppHeader = () => {
   const isProfile = useMatch("/profile");
   const isOrders = useMatch("/profile/orders");
   //const currentPath = useResolvedPath("").pathname; // получаю путь, который сейчас есть в адресной строке
-  
   //const currentPathHome = currentPath.includes("ingredients");
 
 

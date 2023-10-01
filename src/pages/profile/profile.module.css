@@ -29,19 +29,11 @@
   margin-bottom: 17px;
 }
 
-
-/*
-:global(.active) {
-  color: rgba(242, 242, 243, 1);
-}
-*/
-
 .description {
   margin: 0;
   padding: 0;
   color: #8585AD;
 }
-
 
 .formContainer {
   display: flex;

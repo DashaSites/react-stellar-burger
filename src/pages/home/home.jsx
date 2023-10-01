@@ -12,7 +12,6 @@ export const HomePage = () => {
 
   const isUserAuthorized = useSelector(isUserAuthorizedSelector);
 
-
     // Достаю из стора ингредиенты, загруженные с сервера
   const { ingredients, isLoading, isError } = useSelector(
     (state) => state.ingredientsState
@@ -26,13 +25,6 @@ export const HomePage = () => {
   React.useEffect(() => {
     dispatch(getFetchedIngredientsFromApi());
   }, []);
-
-  //if(!isUserAuthorized) {
-  //  return (
-  //    <Navigate to="/login" />
-  //  )
-  // }
-
 
 
   return (
@@ -49,5 +41,4 @@ export const HomePage = () => {
       </main>
     </div>
   );
-
 }

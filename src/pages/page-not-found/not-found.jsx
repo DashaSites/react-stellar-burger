@@ -4,8 +4,6 @@ import notFoundStyles from "./not-found.module.css";
 // Страница не найдена
 export const PageNotFound = () => { 
 
-
-
   return (
     <>
       <h1 className={notFoundStyles.header}>404</h1>

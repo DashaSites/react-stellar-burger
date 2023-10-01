@@ -1,22 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./profile.module.css";
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate, NavLink, Outlet, useResolvedPath } from "react-router-dom";
+import { useNavigate, useResolvedPath } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchedUserDetails, getUserLoggedOut, getEditedUserDetails } from "../../services/actions/authorizationActions.js";
 import { userNameSelector, userEmailSelector } from "../../services/selector/authorizationSelectors.js";
  
-// Настроить useMatch();
-// Добиться того, чтобы при открытой странице /profile белым подсвечивался "Профиль"
-// А если кликнута ссылка "История заказов", то тогда
-// Делался бы переход на /profile/orders, навменю оставалось слева и белой стала "История заказов"
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const match = useResolvedPath("").pathname; // получаю путь, который сейчас есть в адресной строке
-
-
 
   const [nameValue, setNameValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
@@ -102,23 +96,6 @@ export const ProfilePage = () => {
 
 
   return (
-    /*
-    <div className={styles.contentContainer}>
-
-      <div className={styles.navigationContainer}>
-        <nav className={`${styles.navigationBlock} mb-20`}>
-          <NavLink to="/profile/" className={setActive}>Профиль</NavLink>
-          <NavLink to="/profile/orders" className={setActive}>История заказов</NavLink>
-          <NavLink onClick={handleLogoutClick} className={`${styles.navigationElement} text text_type_main-medium`}>Выход</NavLink>
-        </nav>
-        <p className={`${styles.description} text text_type_main-small`}>В этом разделе вы можете изменить&nbsp;свои&nbsp;персональные данные</p>
-      </div>
-
-*/
-
-
-
-
       <div className={styles.formContainer}>
         <form className={styles.form} onSubmit={handleProfileFormSubmit}>        
           <fieldset className={styles.inputItems}>
@@ -167,8 +144,5 @@ export const ProfilePage = () => {
             ) : null}
         </form>
       </div>
-
-
-  /*  </div> */
   )
 }

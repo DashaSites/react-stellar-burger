@@ -7,6 +7,7 @@ import {
 } from "../actions/ingredientsActions.js";
 import { v4 as uuidv4 } from "uuid";
 
+// Сохраняю в localStorage стейт:
 const prevStateString = localStorage.getItem('constructorState');
 
 

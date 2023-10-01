@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import ingredientPropType from "../../utils/prop-types.js";
 import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
-import { useLocation, Link, useParams } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 const Ingredient = ({ ingredient, onClick }) => {
   // Вытаскиваю в стейт из стора айдишники тех булок и ингредиентов, которые сейчас лежат в конструкторе

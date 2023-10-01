@@ -38,7 +38,6 @@ const App = () => {
 
   
 
-
   return (
     <>
       <AppHeader />
@@ -48,21 +47,14 @@ const App = () => {
         <Route path='ingredients/:ingredientId'
                element={<IngredientDetails />} />
 
-
-
         {/* Только для неавторизованных */}
         <Route path="login" element={<OnlyUnAuth component={<LoginPage/>} />} />
-
         {/* Только для неавторизованных */}
         <Route path="register" element={<OnlyUnAuth component={<RegisterPage/>} />} />
-
         {/* Только для неавторизованных */}
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
-
         {/* Только для неавторизованных */}
         <Route path="reset-password" element={<ResetPasswordPage />} />
-
-
 
         {/* Только для авторизованных */}
         <Route path="/profile/" element={<OnlyAuth component={<Layout />} />}>
@@ -70,24 +62,7 @@ const App = () => {
           <Route index element={<OnlyAuth component={<ProfilePage />} />} />
           <Route path="orders" element={<OnlyAuth component={<ProfileOrders />} />} />
         </Route>
-
-      
-
-
-
-
-
-        {/* РАБОТАЕТ: Маршрут только для авторизованных */}
-        {/*  
-        <Route path="profile" element={<OnlyAuth component={<ProfilePage />} />} >
-          <Route path="profile/orders" element={<OnlyAuth component={<ProfileOrders />} />} />
-        </Route>
-        */}
-        
-
-
-
-          
+     
         <Route path="*" element={<PageNotFound />} />
       </Routes>
 
@@ -105,53 +80,6 @@ const App = () => {
       )}
     </>
   );
-
-  /*
-  return (
-    <div className={appStyles.app}>
-      <AppHeader />
-      <main className={appStyles.main}>
-        {isError && "Что-то пошло не так"}
-        {isLoading && "Загрузка..."}
-        {!isError && !isLoading && ingredients.length > 0 && (
-          <>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </>
-        )}
-      </main>
-    </div>
-  );
-*/
-
-
-
-
 };
 
 export default App;
-
-
-
-
-
-
-
-
-// + 1) Оборачиваем App в BrowserRouter
-// + 2) Создаем папку pages, и переносим в него нашу разметку из App в домашнюю страницу
-// + 3) Верстаем страницы 
-// + 4) Реализуем функционал модалки
-// 5) В посте "Авторизация и работа с модалками" лежит код для обновления токенов, скопировать его оттуда
-
-
-
-//!!! Компонент <Navigate></Navigate> потребуется только в реализации protected router
-
-//!!! Функция navigate(-1) (или navigate("/")) потребуется при реализации модалки
-
-// !!! Вложенные роуты нужны только для менюшки на странице профиля: см. 1:40 в вебинаре
-
-// !!! Защищенные маршруты и авторизация - с 1:43 в вебинаре 
-
-// !!! Токены лучше положить на хранение в localStorage (а не в куки)

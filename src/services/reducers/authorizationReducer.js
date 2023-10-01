@@ -28,16 +28,12 @@ export const initialState = {
 // Авторизация в окне login
 export const authorizationReducer = (state = initialState, action) => {
   switch (action.type) {
-
-
     case SET_AUTH_CHECKED: { 
       return {
         ...state,
         isAuthChecked: action.payload
       };
     }
-
-
     case AUTHORIZE_USER_REQUEST: {
       return {
         ...state,
@@ -102,7 +98,6 @@ export const authorizationReducer = (state = initialState, action) => {
         isError: true
       };
     }
-
     case EDIT_USER_DETAILS_REQUEST: {
       return {
         ...state,

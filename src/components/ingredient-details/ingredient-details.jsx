@@ -9,9 +9,7 @@ import { getFetchedIngredientsFromApi } from "../../services/actions/ingredients
 const IngredientDetails = () => {
 
   const { ingredientId } = useParams();
-
   const ingredient = useSelector(ingredientSelector(ingredientId));
-
   const dispatch = useDispatch();
 
   // Достаю данные через запрос к api (через функцию в экшенах): импортирую сюда запрос и ответ из burger-api.js
@@ -27,10 +25,6 @@ const IngredientDetails = () => {
   if (!ingredient) {
     return <h1>Загрузка</h1>
   }
-
-
-
-
 
 
   return (

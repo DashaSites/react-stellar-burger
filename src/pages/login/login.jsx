@@ -27,7 +27,6 @@ export const LoginPage = () => {
   const [passwordValue, setPasswordValue] = useState("");
 
 
-
   const onEmailChange = e => {
     setEmailValue(e.target.value);
   }
@@ -43,7 +42,6 @@ export const LoginPage = () => {
     setEmailValue("");
     setPasswordValue("");
   }
-
 
   const registerButtonClickHandler = () => {
     navigate("/register");

@@ -67,7 +67,6 @@ export const checkUserAuth = () => {
 };
 
 
-
 // Асинхронный запрос для логина (функция с мидлваром)
 export const getFetchedAuthorizedUser = (email, password) => { 
   return (dispatch) => {
@@ -97,7 +96,6 @@ export const getFetchedAuthorizedUser = (email, password) => {
     })
   }   
 }
-
 
 
 // Асинхронный (с мидлваром) запрос к серверу для выхода из системы

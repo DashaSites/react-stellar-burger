@@ -12,7 +12,6 @@ const Layout = () => {
   const isProfile = useMatch("/profile");
   const isProfileOrders = useMatch("/profile/orders");
 
-
   const handleLogoutClick = () => {
     dispatch(getUserLoggedOut());
     navigate("/login", { replace: true });

@@ -27,9 +27,7 @@ import { isUserAuthorizedSelector } from "../../services/selector/authorizationS
 
 const BurgerConstructor = () => {
   const { ingredients } = useSelector((state) => state.ingredientsState);
-
   const { isError } = useSelector((state) => state.orderDetailsState);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

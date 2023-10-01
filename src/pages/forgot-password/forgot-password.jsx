@@ -9,8 +9,6 @@ import { useDispatch } from "react-redux";
 import { recognizeUser } from "../../utils/burger-api.js";
 
 
-
-
 export const ForgotPasswordPage = () => {
 
   const navigate = useNavigate();
@@ -40,15 +38,9 @@ export const ForgotPasswordPage = () => {
       navigate("/reset-password", { replace: true });
     }).catch((err) => {
         console.log(err);
-        // Если сервер не вернул данных, отправляем экшен об ошибке
     })
-
   }
 
-  // Пользователь вводит в поле пароль и жмет на кнопку "Восстановить"
-  // Если имейл введен, происходит POST-запрос к эндпойнту: ...
-  // В случае успешного ответа пользователь направляется на роут /reset-password
-  // А на введенную почту приходит инструкция с кодом для восстановления пароля.
 
   return (
     <div className={styles.formContainer}>

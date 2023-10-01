@@ -100,17 +100,8 @@ export const resetPassword = (password, token) => {
 
 
 
-
-
-
-
-
-
-
-
-
 // Запрос для выхода из системы
-// (это авторизованный запрос)
+// (авторизованный запрос)
 export const logoutUser = () => {
   return fetchWithRefresh(`${API_URL}/auth/logout`, {
     method: 'POST',
@@ -137,7 +128,6 @@ export const getUser = () => {
 
 
 // Авторизованный запрос на редактирование данных пользователя
-// НАПИСАТЬ ФУНКЦИОНАЛЬНОСТЬ С ВЫЗОВОМ ЭТОЙ ФУНКЦИИ
 export const patchUser = (name, email, password) => {
   return fetchWithRefresh(`${API_URL}/auth/user`, {
     method: "PATCH",

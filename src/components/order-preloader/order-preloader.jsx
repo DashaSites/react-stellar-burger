@@ -13,5 +13,4 @@ const OrderPreloader = () => {
 };
 
 
-
 export default OrderPreloader;

@@ -7,7 +7,6 @@ import {
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../../utils/burger-api.js";
 import { useDispatch } from "react-redux";
 import { getFetchedRegisteredUser } from "../../services/actions/registrationActions.js";
 
@@ -18,7 +17,6 @@ export const RegisterPage = () => {
   const [nameValue, setNameValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
-
 
   const onNameChange = e => {
     setNameValue(e.target.value);
@@ -34,7 +32,6 @@ export const RegisterPage = () => {
     setPasswordValue(e.target.value);
   }
 
-
   const handleFormSubmit = (event) => {
     event.preventDefault();
     dispatch(getFetchedRegisteredUser(nameValue, emailValue, passwordValue));
@@ -44,7 +41,6 @@ export const RegisterPage = () => {
     setPasswordValue("");
   }
 
-
   const loginButtonClickHandler = () => {
     navigate("/login");
   }
@@ -52,10 +48,8 @@ export const RegisterPage = () => {
 
   return (
     <div className={styles.formContainer}>
-      <form className={styles.form} onSubmit={handleFormSubmit}>
-        
-        <h2 className={`${styles.headline} text text_type_main-medium mb-6`}>Регистрация</h2>
-        
+      <form className={styles.form} onSubmit={handleFormSubmit}> 
+        <h2 className={`${styles.headline} text text_type_main-medium mb-6`}>Регистрация</h2>   
         <fieldset className={styles.inputItems}>
          <Input 
             placeholder="Имя"
@@ -71,25 +65,19 @@ export const RegisterPage = () => {
             value={passwordValue}
          />
         </fieldset>
-
         <div className={`${styles.loginButton} mt-6 mb-20`}>
           <Button htmlType="submit">Зарегистрироваться</Button>
         </div>
-      
       </form>
 
       <div className={`${styles.navigationContainer} mb-4`}>
-
         <p className={`${styles.navigationText} text text_type_main-default`}>
           Уже зарегистрированы?
         </p>
-
         <button className={`${styles.navigationButton} text text_type_main-default`} onClick={loginButtonClickHandler}>
           Войти
         </button>
-
       </div>
-
     </div>
   )
 }

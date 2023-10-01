@@ -5,9 +5,7 @@ import OrderPreloader from "../order-preloader/order-preloader.jsx";
 const ProfileOrders = () => {
 
   return (
-
-      <OrderPreloader />
-
+    <OrderPreloader />
   )
 };
 
