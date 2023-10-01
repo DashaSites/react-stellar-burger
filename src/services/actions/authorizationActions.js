@@ -1,4 +1,4 @@
-import { loginUser, logoutUser, getUser, patchUser } from "../../utils/burger-api.js";
+import { loginUser, logoutUser, getUser, patchUser, recognizeUser, resetPassword } from "../../utils/burger-api.js";
 
 // Экшены для редьюсера authorizationReducer
 
@@ -17,7 +17,16 @@ export const GET_USER_DETAILS_ERROR = "GET_USER_DETAILS_ERROR";
 export const EDIT_USER_DETAILS_REQUEST = "EDIT_USER_DETAILS_REQUEST";
 export const EDIT_USER_DETAILS_SUCCESS = "EDIT_USER_DETAILS_SUCCESS";
 export const EDIT_USER_DETAILS_ERROR = "EDIT_USER_DETAILS_ERROR";
+
 export const SET_AUTH_CHECKED = "SET_AUTH_CHECKED";
+
+export const RECOGNIZE_USER_BY_MAIL_REQUEST = "RECOGNIZE_USER_BY_MAIL_REQUEST";
+export const RECOGNIZE_USER_BY_MAIL_SUCCESS = "RECOGNIZE_USER_BY_MAIL_SUCCESS";
+export const RECOGNIZE_USER_BY_MAIL_ERROR = "RECOGNIZE_USER_BY_MAIL_ERROR";
+
+export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
+export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
+export const RESET_PASSWORD_ERROR = "RESET_PASSWORD_ERROR";
 
 
 
@@ -171,3 +180,61 @@ export const getEditedUserDetails = (name, email, password) => {
     })
   }   
 }
+
+
+
+// Опознать по мейлу пользователя, забывшего пароль
+export const GetRecognizedByMail = (email) => { 
+  return (dispatch) => {
+    // флажок о начале
+    dispatch({
+        type: RECOGNIZE_USER_BY_MAIL_REQUEST
+    })
+    
+    recognizeUser(email)
+    .then((res) => {
+      console.log(res.message)
+        dispatch({
+            type: RECOGNIZE_USER_BY_MAIL_SUCCESS,
+            payload: {
+              message: res.message
+            },
+          });
+    }).catch((err) => {
+        console.log(err);
+        // Если сервер не вернул данных, отправляем экшен об ошибке
+        dispatch({
+            type: RECOGNIZE_USER_BY_MAIL_ERROR
+        })
+    })
+  }   
+}
+
+
+// Сбросить пароль (неавторизованный запрос?) ДОПИСАТЬ ЭТУ ФУНКЦИЮ!
+export const GetPasswordReset = (password) => { 
+  return (dispatch) => {
+    // флажок о начале
+    dispatch({
+        type: RESET_PASSWORD_REQUEST
+    })
+    
+    resetPassword(password)
+    .then((res) => {
+      console.log(res.message)
+        dispatch({
+            type: RESET_PASSWORD_SUCCESS,
+            payload: {
+              message: res.message
+            },
+          });
+    }).catch((err) => {
+        console.log(err);
+        // Если сервер не вернул данных, отправляем экшен об ошибке
+        dispatch({
+            type: RESET_PASSWORD_ERROR
+        })
+    })
+  }   
+}
+

@@ -11,7 +11,8 @@ import {
   EDIT_USER_DETAILS_REQUEST,
   EDIT_USER_DETAILS_SUCCESS,
   EDIT_USER_DETAILS_ERROR,
-  SET_AUTH_CHECKED
+  SET_AUTH_CHECKED,
+  
 } from "../actions/authorizationActions.js";
 
 // initialState for authorizationReducer

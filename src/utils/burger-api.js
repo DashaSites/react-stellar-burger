@@ -66,6 +66,49 @@ export const registerUser = (name, email, password) => {
 }
 
 
+// Запрос для опознания пользователя, забывшего пароль, по его мейлу
+// Это неавторизованный запрос (без передачи на сервер токена)
+export const recognizeUser = (email) => {
+  return fetch(`${API_URL}/password-reset`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify({
+      "email": email
+    })
+  })
+  .then(res => checkReponse(res))
+}
+
+
+// Запрос для reset password
+// Это неавторизованный запрос (без передачи на сервер токена)?
+export const resetPassword = (password) => {
+  return fetch(`${API_URL}/password-reset/reset`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify({
+      "password": password,
+      "token": localStorage.getItem('accessToken') // КАК ПЕРЕДАТЬ ТОКЕН???
+    })
+  })
+  .then(res => checkReponse(res))
+}
+
+
+
+
+
+
+
+
+
+
+
+
 // Запрос для выхода из системы
 // (это авторизованный запрос)
 export const logoutUser = () => {

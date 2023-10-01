@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./forgotPassword.module.css";
 import {
   EmailInput,
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { GetRecognizedByMail } from "../../services/actions/authorizationActions.js";
+
 
 
 
 export const ForgotPasswordPage = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [emailValue, setEmailValue] = useState("");
 
   const loginButtonClickHandler = () => {
     navigate("/login");
+  }
+
+  const onEmailChange = event => {
+    setEmailValue(event.target.value);
+  }
+
+  const handleForgotPassFormSubmit = (event) => {
+    event.preventDefault();
+    dispatch(GetRecognizedByMail(emailValue));
   }
 
   // Пользователь вводит в поле пароль и жмет на кнопку "Восстановить"
@@ -23,16 +37,19 @@ export const ForgotPasswordPage = () => {
 
   return (
     <div className={styles.formContainer}>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleForgotPassFormSubmit}>
         
         <h2 className={`${styles.headline} text text_type_main-medium mb-6`}>Восстановление пароля</h2>
         
-   
-   
-         <EmailInput placeholder="Укажите e-mail"/>
+        <EmailInput 
+          placeholder="Укажите e-mail"
+          onChange={onEmailChange}
+          value={emailValue}
+          required
+        />
 
         <div className={`${styles.restoreButton} mt-6 mb-20`}>
-          <Button>Восстановить</Button>
+          <Button htmlType="submit">Восстановить</Button>
         </div>
       
       </form>
