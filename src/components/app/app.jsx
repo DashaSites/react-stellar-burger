@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { Layout } from "../layout/layout.jsx";
 import AppHeader from "../app-header/app-header.jsx";
 import { HomePage } from "../../pages/home/home.jsx"
 import { LoginPage } from "../../pages/login/login.jsx";
@@ -8,8 +7,10 @@ import { RegisterPage } from "../../pages/register/register.jsx";
 import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password.jsx";
 import { ResetPasswordPage } from "../../pages/reset-password/reset-password.jsx";
 import { ProfilePage } from "../../pages/profile/profile.jsx";
+import ProfileOrders from "../profie-orders/profile-orders.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import Modal from "../modal/modal.jsx";
+import Layout from "../layout/layout.jsx";
 import { PageNotFound } from "../../pages/page-not-found/not-found.jsx";
 import { useDispatch } from "react-redux";
 import { checkUserAuth } from "../../services/actions/authorizationActions.js";
@@ -44,28 +45,48 @@ const App = () => {
 
       <Routes location={background || location}>
         <Route path="/" element={<HomePage />} />
-        <Route path='/ingredients/:ingredientId'
+        <Route path='ingredients/:ingredientId'
                element={<IngredientDetails />} />
 
 
 
-        {/* Авторизованный юзер не должен сюда попасть */}
-        <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>} />} />
+        {/* Только для неавторизованных */}
+        <Route path="login" element={<OnlyUnAuth component={<LoginPage/>} />} />
 
-        {/* Авторизованный юзер не должен сюда попасть */}
-        <Route path="/register" element={<OnlyUnAuth component={<RegisterPage/>} />} />
+        {/* Только для неавторизованных */}
+        <Route path="register" element={<OnlyUnAuth component={<RegisterPage/>} />} />
 
-        {/* Авторизованный юзер не должен сюда попасть */}
+        {/* Только для неавторизованных */}
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
 
-        {/* Авторизованный юзер не должен сюда попасть */}
+        {/* Только для неавторизованных */}
         <Route path="reset-password" element={<ResetPasswordPage />} />
 
-        {/* Неавторизованный юзер не должен сюда попасть */}
-        <Route path="/profile">
-          <Route index path="/profile" element={<OnlyAuth component={<ProfilePage/>} />} />
-          <Route path="profile/orders" />
+
+
+        {/* Только для авторизованных */}
+        <Route path="/profile/" element={<OnlyAuth component={<Layout />} />}>
+          {/* ключевое слово index означает, что <ProfilePage /> размещен по адресу выше */}
+          <Route index element={<OnlyAuth component={<ProfilePage />} />} />
+          <Route path="orders" element={<OnlyAuth component={<ProfileOrders />} />} />
         </Route>
+
+      
+
+
+
+
+
+        {/* РАБОТАЕТ: Маршрут только для авторизованных */}
+        {/*  
+        <Route path="profile" element={<OnlyAuth component={<ProfilePage />} />} >
+          <Route path="profile/orders" element={<OnlyAuth component={<ProfileOrders />} />} />
+        </Route>
+        */}
+        
+
+
+
           
         <Route path="*" element={<PageNotFound />} />
       </Routes>
@@ -73,7 +94,7 @@ const App = () => {
       {background && (
         <Routes>
 	        <Route
-	          path='/ingredients/:ingredientId'
+	          path='ingredients/:ingredientId'
 	          element={
 	            <Modal onCloseClick={handleModalClose}>
 	              <IngredientDetails />

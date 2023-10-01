@@ -5,7 +5,11 @@ import { useNavigate, NavLink, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchedUserDetails, getUserLoggedOut, getEditedUserDetails } from "../../services/actions/authorizationActions.js";
 import { userNameSelector, userEmailSelector } from "../../services/selector/authorizationSelectors.js";
-
+ 
+// Настроить useMatch();
+// Добиться того, чтобы при открытой странице /profile белым подсвечивался "Профиль"
+// А если кликнута ссылка "История заказов", то тогда
+// Делался бы переход на /profile/orders, навменю оставалось слева и белой стала "История заказов"
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
@@ -78,30 +82,41 @@ export const ProfilePage = () => {
     setPasswordValue("");
   }
 
+  const handleProfileFormSubmit = (event) => {
+    event.preventDefault();
+    setNameValue(event.target.value);
+    setEmailValue(event.target.value);
+    setPasswordValue(event.target.value);
+  }
+
 
   // Для условие - показать кнопки, когда что-то меняется в любом из инпутов
   const hasInputChanged = userName !== nameValue || userEmail !== emailValue || passwordValue
   
   // Настраиваю стили для активных ссылок в панели навигации
-  const classNameFunc = ({ isActive }) => (isActive ? `${styles.activeLink} text text_type_main-medium` : `${styles.navigationLink} text text_type_main-medium`); 
+  const classNameFunc = ({ isActive }) => (isActive ? `${styles.activeLink} text text_type_main-medium` : `${styles.navigationElement} text text_type_main-medium`); 
 
 
   return (
+    /*
     <div className={styles.contentContainer}>
 
       <div className={styles.navigationContainer}>
         <nav className={`${styles.navigationBlock} mb-20`}>
-          <NavLink to="/profile" className={classNameFunc}>Профиль</NavLink>
+          <NavLink to="/profile/" className={classNameFunc}>Профиль</NavLink>
           <NavLink to="/profile/orders" className={classNameFunc}>История заказов</NavLink>
-          <NavLink onClick={handleLogoutClick} className={`${styles.navigationLink} text text_type_main-medium`}>Выход</NavLink>
+          <NavLink onClick={handleLogoutClick} className={`${styles.navigationElement} text text_type_main-medium`}>Выход</NavLink>
         </nav>
         <p className={`${styles.description} text text_type_main-small`}>В этом разделе вы можете изменить&nbsp;свои&nbsp;персональные данные</p>
       </div>
 
-      <Outlet /> {/* заглушка */}
+*/
+
+
+
 
       <div className={styles.formContainer}>
-        <form className={styles.form}>        
+        <form className={styles.form} onSubmit={handleProfileFormSubmit}>        
           <fieldset className={styles.inputItems}>
            <Input 
               value={nameValue} 
@@ -148,6 +163,8 @@ export const ProfilePage = () => {
             ) : null}
         </form>
       </div>
-    </div>
+
+
+  /*  </div> */
   )
 }
