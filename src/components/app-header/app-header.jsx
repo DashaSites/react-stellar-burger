@@ -5,7 +5,7 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate, Link, NavLink, useMatch, useLocation } from "react-router-dom";
+import { useNavigate, NavLink, useMatch, useLocation } from "react-router-dom";
 
 const AppHeader = () => {
 

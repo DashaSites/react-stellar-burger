@@ -7,7 +7,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { GetPasswordReset } from "../../services/actions/authorizationActions.js";
+import { resetPassword } from "../../utils/burger-api.js";
+
 
 
 
@@ -17,6 +18,7 @@ export const ResetPasswordPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [passwordValue, setPasswordValue] = useState("");
+  const [codeValue, setCodeValue] = useState("");
 
   const loginButtonClickHandler = () => {
     navigate("/login");
@@ -26,9 +28,37 @@ export const ResetPasswordPage = () => {
     setPasswordValue(event.target.value);
   }
 
+  const onCodeChange = (event) => {
+    setCodeValue(event.target.value);
+  }
+
   const handleResetPassFormSubmit = (event) => {
     event.preventDefault();
-    dispatch(GetPasswordReset(passwordValue));
+
+    getResetPasswordRequest();
+
+    //dispatch(GetPasswordReset(passwordValue, codeValue));
+
+    setPasswordValue("");
+    setCodeValue("");
+  }
+
+  const getResetPasswordRequest = () => {
+    resetPassword(passwordValue, codeValue)
+    .then((res) => {
+      console.log(res.message);
+      localStorage.removeItem("flagToResetPassword");
+      navigate("/login", { replace: true });
+    }).catch((err) => {
+        console.log(err);
+        // Если сервер не вернул данных, отправляем экшен об ошибке
+    })
+  }
+
+  const isPasswordToReset = localStorage.getItem("flagToResetPassword");
+
+  if (!isPasswordToReset) {
+    navigate("/", { replace: true });
   }
 
   return (
@@ -46,7 +76,9 @@ export const ResetPasswordPage = () => {
           required 
          />
          <Input 
-          placeholder="Введите код из письма" 
+          placeholder="Введите код из письма"
+          onChange={onCodeChange}
+          value={codeValue} 
         />
 
         </fieldset>

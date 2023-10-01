@@ -84,7 +84,7 @@ export const recognizeUser = (email) => {
 
 // Запрос для reset password
 // Это неавторизованный запрос (без передачи на сервер токена)?
-export const resetPassword = (password) => {
+export const resetPassword = (password, token) => {
   return fetch(`${API_URL}/password-reset/reset`, {
     method: 'POST',
     headers: {
@@ -92,7 +92,7 @@ export const resetPassword = (password) => {
     },
     body: JSON.stringify({
       "password": password,
-      "token": localStorage.getItem('accessToken') // КАК ПЕРЕДАТЬ ТОКЕН???
+      "token": token
     })
   })
   .then(res => checkReponse(res))

@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { GetRecognizedByMail } from "../../services/actions/authorizationActions.js";
+import { recognizeUser } from "../../utils/burger-api.js";
 
 
 
@@ -27,7 +27,22 @@ export const ForgotPasswordPage = () => {
 
   const handleForgotPassFormSubmit = (event) => {
     event.preventDefault();
-    dispatch(GetRecognizedByMail(emailValue));
+    forgotPasswordServerRequest();
+
+    setEmailValue("");
+  }
+
+  const forgotPasswordServerRequest = () => {
+    recognizeUser(emailValue)
+    .then((res) => {
+      console.log(res.message);
+      localStorage.setItem("flagToResetPassword", "flagToResetPassword");
+      navigate("/reset-password", { replace: true });
+    }).catch((err) => {
+        console.log(err);
+        // Если сервер не вернул данных, отправляем экшен об ошибке
+    })
+
   }
 
   // Пользователь вводит в поле пароль и жмет на кнопку "Восстановить"
