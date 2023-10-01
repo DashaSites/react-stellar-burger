@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./profile.module.css";
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate, NavLink, Outlet } from "react-router-dom";
+import { useNavigate, NavLink, Outlet, useResolvedPath } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchedUserDetails, getUserLoggedOut, getEditedUserDetails } from "../../services/actions/authorizationActions.js";
 import { userNameSelector, userEmailSelector } from "../../services/selector/authorizationSelectors.js";
@@ -14,6 +14,10 @@ import { userNameSelector, userEmailSelector } from "../../services/selector/aut
 export const ProfilePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const match = useResolvedPath("").pathname; // получаю путь, который сейчас есть в адресной строке
+
+
+
   const [nameValue, setNameValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
@@ -94,7 +98,7 @@ export const ProfilePage = () => {
   const hasInputChanged = userName !== nameValue || userEmail !== emailValue || passwordValue
   
   // Настраиваю стили для активных ссылок в панели навигации
-  const classNameFunc = ({ isActive }) => (isActive ? `${styles.activeLink} text text_type_main-medium` : `${styles.navigationElement} text text_type_main-medium`); 
+  const setActive = ({ isActive }) => (isActive ? `${styles.activeLink} text text_type_main-medium` : `${styles.navigationElement} text text_type_main-medium`); 
 
 
   return (
@@ -103,8 +107,8 @@ export const ProfilePage = () => {
 
       <div className={styles.navigationContainer}>
         <nav className={`${styles.navigationBlock} mb-20`}>
-          <NavLink to="/profile/" className={classNameFunc}>Профиль</NavLink>
-          <NavLink to="/profile/orders" className={classNameFunc}>История заказов</NavLink>
+          <NavLink to="/profile/" className={setActive}>Профиль</NavLink>
+          <NavLink to="/profile/orders" className={setActive}>История заказов</NavLink>
           <NavLink onClick={handleLogoutClick} className={`${styles.navigationElement} text text_type_main-medium`}>Выход</NavLink>
         </nav>
         <p className={`${styles.description} text text_type_main-small`}>В этом разделе вы можете изменить&nbsp;свои&nbsp;персональные данные</p>
