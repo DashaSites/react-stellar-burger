@@ -22,6 +22,8 @@ import { dropIngredientWithUuid } from "../../services/actions/ingredientsAction
 import { MiddleConstructorElement } from "../middle-constructor-element/middle-constructor-element.jsx";
 import Modal from "../modal/modal.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
+import { Navigate, useNavigate } from "react-router-dom";
+import { isUserAuthorizedSelector } from "../../services/selector/authorizationSelectors.js";
 
 const BurgerConstructor = () => {
   const { ingredients } = useSelector((state) => state.ingredientsState);
@@ -29,6 +31,7 @@ const BurgerConstructor = () => {
   const { isError } = useSelector((state) => state.orderDetailsState);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Найдем в данных (если они загрузились) хоть одну булку - передаем ее сюда из селектора
   const bunElement = useSelector(bunSelector);
@@ -69,9 +72,15 @@ const BurgerConstructor = () => {
 
   // Создание заказа
   const handleClickOrderButton = () => {
-    // Вызов dispatch
-    setIsOrderDetailsOpened(true);
-    dispatch(getFetchedOrderDetailsFromApi(ingredientsIdArray)); // вспомогательная функция, чтобы в ней повесить флажок isError
+
+    const isAuthorized = select(isUserAuthorizedSelector);
+
+    if (isAuthorized) {
+      setIsOrderDetailsOpened(true);
+      dispatch(getFetchedOrderDetailsFromApi(ingredientsIdArray)); // вспомогательная функция, чтобы в ней повесить флажок isError
+    } else {
+      navigate("/login");
+    }
   };
 
   ///// DND: Перетаскиваю ингредиенты в конструктор /////
