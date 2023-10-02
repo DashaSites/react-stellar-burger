@@ -1,30 +1,41 @@
 import React, { useEffect } from "react";
 import ingredientDetailsStyles from "./ingredient-details.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
-import { useParams } from 'react-router-dom';
-import { getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
+import { ingredientSelector, allIngredientsSelector } from "../../services/selector/ingredientsSelectors.js";
+import { Navigate, useParams } from 'react-router-dom';
+import Preloader from "../preloader/preloader.jsx";
+import { getSelectedIngredient, getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
 
 
 const IngredientDetails = () => {
 
   const { ingredientId } = useParams();
-  const ingredient = useSelector(ingredientSelector(ingredientId));
+
+  // КЛИКНУТЫЙ ИНГРЕДИЕНТ
+  const ingredient = useSelector(ingredientSelector(ingredientId)); 
+
+  
+  // ВСЕ ИНГРЕДИЕНТЫ
+  const allIngredients = useSelector(allIngredientsSelector()); 
   const dispatch = useDispatch();
 
-  // Достаю данные через запрос к api (через функцию в экшенах): импортирую сюда запрос и ответ из burger-api.js
-  // и обрабатываю эти данные дальше (записываю в стейт)
 
+ // ПРЕЖНЯЯ ФУНКЦИЯ - РАБОТАЕТ: ДИСПАТЧУ АСИНХРОННЫЙ ЭКШЕН, 
+ // ЧТОБЫ ЗАГРУЗИТЬ С СЕРВЕРА ВСЕ ИНГРЕДИЕНТЫ 
+
+/*
   useEffect(() => {
     if (!ingredient) {
-      dispatch(getFetchedIngredientsFromApi());
+      return <Preloader />
+      //dispatch(getFetchedIngredientsFromApi());
     }
   }, [ingredient]);
-
+ */
 
   if (!ingredient) {
-    return <h1>Загрузка</h1>
+    return <Preloader />
   }
+
 
 
   return (

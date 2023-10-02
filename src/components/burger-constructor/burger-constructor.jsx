@@ -32,14 +32,13 @@ const BurgerConstructor = () => {
   const navigate = useNavigate();
 
   // Найдем в данных (если они загрузились) хоть одну булку - передаем ее сюда из селектора
-  const bunElement = useSelector(bunSelector);
+  const bunElement = useSelector(bunSelector); // В КОНСТРУКТОРЕ
 
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок: передаем его сюда из селектора
-  const mainsAndSaucesElements = useSelector(middleIngredientsSelector);
-
+  const mainsAndSaucesElements = useSelector(middleIngredientsSelector); // В КОНСТРУКТОРЕ
+  
   // Суммарное число ингредиентов-соусов и ингредиентов-начинок в конструкторе
-  const mainsAndSaucesElementsCount = mainsAndSaucesElements.length;
-
+  const mainsAndSaucesElementsCount = mainsAndSaucesElements.length; // В КОНСТРУКТОРЕ
 
   // Текущая стоимость заказа на данный момент
   const totalOrderPrice = useMemo(() => {
@@ -65,8 +64,9 @@ const BurgerConstructor = () => {
     setIsOrderDetailsOpened(false);
   };
 
-  // Соберем id всех ингредиентов конструктора в массив
+  // Соберем id всех ингредиентов в массив
   const ingredientsIdArray = ingredients.map((ingredient) => ingredient._id);
+  
 
   // Создание заказа
   const handleClickOrderButton = () => {
