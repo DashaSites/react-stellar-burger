@@ -1,14 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./profile.module.css";
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate, useResolvedPath } from "react-router-dom";
+import { useResolvedPath } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getFetchedUserDetails, getUserLoggedOut, getEditedUserDetails } from "../../services/actions/authorizationActions.js";
+import { getFetchedUserDetails, getEditedUserDetails } from "../../services/actions/authorizationActions.js";
 import { userNameSelector, userEmailSelector } from "../../services/selector/authorizationSelectors.js";
  
 
 export const ProfilePage = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const match = useResolvedPath("").pathname; // получаю путь, который сейчас есть в адресной строке
 
@@ -19,14 +18,6 @@ export const ProfilePage = () => {
   const userEmail = useSelector(userEmailSelector);
 
 
-  // Создаю реф, чтобы сохранить в нем текущее имя залогиненного пользователя
-  const nameInputRef = useRef();
-  // Создаю реф, чтобы сохранить в нем текущий имейл залогиненного пользователя
-  const emailInputRef = useRef();
-  // Создаю реф, чтобы сохранить в нем текущий value пароля
-  const passwordInputRef = useRef();
-
-
   useEffect(() => {
     dispatch(getFetchedUserDetails());
   }, []);
@@ -35,28 +26,14 @@ export const ProfilePage = () => {
   useEffect(() => {
     // Подгружаю из стора имя залогиненного пользователя в поле name 
     setNameValue(userName);
-    // Сохраняю в рефе текущее имя залогиненного пользователя, которое было сюда подгружено
-    nameInputRef.current = userName;
   }, [userName]);
   
-  const currentUserName = nameInputRef.current;
-
-
 
   useEffect(() => {
     // Подгружаю из стора имейл залогиненного пользователя в поле email 
     setEmailValue(userEmail);
-    // Сохраняю в рефе текущее имя залогиненного пользователя, которое было сюда подгружено
-    emailInputRef.current = userEmail;
   }, [userEmail]);
 
-  const currentUserEmail = emailInputRef.current;
-
-
-  const handleLogoutClick = () => {
-    dispatch(getUserLoggedOut());
-    navigate("/login", { replace: true });
-  }
 
   const onNameChange = e => {
     setNameValue(e.target.value);
@@ -104,20 +81,17 @@ export const ProfilePage = () => {
               onChange={onNameChange} 
               placeholder="Имя" 
               icon={'EditIcon'}
-              ref={nameInputRef}
             />
            <Input 
               value={emailValue} 
               onChange={onEmailChange} 
               placeholder="Логин" 
               icon={'EditIcon'}
-              ref={emailInputRef} 
            />
            <PasswordInput
               onChange={onPasswordChange}
               value={passwordValue}
               name={'password'}
-              ref={passwordInputRef}
           />
           </fieldset>
           {hasInputChanged ? (

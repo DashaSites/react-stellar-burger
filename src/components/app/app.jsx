@@ -19,7 +19,6 @@ import { OnlyAuth, OnlyUnAuth } from "../protected-route-element/protected-route
 
 const App = () => {
 
-  // Здесь потребуются хуки: useLocation - при вызове возвращает длинный объект...
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -71,7 +70,7 @@ const App = () => {
 	        <Route
 	          path='ingredients/:ingredientId'
 	          element={
-	            <Modal onCloseClick={handleModalClose}>
+	            <Modal onCloseClick={handleModalClose} closeModals={handleModalClose}>
 	              <IngredientDetails />
 	            </Modal>
 	          }
