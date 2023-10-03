@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../ingredient/ingredient.jsx";
-import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -79,22 +78,6 @@ const BurgerIngredients = () => {
     }
   };
 
-  // Настройка состояния и работы модалки IngredientDetails
-
-  // Стейт для модального окна IngredientDetails
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
-    React.useState(false);
-
-  // Закрываю модальное окно по клику на крестик + по клику на оверлей
-  const closeModals = () => {
-    setIsIngredientDetailsOpened(false);
-  };
-
-  // Обработка кликов по ингредиенту
-  const handleClickIngredient = (ingredient) => {
-
-    setIsIngredientDetailsOpened(true);
-  };
 
   return (
     <section className={ingredientsStyles.ingredientsSection}>
@@ -125,7 +108,6 @@ const BurgerIngredients = () => {
             <Ingredient
               ingredient={bun}
               key={bun._id}
-              onClick={handleClickIngredient}
             />
           ))}
         </ul>
@@ -138,7 +120,6 @@ const BurgerIngredients = () => {
             <Ingredient
               ingredient={sauce}
               key={sauce._id}
-              onClick={handleClickIngredient}
             />
           ))}
         </ul>
@@ -151,17 +132,14 @@ const BurgerIngredients = () => {
             <Ingredient
               ingredient={main}
               key={main._id}
-              onClick={handleClickIngredient}
             />
           ))}
         </ul>
       </div>
 
-      {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
-        <Modal onCloseClick={closeModals} closeModals={closeModals}>
-          <IngredientDetails />
-        </Modal>
-      )}
+{/* Модалка ингредиента теперь открывается не из этого компонента, 
+// а при попадании на динамические маршруты ингредиентов */}
+      
     </section>
   );
 };

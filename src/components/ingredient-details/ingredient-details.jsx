@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ingredientDetailsStyles from "./ingredient-details.module.css";
-import { useSelector, useDispatch } from "react-redux";
-import { ingredientSelector, allIngredientsSelector } from "../../services/selector/ingredientsSelectors.js";
-import { Navigate, useParams } from 'react-router-dom';
-import Preloader from "../preloader/preloader.jsx";
-import { getSelectedIngredient, getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
+import { useSelector } from "react-redux";
+import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
+import { useParams } from 'react-router-dom';
 
 
 const IngredientDetails = () => {
@@ -13,29 +11,6 @@ const IngredientDetails = () => {
 
   // КЛИКНУТЫЙ ИНГРЕДИЕНТ
   const ingredient = useSelector(ingredientSelector(ingredientId)); 
-
-  
-  // ВСЕ ИНГРЕДИЕНТЫ
-  const allIngredients = useSelector(allIngredientsSelector()); 
-  const dispatch = useDispatch();
-
-
- // ПРЕЖНЯЯ ФУНКЦИЯ - РАБОТАЕТ: ДИСПАТЧУ АСИНХРОННЫЙ ЭКШЕН, 
- // ЧТОБЫ ЗАГРУЗИТЬ С СЕРВЕРА ВСЕ ИНГРЕДИЕНТЫ 
-
-/*
-  useEffect(() => {
-    if (!ingredient) {
-      return <Preloader />
-      //dispatch(getFetchedIngredientsFromApi());
-    }
-  }, [ingredient]);
- */
-
-  if (!ingredient) {
-    return <Preloader />
-  }
-
 
 
   return (
