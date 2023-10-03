@@ -48,7 +48,7 @@ const App = () => {
 
   const handleModalClose = () => {
   // Возвращаемся к предыдущему пути при закрытии модалки
-    navigate("/");
+    navigate(-1);
   };
 
   
@@ -89,7 +89,7 @@ const App = () => {
 	              <Route
 	                path='ingredients/:ingredientId'
 	                element={
-	                  <Modal onCloseClick={handleModalClose} closeModals={handleModalClose}>
+	                  <Modal closeModals={handleModalClose}>
 	                    <IngredientDetails />
 	                  </Modal>
 	                }

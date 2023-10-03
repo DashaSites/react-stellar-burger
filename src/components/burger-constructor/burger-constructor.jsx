@@ -60,7 +60,7 @@ const BurgerConstructor = () => {
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = useState(false);
 
   // Закрываю модальное окно по клику на крестик + по клику на оверлей
-  const closeModals = () => {
+  const closeOrderDetailsModal = () => {
     setIsOrderDetailsOpened(false);
   };
 
@@ -182,7 +182,7 @@ const BurgerConstructor = () => {
       </div>
 
       {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
-        <Modal onCloseClick={closeModals} closeModals={closeModals}>
+        <Modal closeModals={closeOrderDetailsModal}>
           {isError && "Что-то пошло не так"}
           {!isError && <OrderDetails />}
         </Modal>

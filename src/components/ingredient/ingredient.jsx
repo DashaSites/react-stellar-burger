@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
 import { useLocation, Link } from 'react-router-dom';
 
-const Ingredient = ({ ingredient, onClick }) => {
+const Ingredient = ({ ingredient }) => {
   // Вытаскиваю в стейт из стора айдишники тех булок и ингредиентов, которые сейчас лежат в конструкторе
   const { bunIngredientID, middleIngredients } = useSelector(
     (state) => state.constructorState
@@ -48,9 +48,6 @@ const Ingredient = ({ ingredient, onClick }) => {
     }
   }, [ingredient, bunIngredientID]);
 
-  const handleOnClick = () => {
-    onClick(ingredient);
-  };
 
   return (
     <Link
@@ -64,7 +61,6 @@ const Ingredient = ({ ingredient, onClick }) => {
     >
       <li
         className={ingredientStyles.box}
-        onClick={handleOnClick}
         ref={dragRef}
         style={{ opacity: opacity }}
       >
@@ -96,8 +92,7 @@ const Ingredient = ({ ingredient, onClick }) => {
 };
 
 Ingredient.propTypes = {
-  ingredient: ingredientPropType.isRequired,
-  onClick: PropTypes.func.isRequired,
+  ingredient: ingredientPropType.isRequired
 };
 
 export default Ingredient;
