@@ -1,22 +1,30 @@
 
 const API_URL = 'https://norma.nomoreparties.space/api';
 
-const checkReponse = (res) => {
+const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
+// Универсальная функция запроса с проверкой ответа
+// (чтобы не дублировать эту проверку в каждом запросе)
+function request(url, options) {
+  // принимает два аргумента: урл и объект опций, каки `fetch`
+  return fetch(url, options).then(checkResponse)
+}
+
+
+
 export const getIngredients = () => {
-  return fetch(`${API_URL}/ingredients`, {
+  return request(`${API_URL}/ingredients`, {
       headers: {
         "Content-Type": "application/json"
       }
     })
-    .then(res => checkReponse(res))
 };
 
 
 export const getOrderDetails = (idArray) => {
-  return fetch(`${API_URL}/orders`, {
+  return request(`${API_URL}/orders`, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json"
@@ -25,7 +33,6 @@ export const getOrderDetails = (idArray) => {
       "ingredients": idArray
     })
   })
-  .then(res => checkReponse(res))
 };
 
 
@@ -34,7 +41,7 @@ export const getOrderDetails = (idArray) => {
 // Запрос для авторизации пользователя
 // Это неавторизованный запрос (без передачи на сервер токена)
 export const loginUser = (email, password) => {
-  return fetch(`${API_URL}/auth/login`, {
+  return request(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
@@ -44,14 +51,13 @@ export const loginUser = (email, password) => {
       "password": password
    })
   })
-  .then(res => checkReponse(res))
 };
 
 
 // Запрос для регистрации
 // Это неавторизованный запрос (без передачи на сервер токена)
 export const registerUser = (name, email, password) => {
-  return fetch(`${API_URL}/auth/register`, {
+  return request(`${API_URL}/auth/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
@@ -62,14 +68,13 @@ export const registerUser = (name, email, password) => {
       "name": name 
     })
   })
-  .then(res => checkReponse(res))
 }
 
 
 // Запрос для опознания пользователя, забывшего пароль, по его мейлу
 // Это неавторизованный запрос (без передачи на сервер токена)
 export const recognizeUser = (email) => {
-  return fetch(`${API_URL}/password-reset`, {
+  return request(`${API_URL}/password-reset`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
@@ -78,14 +83,13 @@ export const recognizeUser = (email) => {
       "email": email
     })
   })
-  .then(res => checkReponse(res))
 }
 
 
 // Запрос для reset password
 // Это неавторизованный запрос (без передачи на сервер токена)?
 export const resetPassword = (password, token) => {
-  return fetch(`${API_URL}/password-reset/reset`, {
+  return request(`${API_URL}/password-reset/reset`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
@@ -95,7 +99,6 @@ export const resetPassword = (password, token) => {
       "token": token
     })
   })
-  .then(res => checkReponse(res))
 }
 
 
@@ -146,7 +149,7 @@ export const patchUser = (name, email, password) => {
 
 
 export const refreshToken = () => {
-  return fetch(`${API_URL}/auth/token`, {
+  return request(`${API_URL}/auth/token`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -154,7 +157,7 @@ export const refreshToken = () => {
     body: JSON.stringify({
       token: localStorage.getItem("refreshToken"),
     }),
-  }).then(checkReponse);
+  });
 };
 
 
@@ -166,7 +169,7 @@ export const refreshToken = () => {
 export const fetchWithRefresh = async (url, options) => {
   try {
     const res = await fetch(url, options);
-    return await checkReponse(res);
+    return await checkResponse(res);
   } catch (err) {
     if (err.message === "jwt expired") {
       const refreshData = await refreshToken(); //обновляем токен
@@ -177,7 +180,7 @@ export const fetchWithRefresh = async (url, options) => {
       localStorage.setItem("accessToken", refreshData.accessToken);
       options.headers.authorization = refreshData.accessToken;
       const res = await fetch(url, options); //повторяем запрос
-      return await checkReponse(res);
+      return await checkResponse(res);
     } else {
       return Promise.reject(err);
     }

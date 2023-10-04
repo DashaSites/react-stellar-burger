@@ -8,6 +8,7 @@ import {
 const initialState = {
   orderNumber: null,
   isError: false,
+  isLoading: false
 };
 
 // Получение и обновление номера заказа в попапе
@@ -17,6 +18,7 @@ export const orderDetailsReducer = (state = initialState, action) => {
       return {
         ...state,
         isError: false,
+        isLoading: true
       };
     }
     case GET_ORDER_DETAILS_SUCCESS: {
@@ -24,12 +26,14 @@ export const orderDetailsReducer = (state = initialState, action) => {
         ...state,
         orderNumber: action.payload,
         isError: false,
+        isLoading: false
       };
     }
     case GET_ORDER_DETAILS_ERROR: {
       return {
         ...state,
         isError: true,
+        isLoading: false
       };
     }
     default: {

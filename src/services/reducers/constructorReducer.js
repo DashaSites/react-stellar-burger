@@ -1,5 +1,4 @@
 import {
-  //LOAD_INGREDIENTS_SUCCESS,
   DELETE_INGREDIENT,
   DROP_INGREDIENT_BUN,
   DROP_INGREDIENT_MIDDLE,
@@ -29,34 +28,6 @@ const initialState = prevStateString ? JSON.parse(prevStateString) : {
 // Редьюсер для получения списка ингредиентов в конструкторе бургера
 export const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
-    /*
-    case LOAD_INGREDIENTS_SUCCESS: {
-
-      if (state.bunIngredientID) {
-        return state;
-      }
-
-      const ingredients = action.payload; // все ингредиенты с сервера
-
-      const bunElement =
-        ingredients.length > 0 &&
-        ingredients.find((item) => item.type === "bun"); // нашла булку в ингредиентах с сервера
-
-      const middleIngedients = ingredients.filter(
-        (item) => item.type !== "bun" // все ингредиенты с сервера, кроме булок
-      );
-
-      return {
-        bunIngredientID: bunElement._id, 
-        middleIngredients: middleIngedients.map((item) => {
-          return {
-            id: item._id,
-            key: uuidv4(),
-          };
-        }),
-      };
-    }
-    */
     case DROP_INGREDIENT_BUN: {
       const droppedIngredientBun = action.payload;
 

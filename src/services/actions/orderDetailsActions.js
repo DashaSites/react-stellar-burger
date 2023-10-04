@@ -6,7 +6,6 @@ export const GET_ORDER_DETAILS_SUCCESS = 'GET_ORDER_DETAILS_SUCCESS';
 export const GET_ORDER_DETAILS_ERROR = 'GET_ORDER_DETAILS_ERROR';
 
 
-
   // Асинхронный запрос к серверу за номером заказа (функция с мидлваром)
   export const getFetchedOrderDetailsFromApi = (array) => { 
     return (dispatch) => {
@@ -21,6 +20,8 @@ export const GET_ORDER_DETAILS_ERROR = 'GET_ORDER_DETAILS_ERROR';
               type: GET_ORDER_DETAILS_SUCCESS, 
               payload: res.order.number
             })
+      // !! Потом придумать, как очистить конструктор после успешного получения номера заказа 
+      // с сервера в блоке then, чтобы пользователь мог следующий заказ сделать, не удаляя старые ингредиенты
       }).catch((err) => {
           console.log(err);
           // Если сервер не вернул данных, отправляем экшен об ошибке
