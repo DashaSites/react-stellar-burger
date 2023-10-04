@@ -71,7 +71,9 @@ const AppHeader = () => {
           </li>
         </ul>
         <div className={headerStyles.headerLogo}>
-          <Logo />
+          <NavLink to="/">
+            <Logo />
+          </NavLink>
         </div>
         {
           isProfile ? (
