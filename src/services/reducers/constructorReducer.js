@@ -1,5 +1,5 @@
 import {
-  LOAD_INGREDIENTS_SUCCESS,
+  //LOAD_INGREDIENTS_SUCCESS,
   DELETE_INGREDIENT,
   DROP_INGREDIENT_BUN,
   DROP_INGREDIENT_MIDDLE,
@@ -29,7 +29,7 @@ const initialState = prevStateString ? JSON.parse(prevStateString) : {
 // Редьюсер для получения списка ингредиентов в конструкторе бургера
 export const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
-    
+    /*
     case LOAD_INGREDIENTS_SUCCESS: {
 
       if (state.bunIngredientID) {
@@ -56,8 +56,7 @@ export const constructorReducer = (state = initialState, action) => {
         }),
       };
     }
-    
-    
+    */
     case DROP_INGREDIENT_BUN: {
       const droppedIngredientBun = action.payload;
 

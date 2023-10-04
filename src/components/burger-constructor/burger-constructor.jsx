@@ -33,24 +33,42 @@ const BurgerConstructor = () => {
 
   // Найдем в данных (если они загрузились) хоть одну булку - передаем ее сюда из селектора
   const bunElement = useSelector(bunSelector); // В КОНСТРУКТОРЕ
+  console.log(bunElement)
 
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок: передаем его сюда из селектора
   const mainsAndSaucesElements = useSelector(middleIngredientsSelector); // В КОНСТРУКТОРЕ
-  
+  console.log(mainsAndSaucesElements)
+
   // Суммарное число ингредиентов-соусов и ингредиентов-начинок в конструкторе
   const mainsAndSaucesElementsCount = mainsAndSaucesElements.length; // В КОНСТРУКТОРЕ
 
+
+
   // Текущая стоимость заказа на данный момент
+  
+  
   const totalOrderPrice = useMemo(() => {
 
-    const selectedIngredients = [bunElement, ...mainsAndSaucesElements, bunElement];
+    let selectedIngredients = [];
+
+    if (bunElement && mainsAndSaucesElements) {
+      selectedIngredients = [bunElement, ...mainsAndSaucesElements, bunElement];
+    } else if (bunElement) {
+      selectedIngredients = [bunElement, bunElement];
+    } else if (mainsAndSaucesElements) {
+      selectedIngredients = mainsAndSaucesElements;
+    }
+
+
+
+    //[bunElement, ...mainsAndSaucesElements, bunElement];
 
     const newSum = selectedIngredients.reduce((sum, currentIngredient) => {
       return sum + currentIngredient.price;
     }, 0);
     return newSum;
     
-  }, [bunElement._id, mainsAndSaucesElementsCount]);
+  }, [bunElement, mainsAndSaucesElementsCount]);
 
 
 
@@ -117,12 +135,138 @@ const BurgerConstructor = () => {
     });
   }, []);
 
+
+
+  return (
+   
+      <section
+      className={`${constructorStyles.constructorSection} pt-25`}
+      ref={dropRef}
+      style={{ opacity }}
+    >
+
+      <div className={`${constructorStyles.elementsList} mb-10`}>
+        
+      {!bunElement && mainsAndSaucesElements.length === 0 && (
+      <p>Положите что-то в корзину.</p>
+      )} 
+  
+        <>
+          {bunElement && (
+            <div className={constructorStyles.fixedElement}>
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={`${bunElement.name} (верх)`}
+              price={bunElement.price}
+              thumbnail={bunElement.image}
+            />
+          </div>
+          )}
+    
+        <ul
+          className={`${constructorStyles.transposableElements} custom-scroll`}
+          ref={dropRef}
+        >
+          {/* Список начинок и соусов */}
+          {mainsAndSaucesElements.map((element, index) => {
+            return (
+              // Вынесла ингредиент - элемент конструктора в отдельный компонент, а там уже описана логика сортировки
+              <MiddleConstructorElement
+                element={element}
+                key={element.key}
+                index={index}
+                moveIngredient={moveIngredient}
+              />
+            );
+          })}
+        </ul>
+        { bunElement && (
+          <div className={constructorStyles.fixedElement}>
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${bunElement.name} (низ)`}
+              price={bunElement.price}
+              thumbnail={bunElement.image}
+            />
+          </div>
+          )
+        }
+        
+
+          </>
+        
+
+
+      </div>
+
+      <div className={constructorStyles.resultCorner}>
+        <div className={`${constructorStyles.resultCounter} mr-10`}>
+          <span className="text text_type_digits-medium">
+            {totalOrderPrice} 
+          </span>
+          <CurrencyIcon type="primary" />
+        </div>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={handleClickOrderButton}
+        >
+          Оформить заказ
+        </Button>
+      </div>
+  
+    
+      {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
+        <Modal closeModals={closeOrderDetailsModal}>
+          {isError && "Что-то пошло не так"}
+          {!isError && <OrderDetails />}
+        </Modal>
+      )}
+
+    
+    </section>
+  );
+};
+
+export default BurgerConstructor;
+
+
+
+/* 
+
+1) Сейчас при загрузке в конструктор падают все ингредеинты, загруженные с сервера.
+2) Эти данные попадают в компонент BurgerConstructor из редьюсера constructorReducer.
+3) В этом редьюсере стейт обновляется сразу же после загрузки данных с сервера,
+4) поэтому мой конструктор сразу же заполняется.
+5) А надо, чтобы конструктор сначала был пуст, а заполнялся только через drag and drop:
+6) То есть убрать из constructorReducer обработку экшена LOAD_INGREDIENTS_SUCCESS.
+7) И тут возникает проблема:
+8) Конструктор теперь пустой, но ингредиенты в него не перетаскиваются
+
+*/
+
+
+
+
+
+
+/*
+  // НОВЫЙ РЕНДЕР: КОНСТРУКТОР ПУСТ
+
   return (
     <section
       className={`${constructorStyles.constructorSection} pt-25`}
       ref={dropRef}
       style={{ opacity }}
     >
+    {!bunElement && mainsAndSaucesElements.length === 0 && (
+      <p>Пожалуйста, перетащите сюда булку с ингредиентами для создания заказа</p>
+    )}
+    {bunElement && mainsAndSaucesElements.length > 0 && (
+      <>
       <div className={`${constructorStyles.elementsList} mb-10`}>
         {
           <div className={constructorStyles.fixedElement}>
@@ -139,7 +283,7 @@ const BurgerConstructor = () => {
           className={`${constructorStyles.transposableElements} custom-scroll`}
           ref={dropRef}
         >
-          {/* Список начинок и соусов */}
+      
           {mainsAndSaucesElements.map((element, index) => {
             return (
               // Вынесла ингредиент - элемент конструктора в отдельный компонент, а там уже описана логика сортировки
@@ -167,7 +311,7 @@ const BurgerConstructor = () => {
       <div className={constructorStyles.resultCorner}>
         <div className={`${constructorStyles.resultCounter} mr-10`}>
           <span className="text text_type_digits-medium">
-            {totalOrderPrice}
+           {totalOrderPrice} 
           </span>
           <CurrencyIcon type="primary" />
         </div>
@@ -180,6 +324,10 @@ const BurgerConstructor = () => {
           Оформить заказ
         </Button>
       </div>
+     </>
+    )}
+
+
 
       {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
         <Modal closeModals={closeOrderDetailsModal}>
@@ -189,6 +337,4 @@ const BurgerConstructor = () => {
       )}
     </section>
   );
-};
-
-export default BurgerConstructor;
+  */

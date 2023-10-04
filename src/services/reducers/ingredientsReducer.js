@@ -1,8 +1,7 @@
 import {
   LOAD_INGREDIENTS_REQUEST,
   LOAD_INGREDIENTS_SUCCESS,
-  LOAD_INGREDIENTS_ERROR,
-  GET_CLICKED_INGREDIENT
+  LOAD_INGREDIENTS_ERROR
 } from "../actions/ingredientsActions.js";
 
 // initialState for ingredientsReducer
