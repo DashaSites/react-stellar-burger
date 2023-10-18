@@ -1,11 +1,14 @@
 import {
-  LOAD_INGREDIENTS_SUCCESS,
   DELETE_INGREDIENT,
   DROP_INGREDIENT_BUN,
   DROP_INGREDIENT_MIDDLE,
   MOVE_INGREDIENT,
 } from "../actions/ingredientsActions.js";
 import { v4 as uuidv4 } from "uuid";
+
+// Сохраняю в localStorage стейт:
+//!!! НОВОЕ const prevStateString = localStorage.getItem('constructorState');
+
 
 // initialState for constructorReducer
 const initialState = {
@@ -14,41 +17,37 @@ const initialState = {
   middleIngredients: [],
 };
 
+/* !!! НОВОЕ
+const initialState = prevStateString ? JSON.parse(prevStateString) : {
+  bunIngredientID: null,
+  // массив ингредиентов, который содержит айдишники и уникальные ключи каждого инг-та
+  middleIngredients: [],
+};
+*/
+
 // Редьюсер для получения списка ингредиентов в конструкторе бургера
 export const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_INGREDIENTS_SUCCESS: {
-      const ingredients = action.payload;
-      const bunElement =
-        ingredients.length > 0 &&
-        ingredients.find((item) => item.type === "bun");
-      const middleIngedients = ingredients.filter(
-        (item) => item.type !== "bun"
-      );
-
-      return {
-        bunIngredientID: bunElement._id,
-        middleIngredients: middleIngedients.map((item) => {
-          return {
-            id: item._id,
-            key: uuidv4(),
-          };
-        }),
-      };
-    }
     case DROP_INGREDIENT_BUN: {
       const droppedIngredientBun = action.payload;
 
-      return {
+      const newState = {
         ...state,
         // перетаскиваемые булки заменяют собой булки, которые были в конструкторе раньше
         bunIngredientID: droppedIngredientBun._id,
       };
+
+      // !!! НОВОЕ const stringifiedConstructorState = JSON.stringify(newState);
+
+      // !!! НОВОЕ localStorage.setItem('constructorState', stringifiedConstructorState);
+
+      return newState;
     }
+
     case DROP_INGREDIENT_MIDDLE: {
       const droppedIngredientMiddle = action.payload;
 
-      return {
+      const newState = {
         ...state,
         // перетаскиваемые начинки и соусы падают в середину конструктора
         middleIngredients: [
@@ -59,16 +58,26 @@ export const constructorReducer = (state = initialState, action) => {
           },
         ],
       };
+
+      const stringifiedConstructorState = JSON.stringify(newState);
+      localStorage.setItem('constructorState', stringifiedConstructorState);
+      return newState;
     }
+
     case DELETE_INGREDIENT: {
-      return {
+      const newState = {
         ...state,
         // возвращаю все начинки, кроме выбрасываемой
         middleIngredients: state.middleIngredients.filter(
           (middleIngredient) => middleIngredient.key !== action.payload
         ),
       };
+
+      const stringifiedConstructorState = JSON.stringify(newState);
+      localStorage.setItem('constructorState', stringifiedConstructorState);
+      return newState;
     }
+
     case MOVE_INGREDIENT: {
       const dragIndex = action.payload.dragIndex;
       const hoverIndex = action.payload.hoverIndex;

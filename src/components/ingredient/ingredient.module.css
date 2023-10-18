@@ -17,3 +17,8 @@
   min-height: 40px;
   text-align: center;
 }
+
+.link {
+  text-decoration: none;
+  color: rgba(242, 242, 243, 1);
+}

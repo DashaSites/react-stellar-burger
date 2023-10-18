@@ -1,14 +1,14 @@
 import {
   LOAD_INGREDIENTS_REQUEST,
   LOAD_INGREDIENTS_SUCCESS,
-  LOAD_INGREDIENTS_ERROR,
+  LOAD_INGREDIENTS_ERROR
 } from "../actions/ingredientsActions.js";
 
 // initialState for ingredientsReducer
 const ingredientsInitialState = {
   ingredients: [],
   isLoading: false,
-  isError: false,
+  isError: false
 };
 
 // 1) Редьюсер для загрузки ингредиентов с сервера

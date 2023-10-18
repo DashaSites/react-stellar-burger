@@ -2,17 +2,12 @@ import React, { useRef } from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../ingredient/ingredient.jsx";
-import Modal from "../modal/modal.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  INGREDIENT_POPUP_OPENED,
-  INGREDIENT_POPUP_CLOSED,
-} from "../../services/actions/ingredientDetailsActions.js";
+
 
 const BurgerIngredients = () => {
   const { ingredients } = useSelector((state) => state.ingredientsState);
-
   const dispatch = useDispatch();
 
   // Подключаем табы: изначально стейт принимает таб, выбранный по умолчанию
@@ -83,37 +78,6 @@ const BurgerIngredients = () => {
     }
   };
 
-  // Настройка состояния и работы модалки IngredientDetails
-
-  // Стейт для модального окна IngredientDetails
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
-    React.useState(false);
-
-  // Закрываю модальное окно по клику на крестик + по клику на оверлей
-  const closeModals = () => {
-    setIsIngredientDetailsOpened(false);
-
-    dispatch({
-      type: INGREDIENT_POPUP_CLOSED,
-    });
-  };
-
-  // Обработка кликов по ингредиенту
-  const handleClickIngredient = (ingredient) => {
-    dispatch({
-      type: INGREDIENT_POPUP_OPENED,
-      payload: {
-        id: ingredient._id,
-        src: ingredient.image,
-        name: ingredient.name,
-        calories: ingredient.calories,
-        proteins: ingredient.proteins,
-        fat: ingredient.fat,
-        carbohydrates: ingredient.carbohydrates,
-      },
-    });
-    setIsIngredientDetailsOpened(true);
-  };
 
   return (
     <section className={ingredientsStyles.ingredientsSection}>
@@ -144,7 +108,6 @@ const BurgerIngredients = () => {
             <Ingredient
               ingredient={bun}
               key={bun._id}
-              onClick={handleClickIngredient}
             />
           ))}
         </ul>
@@ -157,7 +120,6 @@ const BurgerIngredients = () => {
             <Ingredient
               ingredient={sauce}
               key={sauce._id}
-              onClick={handleClickIngredient}
             />
           ))}
         </ul>
@@ -170,17 +132,14 @@ const BurgerIngredients = () => {
             <Ingredient
               ingredient={main}
               key={main._id}
-              onClick={handleClickIngredient}
             />
           ))}
         </ul>
       </div>
 
-      {isIngredientDetailsOpened && ( // если компонент с ингредиентом открыт, тогда:
-        <Modal onCloseClick={closeModals} closeModals={closeModals}>
-          <IngredientDetails />
-        </Modal>
-      )}
+{/* Модалка ингредиента теперь открывается не из этого компонента, 
+// а при попадании на динамические маршруты ингредиентов */}
+      
     </section>
   );
 };

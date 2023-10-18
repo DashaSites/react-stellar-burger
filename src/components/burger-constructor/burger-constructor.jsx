@@ -22,35 +22,49 @@ import { dropIngredientWithUuid } from "../../services/actions/ingredientsAction
 import { MiddleConstructorElement } from "../middle-constructor-element/middle-constructor-element.jsx";
 import Modal from "../modal/modal.jsx";
 import OrderDetails from "../order-details/order-details.jsx";
+import Preloader from "../preloader/preloader.jsx";
+import { Navigate, useNavigate } from "react-router-dom";
+import { isUserAuthorizedSelector } from "../../services/selector/authorizationSelectors.js";
 
 const BurgerConstructor = () => {
   const { ingredients } = useSelector((state) => state.ingredientsState);
-
   const { isError } = useSelector((state) => state.orderDetailsState);
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Найдем в данных (если они загрузились) хоть одну булку - передаем ее сюда из селектора
-  const bunElement = useSelector(bunSelector);
+  const bunElement = useSelector(bunSelector); 
 
   // Из данных вытащим массив всех остальных ингредиентов, кроме булок: передаем его сюда из селектора
   const mainsAndSaucesElements = useSelector(middleIngredientsSelector);
+
+  const { isLoading } = useSelector((state) => state.orderDetailsState);
 
   // Суммарное число ингредиентов-соусов и ингредиентов-начинок в конструкторе
   const mainsAndSaucesElementsCount = mainsAndSaucesElements.length;
 
 
+
   // Текущая стоимость заказа на данный момент
   const totalOrderPrice = useMemo(() => {
 
-    const selectedIngredients = [bunElement, ...mainsAndSaucesElements, bunElement];
+    let selectedIngredients = [];
+
+    if (bunElement && mainsAndSaucesElements) {
+      selectedIngredients = [bunElement, ...mainsAndSaucesElements, bunElement];
+    } else if (bunElement) {
+      selectedIngredients = [bunElement, bunElement];
+    } else if (mainsAndSaucesElements) {
+      selectedIngredients = mainsAndSaucesElements;
+    }
+
 
     const newSum = selectedIngredients.reduce((sum, currentIngredient) => {
       return sum + currentIngredient.price;
     }, 0);
     return newSum;
     
-  }, [bunElement._id, mainsAndSaucesElementsCount]);
+  }, [bunElement, mainsAndSaucesElementsCount]);
 
 
 
@@ -60,18 +74,25 @@ const BurgerConstructor = () => {
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = useState(false);
 
   // Закрываю модальное окно по клику на крестик + по клику на оверлей
-  const closeModals = () => {
+  const closeOrderDetailsModal = () => {
     setIsOrderDetailsOpened(false);
   };
 
-  // Соберем id всех ингредиентов конструктора в массив
+  // Соберем id всех ингредиентов в массив
   const ingredientsIdArray = ingredients.map((ingredient) => ingredient._id);
+  
 
   // Создание заказа
   const handleClickOrderButton = () => {
-    // Вызов dispatch
-    setIsOrderDetailsOpened(true);
-    dispatch(getFetchedOrderDetailsFromApi(ingredientsIdArray)); // вспомогательная функция, чтобы в ней повесить флажок isError
+
+    const isAuthorized = select(isUserAuthorizedSelector);
+
+    if (isAuthorized) {
+      setIsOrderDetailsOpened(true);
+      dispatch(getFetchedOrderDetailsFromApi(ingredientsIdArray)); // вспомогательная функция, чтобы в ней повесить флажок isError
+    } else {
+      navigate("/login");
+    }
   };
 
   ///// DND: Перетаскиваю ингредиенты в конструктор /////
@@ -110,6 +131,8 @@ const BurgerConstructor = () => {
     });
   }, []);
 
+
+
   return (
     <section
       className={`${constructorStyles.constructorSection} pt-25`}
@@ -117,67 +140,78 @@ const BurgerConstructor = () => {
       style={{ opacity }}
     >
       <div className={`${constructorStyles.elementsList} mb-10`}>
-        {
-          <div className={constructorStyles.fixedElement}>
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={`${bunElement.name} (верх)`}
-              price={bunElement.price}
-              thumbnail={bunElement.image}
-            />
-          </div>
-        }
-        <ul
-          className={`${constructorStyles.transposableElements} custom-scroll`}
-          ref={dropRef}
-        >
-          {/* Список начинок и соусов */}
-          {mainsAndSaucesElements.map((element, index) => {
-            return (
-              // Вынесла ингредиент - элемент конструктора в отдельный компонент, а там уже описана логика сортировки
-              <MiddleConstructorElement
-                element={element}
-                key={element.key}
-                index={index}
-                moveIngredient={moveIngredient}
+        {!bunElement && mainsAndSaucesElements.length === 0 && (
+          <p className="text text_type_main-default">Для создания заказа перетащите в корзину булку и любую комбинацию ингредиентов.</p>
+        )} 
+        <>
+          {bunElement && (
+            <div className={constructorStyles.fixedElement}>
+              <ConstructorElement
+                type="top"
+                isLocked={true}
+                text={`${bunElement.name} (верх)`}
+                price={bunElement.price}
+                thumbnail={bunElement.image}
               />
-            );
-          })}
-        </ul>
-        {
-          <div className={constructorStyles.fixedElement}>
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={`${bunElement.name} (низ)`}
-              price={bunElement.price}
-              thumbnail={bunElement.image}
-            />
-          </div>
-        }
-      </div>
-      <div className={constructorStyles.resultCorner}>
-        <div className={`${constructorStyles.resultCounter} mr-10`}>
-          <span className="text text_type_digits-medium">
-            {totalOrderPrice}
-          </span>
-          <CurrencyIcon type="primary" />
-        </div>
-        <Button
-          htmlType="button"
-          type="primary"
-          size="large"
-          onClick={handleClickOrderButton}
-        >
-          Оформить заказ
-        </Button>
+            </div>
+          )}
+          <ul
+            className={`${constructorStyles.transposableElements} custom-scroll`}
+            ref={dropRef}
+          >
+            {/* Список начинок и соусов */}
+            {mainsAndSaucesElements.map((element, index) => {
+              return (
+                // Вынесла ингредиент - элемент конструктора в отдельный компонент, а там уже описана логика сортировки
+                <MiddleConstructorElement
+                  element={element}
+                  key={element.key}
+                  index={index}
+                  moveIngredient={moveIngredient}
+                />
+              );
+            })}
+          </ul>
+          { bunElement && (
+            <div className={constructorStyles.fixedElement}>
+              <ConstructorElement
+                type="bottom"
+                isLocked={true}
+                text={`${bunElement.name} (низ)`}
+                price={bunElement.price}
+                thumbnail={bunElement.image}
+              />
+            </div>
+          )}
+        </>
       </div>
 
+      <div className={constructorStyles.resultCorner}>
+        {bunElement && (
+          <>
+            <div className={`${constructorStyles.resultCounter} mr-10`}>
+              <span className="text text_type_digits-medium">
+                {totalOrderPrice}
+              </span>
+              <CurrencyIcon type="primary" />
+            </div>
+            <Button
+              htmlType="button"
+              type="primary"
+              size="large"
+              onClick={handleClickOrderButton}
+            >
+              Оформить заказ
+            </Button>
+          </>
+        )}
+      </div>
+  
       {isOrderDetailsOpened && ( // если компонент с заказом открыт, тогда:
-        <Modal onCloseClick={closeModals} closeModals={closeModals}>
+        <Modal closeModals={closeOrderDetailsModal}>
           {isError && "Что-то пошло не так"}
-          {!isError && <OrderDetails />}
+          {isLoading && <Preloader />}
+          {!isError && !isLoading && <OrderDetails />}
         </Modal>
       )}
     </section>
