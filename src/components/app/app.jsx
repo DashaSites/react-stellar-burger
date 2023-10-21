@@ -7,6 +7,7 @@ import { RegisterPage } from "../../pages/register/register.jsx";
 import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password.jsx";
 import { ResetPasswordPage } from "../../pages/reset-password/reset-password.jsx";
 import { ProfilePage } from "../../pages/profile/profile.jsx";
+import { OrdersFeed } from "../../pages/feed/feed.jsx";
 import ProfileOrders from "../profie-orders/profile-orders.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import Modal from "../modal/modal.jsx";
@@ -73,6 +74,9 @@ const App = () => {
               {/* Только для неавторизованных */}
               <Route path="reset-password" element={<ResetPasswordPage />} />
 
+              {/* Только для неавторизованных */}
+              <Route path="feed" element={<OrdersFeed />} />
+
               {/* Только для авторизованных */}
               <Route path="/profile/" element={<OnlyAuth component={<Layout />} />}>
                 {/* ключевое слово index означает, что <ProfilePage /> размещен по адресу выше */}
@@ -102,3 +106,24 @@ const App = () => {
 };
 
 export default App;
+
+
+
+////////// ВЕБСОКЕТЫ. Вебинар (с ~1.35):
+
+// В ПР будет 2 ленты заказов: 1) по ссылке "Лента заказов" и 2) по ссылке "История заказов".
+// Создать один компонент ленты заказов
+// И в первом случае, переходя на незащищенный роут feed, я туда попадаю без токена
+// А во втором случае происходит подключение к защищенному /profile/orders.
+
+// Для двух этих лент заказов надо создать два редьюсера. 
+
+// Не забыть при создании заказа добавить токен доступа в поле Authorization
+// Заказ будет создаваться 15 секунд. Эти 15 секунд в модалке с деталями заказа должен крутиться спиннер
+
+// На странице /feed надо сделать подключение к сокету через юзеффект, отправляю там экшены connect и disconnect
+// и в ретерне /feed надо отрисовать <Orders />.
+// А в /profile тоже отображается тот же компонент <Orders />.
+// А внутри самого компонента Orders надо с помощью useMatch проверить:
+// Если он открыт со страницы /profile/orders, то тогда он сам делает подключение к вебсокету, только здесь уже при этом добавляется токен.
+// То есть всего в проекте 2 подключения к вебсокету. И для ленты заказов на каждой из страниц должен быть свой редьюсер.

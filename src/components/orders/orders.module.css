@@ -1,0 +1,6 @@
+.ordersWrapper {
+  max-width: 100%;
+  outline: 1px solid firebrick;
+  height: 700px;
+  overflow: auto;
+}

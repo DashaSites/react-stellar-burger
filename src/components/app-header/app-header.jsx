@@ -48,7 +48,7 @@ const AppHeader = () => {
             {
               isOrders ? (
                 <NavLink
-                  to="/profile/orders"
+                  to="/feed"
                   className={`${headerStyles.headerLinkActive} pt-4 pr-5 pb-4 pl-5`}
                 >
                   <ListIcon type="primary" />
@@ -58,7 +58,7 @@ const AppHeader = () => {
                 </NavLink>
               ) : (
                 <NavLink
-                  to="/profile/orders"
+                  to="/feed"
                   className={`${headerStyles.headerLink} pt-4 pr-5 pb-4 pl-5`}
                 >
                   <ListIcon type="secondary" />

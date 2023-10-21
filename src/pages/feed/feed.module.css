@@ -1,0 +1,61 @@
+.container {
+  padding-top: 40px;
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.heading {
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0;
+  align-self: start;
+}
+
+.feedContainer {
+  display: flex;
+  justify-content: space-between;
+  
+  width: 100%;
+}
+
+.orderCardsContainer {
+  width: 610px;
+}
+
+.feedStatistic {
+  width: 580px;
+}
+
+.currentCountContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.listOrdersReady {
+  width: 272px;
+}
+
+.listOrdersInProgress {
+  width: 272px;
+}
+
+.feedStatisticTitle {
+  margin: 0;
+  padding: 0;
+}
+
+.numbersReady {
+  color: #00CCCC;
+}
+
+.ordersCounts {
+  margin-top: 60px;
+}
+
+.ordersCountTotal {
+  margin-bottom: 60px;
+}
+
