@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import ordersStyles from "./orders.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import OrderCard from "../order-card/order-card.jsx";
+import OrderFullInfo from "../order-full-info/order-full-info.jsx";
 
 
 
@@ -38,5 +39,5 @@ const Orders = () => {
 
 export default Orders;
 
-{/* Модалка должна открываться не из этого компонента, 
+{/* Модалка на финальном этапе должна открываться не из этого компонента, 
 // а при попадании на динамические маршруты заказов */}

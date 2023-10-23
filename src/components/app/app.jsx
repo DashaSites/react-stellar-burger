@@ -19,6 +19,7 @@ import { getFetchedIngredientsFromApi } from "../../services/actions/ingredients
 
 import { OnlyAuth, OnlyUnAuth } from "../protected-route-element/protected-route-element.jsx";
 import Preloader from "../preloader/preloader.jsx";
+import { OrderPage } from "../../pages/order-page/order-page.jsx";
 
 
 const App = () => {
@@ -85,6 +86,10 @@ const App = () => {
               </Route>
      
               <Route path="*" element={<PageNotFound />} />
+
+              <Route path="order-page" element={<OrderPage />} />
+
+
             </Routes>
 
             {background && (
