@@ -19,7 +19,8 @@ import { getFetchedIngredientsFromApi } from "../../services/actions/ingredients
 
 import { OnlyAuth, OnlyUnAuth } from "../protected-route-element/protected-route-element.jsx";
 import Preloader from "../preloader/preloader.jsx";
-import { OrderPage } from "../../pages/order-page/order-page.jsx";
+import OrderDetails from "../../components/order-details/order-details.jsx";
+import OrderCard from "../../components/order-card/order-card.jsx";
 
 
 const App = () => {
@@ -75,20 +76,23 @@ const App = () => {
               {/* Только для неавторизованных */}
               <Route path="reset-password" element={<ResetPasswordPage />} />
 
-              {/* Только для неавторизованных */}
-              <Route path="feed" element={<OrdersFeed />} />
+              {/* Только для неавторизованных - ЛЕНТА ЗАКАЗОВ */}
+              <Route exact path="feed" element={<OrdersFeed />} />
+
+              <Route path='feed/:orderNumber'
+                  element={<OrderDetails />} />
+
+              
 
               {/* Только для авторизованных */}
               <Route path="/profile/" element={<OnlyAuth component={<Layout />} />}>
                 {/* ключевое слово index означает, что <ProfilePage /> размещен по адресу выше */}
                 <Route index element={<OnlyAuth component={<ProfilePage />} />} />
+                {/* Только для авторизованных - ИСТОРИЯ ЗАКАЗОВ */}
                 <Route path="orders" element={<OnlyAuth component={<ProfileOrders />} />} />
               </Route>
      
               <Route path="*" element={<PageNotFound />} />
-
-              <Route path="order-page" element={<OrderPage />} />
-
 
             </Routes>
 
@@ -99,6 +103,14 @@ const App = () => {
 	                element={
 	                  <Modal closeModals={handleModalClose}>
 	                    <IngredientDetails />
+	                  </Modal>
+	                }
+	              />
+                <Route
+	                path='feed/:orderNumber'
+	                element={
+	                  <Modal closeModals={handleModalClose}>
+	                    <OrderDetails />
 	                  </Modal>
 	                }
 	              />

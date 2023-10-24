@@ -6,11 +6,13 @@ import {
   CurrencyIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderCardIngredients from "../../components/order-card-ingredients/order-card-ingredients.jsx";
+import { useLocation, Link } from 'react-router-dom';
 
 
 
-const OrderCard = ({ number, title, counter }) => {
+const OrderCard = ({ orderNumber, title, counter }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
  
 
@@ -35,10 +37,19 @@ const OrderCard = ({ number, title, counter }) => {
 
 
   return (
+
+    <Link
+    // Тут мы формируем динамический путь для нашего заказа
+    to={`/feed/${orderNumber}`}
+    // а также сохраняем в свойство background роут,
+    // на котором была открыта наша модалка
+    state={{ background: location }}
+    className={orderCardStyles.link}
+  >
     <section className={orderCardStyles.section}>
       <div className={orderCardStyles.container}>
         <div className={`${orderCardStyles.numberAndDate} mb-6`}>
-          <p className="text text_type_digits-default">{number}</p>
+          <p className="text text_type_digits-default">{orderNumber}</p>
           <span className={`${orderCardStyles.formattedDate} text text_type_main-default`}>{date()}</span>
         </div>
         <p className="text text_type_main-medium mb-6">{title}</p>
@@ -51,6 +62,7 @@ const OrderCard = ({ number, title, counter }) => {
         </div>
       </div>
     </section>
+    </Link>
   );
 };
 
