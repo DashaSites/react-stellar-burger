@@ -1,5 +1,6 @@
 
 const API_URL = 'https://norma.nomoreparties.space/api';
+const API_URL_SOCKET = "wss://norma.nomoreparties.space/orders";
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -35,6 +36,28 @@ export const getOrderDetails = (idArray) => {
   })
 };
 
+
+// Запрос для получения заказов всех покупателей 
+export const getAllOrders = () => {
+  return request(`${API_URL_SOCKET}/all`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+};
+
+
+// Запрос для получения истории заказов пользователя:
+// Добавить токен при подключении к URL в query-параметр: ?token=${accessToken}
+export const getUserOrders = () => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  return request(`${API_URL_SOCKET}?token=${accessToken}`, { 
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+};
 
 ///// ЗАПРОСЫ, СВЯЗАННЫЕ С РОУТИНГОМ /////
 

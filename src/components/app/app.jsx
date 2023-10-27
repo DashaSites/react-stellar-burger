@@ -16,6 +16,8 @@ import { PageNotFound } from "../../pages/page-not-found/not-found.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { checkUserAuth } from "../../services/actions/authorizationActions.js";
 import { getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
+import { getFetchedAllOrdersFromApi } from "../../services/actions/ordersFeedActions.js";
+import { getFetchedUserOrdersFromApi } from "../../services/actions/ordersHistoryActions.js";
 
 import { OnlyAuth, OnlyUnAuth } from "../protected-route-element/protected-route-element.jsx";
 import Preloader from "../preloader/preloader.jsx";
@@ -29,6 +31,14 @@ const App = () => {
   const { ingredients, isLoading, isError } = useSelector(
     (state) => state.ingredientsState
   );
+
+
+
+  // Достаю из стора историю заказов пользователя
+  const { userOrders, areUserOrdersLoading, isErrorWithUserOrders } = useSelector(
+    (state) => state.ordersHistoryState
+  );
+
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,6 +57,23 @@ const App = () => {
   useEffect(() => {
     dispatch(getFetchedIngredientsFromApi());
   }, []);
+
+
+
+  // Достаю заказы всех покупателей через запрос к апи,
+  // и потом через редьюсер записываю эти данные в стейт 
+  useEffect(() => {
+    dispatch(getFetchedAllOrdersFromApi());
+  }, []);
+
+
+  // Достаю историю заказов пользователя через запрос к апи,
+  // и потом через редьюсер записываю эти данные в стейт 
+  useEffect(() => {
+    dispatch(getFetchedUserOrdersFromApi());
+  }, []);
+
+
 
 
   const handleModalClose = () => {
@@ -140,19 +167,19 @@ export default App;
 
 ////////// ВЕБСОКЕТЫ. Вебинар (с ~1.35):
 
-// В ПР будет 2 ленты заказов: 1) по ссылке "Лента заказов" и 2) по ссылке "История заказов".
-// Создать один компонент ленты заказов
-// И в первом случае, переходя на незащищенный роут feed, я туда попадаю без токена
-// А во втором случае происходит подключение к защищенному /profile/orders.
+// + В ПР будет 2 ленты заказов: 1) по ссылке "Лента заказов" и 2) по ссылке "История заказов".
+// + Создать один компонент ленты заказов
+// + И в первом случае, переходя на незащищенный роут feed, я туда попадаю без токена
+// + А во втором случае происходит подключение к защищенному /profile/orders.
 
-// Для двух этих лент заказов надо создать два редьюсера. 
+// + Для двух этих лент заказов надо создать два редьюсера. 
 
 // Не забыть при создании заказа добавить токен доступа в поле Authorization
 // Заказ будет создаваться 15 секунд. Эти 15 секунд в модалке с деталями заказа должен крутиться спиннер
 
 // На странице /feed надо сделать подключение к сокету через юзеффект, отправляю там экшены connect и disconnect
-// и в ретерне /feed надо отрисовать <Orders />.
-// А в /profile тоже отображается тот же компонент <Orders />.
+// + и в ретерне /feed надо отрисовать <Orders />.
+// + А в /profile тоже отображается тот же компонент <Orders />.
 // А внутри самого компонента Orders надо с помощью useMatch проверить:
 // Если он открыт со страницы /profile/orders, то тогда он сам делает подключение к вебсокету, только здесь уже при этом добавляется токен.
 // То есть всего в проекте 2 подключения к вебсокету. И для ленты заказов на каждой из страниц должен быть свой редьюсер.
