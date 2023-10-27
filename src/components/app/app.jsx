@@ -16,8 +16,7 @@ import { PageNotFound } from "../../pages/page-not-found/not-found.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { checkUserAuth } from "../../services/actions/authorizationActions.js";
 import { getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
-import { getFetchedAllOrdersFromApi } from "../../services/actions/ordersFeedActions.js";
-import { getFetchedUserOrdersFromApi } from "../../services/actions/ordersHistoryActions.js";
+
 
 import { OnlyAuth, OnlyUnAuth } from "../protected-route-element/protected-route-element.jsx";
 import Preloader from "../preloader/preloader.jsx";
@@ -59,19 +58,6 @@ const App = () => {
   }, []);
 
 
-
-  // Достаю заказы всех покупателей через запрос к апи,
-  // и потом через редьюсер записываю эти данные в стейт 
-  useEffect(() => {
-    dispatch(getFetchedAllOrdersFromApi());
-  }, []);
-
-
-  // Достаю историю заказов пользователя через запрос к апи,
-  // и потом через редьюсер записываю эти данные в стейт 
-  useEffect(() => {
-    dispatch(getFetchedUserOrdersFromApi());
-  }, []);
 
 
 

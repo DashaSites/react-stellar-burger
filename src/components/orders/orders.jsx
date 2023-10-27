@@ -5,28 +5,7 @@ import OrderCard from "../order-card/order-card.jsx";
 import OrderFullInfo from "../order-full-info/order-full-info.jsx";
 import { LOAD_ALL_ORDERS_SUCCESS } from "../../services/actions/ordersFeedActions.js";
 
-const orders = [
- {
-  number: 7777,
-  title: "Death Star Starship Main бургер",
-  counter: 340
- },
- {
-  number: 33333,
-  title: "Cat",
-  counter: 456
- },
- {
-  number: 34535,
-  title: "Dog",
-  counter: 5955
- },
- {
-  number: 34535,
-  title: "Horse",
-  counter: 340
- }
-]
+
 
 // Внутри компонента Orders надо с помощью useMatch проверить:
 // Если он открыт со страницы /profile/orders, то тогда он сам делает подключение к вебсокету, только здесь уже при этом добавляется токен.
@@ -44,19 +23,31 @@ const Orders = () => {
 
 
   useEffect(() => {
-    dispatch({
-      type: LOAD_ALL_ORDERS_SUCCESS, 
-      payload: orders
-    })
+      const ws = new WebSocket('wss://norma.nomoreparties.space/orders/all')
+      ws.onopen = () => {
+        console.log('ws opened on browser')
+        ws.send('hello world')
+      }
+
+      ws.onmessage = (message) => {
+        const parsedData = JSON.parse(message.data);
+
+        dispatch({
+          type: LOAD_ALL_ORDERS_SUCCESS, 
+          payload: parsedData
+        })
+  }
+
   }, []);
 
 
 console.log(allOrders)
+
   return (
     <section className={`${ordersStyles.ordersWrapper} custom-scroll`}>
     { 
       allOrders.map((order) => {
-        return <OrderCard orderNumber={order.number} title={order.title} counter={order.counter} />
+        return <OrderCard orderNumber={order.number} title={order.name} counter={666} />
       })
   }
  

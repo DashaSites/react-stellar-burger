@@ -21,9 +21,10 @@ export const ordersFeedReducer = (state = ordersFeedInitialState, action) => {
       };
     }
     case LOAD_ALL_ORDERS_SUCCESS: {
+       console.log(`action payload ${action.payload}`);
       return {
         ...state,
-        allOrders: action.payload, // РАЗОБРАТЬСЯ В СТРУКТУРЕ ДАННЫХ
+        allOrders: action.payload.orders, 
         areAllOrdersLoading: false,
         isErrorWithAllOrders: false
       };
