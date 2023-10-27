@@ -6,14 +6,20 @@ import {
   CurrencyIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderCardIngredients from "../../components/order-card-ingredients/order-card-ingredients.jsx";
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useResolvedPath, useMatch } from 'react-router-dom';
 
 
 
 const OrderCard = ({ orderNumber, title, counter }) => {
   const dispatch = useDispatch();
   const location = useLocation();
+  // хук useResolvedPath возвращает объект данных, 
+  // в котором с помощью pathname можно получить текущий путь в адресной строке:
+  const match = useResolvedPath("").pathname;
+  console.log(match);
 
+  const matchFeed = useMatch("/feed");
+  const matchProfileOrders = useMatch("/profile/orders");
  
 
   const date = () => {
@@ -37,36 +43,103 @@ const OrderCard = ({ orderNumber, title, counter }) => {
 
 
   return (
+    <>
+      {matchFeed && (
+        <Link
+        // Тут мы формируем динамический путь для нашего заказа
 
-    <Link
-    // Тут мы формируем динамический путь для нашего заказа
-
-    // !!! ПРИДУМАТЬ, КАК ЗДЕСЬ НАПИСАТЬ РАЗВИЛКУ, -- c использованием location или match! 
-    // ЧТОБЫ С profile/orders ДИНАМИЧЕСКИЙ ПУТЬ БЫЛ ДРУГОЙ!!!
-    to={`/feed/${orderNumber}`}
-    // а также сохраняем в свойство background роут,
-    // на котором была открыта наша модалка
-    state={{ background: location }}
-    className={orderCardStyles.link}
-  >
-    <section className={orderCardStyles.section}>
-      <div className={orderCardStyles.container}>
-        <div className={`${orderCardStyles.numberAndDate} mb-6`}>
-          <p className="text text_type_digits-default">{orderNumber}</p>
-          <span className={`${orderCardStyles.formattedDate} text text_type_main-default`}>{date()}</span>
-        </div>
-        <p className="text text_type_main-medium mb-6">{title}</p>
-        <div className={orderCardStyles.ingredientsAndCounter}>
-          <OrderCardIngredients />
-          <div className={orderCardStyles.orderCounter}>
-            <p className={`${orderCardStyles.counter} text text_type_main-medium`}>{counter}</p>
-            <CurrencyIcon type="primary"/>
+        // !!! ПРИДУМАТЬ, КАК ЗДЕСЬ НАПИСАТЬ РАЗВИЛКУ, -- c использованием location или match! 
+        // ЧТОБЫ С profile/orders ДИНАМИЧЕСКИЙ ПУТЬ БЫЛ ДРУГОЙ!!!
+          to={`/feed/${orderNumber}`}
+        // а также сохраняем в свойство background роут,
+        // на котором была открыта наша модалка
+          state={{ background: location }}
+          className={orderCardStyles.link}
+        >
+          <section className={orderCardStyles.section}>
+          <div className={orderCardStyles.container}>
+            <div className={`${orderCardStyles.numberAndDate} mb-6`}>
+              <p className="text text_type_digits-default">{orderNumber}</p>
+              <span className={`${orderCardStyles.formattedDate} text text_type_main-default`}>{date()}</span>
+            </div>
+            <p className="text text_type_main-medium mb-6">{title}</p>
+            <div className={orderCardStyles.ingredientsAndCounter}>
+              <OrderCardIngredients />
+              <div className={orderCardStyles.orderCounter}>
+                <p className={`${orderCardStyles.counter} text text_type_main-medium`}>{counter}</p>
+                <CurrencyIcon type="primary"/>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
-    </Link>
+        </section>
+      </Link>
+      )}
+
+      {matchProfileOrders && (
+        <Link
+        // Тут мы формируем динамический путь для нашего заказа
+
+        // !!! ПРИДУМАТЬ, КАК ЗДЕСЬ НАПИСАТЬ РАЗВИЛКУ, -- c использованием location или match! 
+        // ЧТОБЫ С profile/orders ДИНАМИЧЕСКИЙ ПУТЬ БЫЛ ДРУГОЙ!!!
+          to={`/profile/orders/${orderNumber}`}
+        // а также сохраняем в свойство background роут,
+        // на котором была открыта наша модалка
+          state={{ background: location }}
+          className={orderCardStyles.link}
+        >
+          <section className={orderCardStyles.section}>
+          <div className={orderCardStyles.container}>
+            <div className={`${orderCardStyles.numberAndDate} mb-6`}>
+              <p className="text text_type_digits-default">{orderNumber}</p>
+              <span className={`${orderCardStyles.formattedDate} text text_type_main-default`}>{date()}</span>
+            </div>
+            <p className="text text_type_main-medium mb-6">{title}</p>
+            <div className={orderCardStyles.ingredientsAndCounter}>
+              <OrderCardIngredients />
+              <div className={orderCardStyles.orderCounter}>
+                <p className={`${orderCardStyles.counter} text text_type_main-medium`}>{counter}</p>
+                <CurrencyIcon type="primary"/>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Link>
+      )}
+    </>
   );
 };
 
 export default OrderCard;
+
+
+
+{/*
+<Link
+// Тут мы формируем динамический путь для нашего заказа
+
+// !!! ПРИДУМАТЬ, КАК ЗДЕСЬ НАПИСАТЬ РАЗВИЛКУ, -- c использованием location или match! 
+// ЧТОБЫ С profile/orders ДИНАМИЧЕСКИЙ ПУТЬ БЫЛ ДРУГОЙ!!!
+to={`/feed/${orderNumber}`}
+// а также сохраняем в свойство background роут,
+// на котором была открыта наша модалка
+state={{ background: location }}
+className={orderCardStyles.link}
+>
+<section className={orderCardStyles.section}>
+  <div className={orderCardStyles.container}>
+    <div className={`${orderCardStyles.numberAndDate} mb-6`}>
+      <p className="text text_type_digits-default">{orderNumber}</p>
+      <span className={`${orderCardStyles.formattedDate} text text_type_main-default`}>{date()}</span>
+    </div>
+    <p className="text text_type_main-medium mb-6">{title}</p>
+    <div className={orderCardStyles.ingredientsAndCounter}>
+      <OrderCardIngredients />
+      <div className={orderCardStyles.orderCounter}>
+        <p className={`${orderCardStyles.counter} text text_type_main-medium`}>{counter}</p>
+        <CurrencyIcon type="primary"/>
+      </div>
+    </div>
+  </div>
+</section>
+</Link>
+*/}

@@ -87,12 +87,14 @@ const App = () => {
               <Route path="/profile/" element={<OnlyAuth component={<Layout />} />}>
                 {/* ключевое слово index означает, что <ProfilePage /> размещен по адресу выше */}
                 <Route index element={<OnlyAuth component={<ProfilePage />} />} />
-
                 {/* Только для авторизованных - ИСТОРИЯ ЗАКАЗОВ */}
                 <Route path="orders" element={<OnlyAuth component={<ProfileOrders />} />} />
-                <Route path="orders/:orderNumber" 
-                    element={<OnlyAuth component={<OrderDetails />} />} />
               </Route>
+
+              {/* Когда перехожу на динамический урл, кликая по модалке с деталями заказа на странице /profile/orders, компонент с деталями этого заказа открывается в отдельном окне */}
+              <Route path="/profile/orders/:orderNumber" 
+                  element={<OnlyAuth component={<OrderDetails />} />} />
+
      
               <Route path="*" element={<PageNotFound />} />
 

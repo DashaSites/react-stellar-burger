@@ -41,7 +41,7 @@ const OrderCardIngredients = ( {  } ) => {
         {
           previewsArray.length > 6 && (
             <div className={orderCardIngredients.counterContainer}>
-              <span className={`${orderCardIngredients.counterOnLastPreview} text text_type_digits-default`}>+{previewsArray.length - 6}</span>
+              <span className={`${orderCardIngredients.counterOnLastPreview} text text_type_digits-default`}>{`+${previewsArray.length - 6}`}</span>
             </div>
           )
         }
