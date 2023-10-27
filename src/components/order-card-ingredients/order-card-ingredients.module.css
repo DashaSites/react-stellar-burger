@@ -1,10 +1,15 @@
 .section {
   height: 64px;
   display: flex;
+  max-width: 310px;
+  overflow: hidden;
+  position: relative;
 }
 
 .previewBox {
   position: relative;
+  z-index: 1;
+
 }
 
 .previewBox:nth-child(6) {
@@ -26,5 +31,23 @@
 .previewBox:nth-child(2) {
   left: -15px;
 }
+
+.counterContainer {
+  display: flex;
+  width: 64px;
+  height: 64px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  left: -186px;
+  z-index: 5;
+}
+
+
+
+
+
+
+
 
 

@@ -79,17 +79,19 @@ const App = () => {
               {/* Только для неавторизованных - ЛЕНТА ЗАКАЗОВ */}
               <Route exact path="feed" element={<OrdersFeed />} />
 
-              <Route path='feed/:orderNumber'
+              <Route path="feed/:orderNumber"
                   element={<OrderDetails />} />
 
-              
 
               {/* Только для авторизованных */}
               <Route path="/profile/" element={<OnlyAuth component={<Layout />} />}>
                 {/* ключевое слово index означает, что <ProfilePage /> размещен по адресу выше */}
                 <Route index element={<OnlyAuth component={<ProfilePage />} />} />
+
                 {/* Только для авторизованных - ИСТОРИЯ ЗАКАЗОВ */}
                 <Route path="orders" element={<OnlyAuth component={<ProfileOrders />} />} />
+                <Route path="orders/:orderNumber" 
+                    element={<OnlyAuth component={<OrderDetails />} />} />
               </Route>
      
               <Route path="*" element={<PageNotFound />} />
@@ -108,6 +110,14 @@ const App = () => {
 	              />
                 <Route
 	                path='feed/:orderNumber'
+	                element={
+	                  <Modal closeModals={handleModalClose}>
+	                    <OrderDetails />
+	                  </Modal>
+	                }
+	              />
+                <Route
+	                path='profile/orders/:orderNumber'
 	                element={
 	                  <Modal closeModals={handleModalClose}>
 	                    <OrderDetails />
