@@ -40,8 +40,7 @@ const OrderCard = ({ orderNumber, title, time, ingredients }) => {
   })
 
 
-/////// ПОДСЧЕТ СТОИМОСТИ ЗАКАЗА
-
+// ПОДСЧЕТ СТОИМОСТИ ЗАКАЗА
   const getOrderPrice = (ingredientsInOrder) => {
     let orderPrice = 0;
 
