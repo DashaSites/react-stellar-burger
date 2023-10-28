@@ -23,6 +23,21 @@ export const OrdersFeed = () => {
   );
 
 
+  const readyOrderNumbersArray = [];
+
+  const getReadyOrderNumbersArray = (allOrders) => {
+    
+    allOrders.map((order) => {
+      if (order.status === "done") {
+        readyOrderNumbersArray.push(order.number);
+      }
+    })
+    return readyOrderNumbersArray;
+  }
+
+  const ReadyOrderNumbers = getReadyOrderNumbersArray(allOrders);
+
+  console.log(ReadyOrderNumbers);
 
 
 
@@ -39,27 +54,21 @@ export const OrdersFeed = () => {
             <div className={ordersFeedStyles.listOrdersReady}>
               <h2 className={`${ordersFeedStyles.feedStatisticTitle} text text_type_main-medium`}>Готовы:</h2>
               <div className={`${ordersFeedStyles.numbersBox} mt-6`}>
-                <p className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>034533</p>
-                <p className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>034532</p>
-                <p className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>034530</p>
-                <p className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>034527</p>
-                <p className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>034525</p>
-                <p className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>034533</p>
-
-
-
+              { // Беру массив всех номеров готовых заказов
+                ReadyOrderNumbers.map((oneOrderNumber) => {
+                // прохожу по нему в цикле, по очереди беру каждый номер заказа,
+                // чтобы отрендерить его в строке
+                  return (
+                    <p className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>{oneOrderNumber}</p>
+                  )            
+                })
+              }
               </div>
             </div>
             <div className={ordersFeedStyles.listOrdersInProgress}>
               <h2 className={`${ordersFeedStyles.feedStatisticTitle} text text_type_main-medium`}>В работе:</h2>
               <div className={`${ordersFeedStyles.numbersBox} mt-6`}>
                 <p className={`${ordersFeedStyles.numberItem} text text_type_digits-default mb-2`}>034538</p>
-                <p className="text text_type_digits-default mb-2">034541</p>
-                <p className="text text_type_digits-default mb-2">034542</p>
-                <p className="text text_type_digits-default mb-2">034538</p>
-                <p className="text text_type_digits-default mb-2">034541</p>
-                <p className="text text_type_digits-default mb-2">034542</p>
-
               </div>
             </div>
           </div>

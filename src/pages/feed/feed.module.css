@@ -50,13 +50,13 @@
 
 .numbersBox {
   height: 325px;
+  width: 100px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
 }
 
 .numberItem {
-  width: 100px;
 }
 
 .numbersReady {

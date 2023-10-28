@@ -73,12 +73,6 @@ const Orders = () => {
   }, []);
 
 
-console.log(allOrders)
-
-
-
-
-
 
 
   return (
