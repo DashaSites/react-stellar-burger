@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import OrderCard from "../order-card/order-card.jsx";
 import OrderFullInfo from "../order-full-info/order-full-info.jsx";
 import { LOAD_ALL_ORDERS_SUCCESS } from "../../services/actions/ordersFeedActions.js";
+import { select } from "../../services/store/store.js";
+import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
 
 
 
@@ -22,13 +24,16 @@ const Orders = () => {
     );
 
 
+  // Подключаюсь к вебсокету
   useEffect(() => {
-      const ws = new WebSocket('wss://norma.nomoreparties.space/orders/all')
+      const ws = new WebSocket('wss://norma.nomoreparties.space/orders/all');
+
       ws.onopen = () => {
         console.log('ws opened on browser')
         ws.send('hello world')
       }
 
+      // загружаю с сервера все заказы к себе в ленту заказов
       ws.onmessage = (message) => {
         const parsedData = JSON.parse(message.data);
 
@@ -43,11 +48,17 @@ const Orders = () => {
 
 console.log(allOrders)
 
+
+
+
+
+
+
   return (
     <section className={`${ordersStyles.ordersWrapper} custom-scroll`}>
     { 
       allOrders.map((order) => {
-        return <OrderCard orderNumber={order.number} title={order.name} counter={666} />
+        return <OrderCard orderNumber={order.number} title={order.name} counter={666} time={order.createdAt} ingredients={order.ingredients} />
       })
   }
  

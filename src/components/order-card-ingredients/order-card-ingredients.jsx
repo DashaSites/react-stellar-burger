@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 import orderCardIngredients from "./order-card-ingredients.module.css";
 import { useSelector, useDispatch } from "react-redux";
+import { select } from "../../services/store/store.js";
+import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
 //import {  
 //} from "@ya.praktikum/react-developer-burger-ui-components";
 import one from "../../images/ingredient-previews/one.png";
@@ -15,33 +17,37 @@ import nine from "../../images/ingredient-previews/nine.png";
 
 
 
-const OrderCardIngredients = ( {  } ) => {
+const OrderCardIngredients = ( { ingredients } ) => {
   const dispatch = useDispatch();
 
-  const previewsArray = [one, two, three, four, five, six, seven]
 
   // Если в массиве превьюшек их больше шести, тогда:
   // Затемнить последнюю картинку с превью (опасити 60%) и
   // По центру этой картинки написать "+ число, на которое длинна массива превышает шесть"
   
-
+// найти картинки ингредиентов по айдишнику
 
   return (
     <>
       <section className={orderCardIngredients.section}>
-        {
-          previewsArray.map((preview, index) => {
+        { // с сервера получила айдишники ингредиентов
+          ingredients.map((ingredientId, index) => {
+            
+            // в цикле через селектор получаю по каждому айдишнику ингредиент,
+            // чтобы ниже отрендерить картинки этих ингредиентов
+            const elementInOrder = select(ingredientSelector(ingredientId));
+
             return (
               <div key={index} className={orderCardIngredients.previewBox}>
-                <img src={preview} />
+                <img src={elementInOrder.image} className={orderCardIngredients.previewImage} /> 
               </div>
               )            
             })
         }
         {
-          previewsArray.length > 6 && (
+          ingredients.length > 6 && (
             <div className={orderCardIngredients.counterContainer}>
-              <span className={`${orderCardIngredients.counterOnLastPreview} text text_type_digits-default`}>{`+${previewsArray.length - 6}`}</span>
+              <span className={`${orderCardIngredients.counterOnLastPreview} text text_type_digits-default`}>{`+${ingredients.length - 6}`}</span>
             </div>
           )
         }

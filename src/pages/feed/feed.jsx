@@ -6,7 +6,7 @@ import {
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Orders from "../../components/orders/orders.jsx";
 
 
@@ -16,6 +16,11 @@ export const OrdersFeed = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // Достаю из стора заказы всех покупателей (ленту заказов) с флагами
+  const { allOrders, total, totalToday } = useSelector(
+    (state) => state.ordersFeedState
+  );
 
 
 
@@ -53,11 +58,11 @@ export const OrdersFeed = () => {
           <div className={ordersFeedStyles.ordersCounts}>
             <div className={ordersFeedStyles.ordersCountTotal}>
               <h2 className={`${ordersFeedStyles.feedStatisticTitle} text text_type_main-medium`}>Выполнено за все время:</h2>
-              <p className="text text_type_digits-large">28 752</p>
+              <p className="text text_type_digits-large">{total}</p>
             </div>
             <div className={ordersFeedStyles.ordersCountToday}>
               <h2 className={`${ordersFeedStyles.feedStatisticTitle} text text_type_main-medium`}>Выполнено за сегодня:</h2>
-              <p className="text text_type_digits-large">138</p>
+              <p className="text text_type_digits-large">{totalToday}</p>
             </div>
           </div>
         </section>

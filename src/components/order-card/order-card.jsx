@@ -7,10 +7,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderCardIngredients from "../../components/order-card-ingredients/order-card-ingredients.jsx";
 import { useLocation, Link, useResolvedPath, useMatch } from 'react-router-dom';
+import { select } from "../../services/store/store.js";
+import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
 
 
 
-const OrderCard = ({ orderNumber, title, counter }) => {
+const OrderCard = ({ orderNumber, title, time, ingredients }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   // хук useResolvedPath возвращает объект данных, 
@@ -20,36 +22,93 @@ const OrderCard = ({ orderNumber, title, counter }) => {
 
   const matchFeed = useMatch("/feed");
   const matchProfileOrders = useMatch("/profile/orders");
- 
 
-  const date = () => {
-    const today = new Date()
-    return (
-      <FormattedDate
-        date={
-          new Date(
-            today.getFullYear(),
-            today.getMonth(),
-            today.getDate(),
-            today.getHours(),
-            today.getMinutes() - 1,
-            0,
-          )
-        }
-      />
-    )
+  ///// ПРОВЕРКА ВАЛИДНОСТИ ЗАКАЗОВ (ЧТОБЫ НЕВАЛИДНЫЕ НЕ ОТРИСОВЫВАТЬ)
+
+  const areEnoughIngredients = ingredients.length >= 3;
+  
+
+  const ingredientsInOrder = ingredients.map((ingredientId) => {
+
+    const ingredient = select(ingredientSelector(ingredientId));
+    return ingredient;
+  });
+
+
+  const ingredientsInOrderTypes = ingredientsInOrder.map((ingredientInOrder) => {
+    return ingredientInOrder.type;
+  })
+
+
+/////// ПОДСЧЕТ СТОИМОСТИ ЗАКАЗА
+
+  const getOrderPrice = (ingredientsInOrder) => {
+    let orderPrice = 0;
+
+    ingredientsInOrder.forEach((ingredient) => {
+      orderPrice += ingredient.price; 
+    });
+
+    return orderPrice;
+  }
+
+  const orderPrice = getOrderPrice(ingredientsInOrder);
+
+
+
+
+
+
+
+
+  // Выявить, есть ли в массиве типов элементов заказа (ingredientsInOrderTypes) две булки
+  // Если есть две булки, то такой заказ валидный
+
+  // Проверить, чтобы в списке идентификаторов ингредиентов не было null
+
+
+  /*
+  if (!orders) {
+    <div>
+    <p>Загрузка...</p>
+  </div>
   }
 
 
 
+   if (
+    orders === null ||
+    orders === undefined ||
+    orders.length === 0 
+  ) {
+    return (
+      <div>
+        <p>Заказов пока нет</p>
+      </div>
+    )
+  }
+
+  order !== undefined && 
+  order !== null && 
+  order.ingredients !== null 
+  && order.ingredients !== undefined 
+  && order.ingredients.length >= 3
+*/
+
+
+
+
+  
+  
+ 
+
+
   return (
     <>
+
       {matchFeed && (
         <Link
         // Тут мы формируем динамический путь для нашего заказа
-
-        // !!! ПРИДУМАТЬ, КАК ЗДЕСЬ НАПИСАТЬ РАЗВИЛКУ, -- c использованием location или match! 
-        // ЧТОБЫ С profile/orders ДИНАМИЧЕСКИЙ ПУТЬ БЫЛ ДРУГОЙ!!!
           to={`/feed/${orderNumber}`}
         // а также сохраняем в свойство background роут,
         // на котором была открыта наша модалка
@@ -59,14 +118,14 @@ const OrderCard = ({ orderNumber, title, counter }) => {
           <section className={orderCardStyles.section}>
           <div className={orderCardStyles.container}>
             <div className={`${orderCardStyles.numberAndDate} mb-6`}>
-              <p className="text text_type_digits-default">{orderNumber}</p>
-              <span className={`${orderCardStyles.formattedDate} text text_type_main-default`}>{date()}</span>
+              <p className="text text_type_digits-default">#{orderNumber}</p>
+              <FormattedDate date={new Date(time)} className={`${orderCardStyles.formattedDate} text text_type_main-default`} />
             </div>
             <p className="text text_type_main-medium mb-6">{title}</p>
             <div className={orderCardStyles.ingredientsAndCounter}>
-              <OrderCardIngredients />
+              <OrderCardIngredients ingredients={ingredients} />
               <div className={orderCardStyles.orderCounter}>
-                <p className={`${orderCardStyles.counter} text text_type_main-medium`}>{counter}</p>
+                <p className={`${orderCardStyles.counter} text text_type_main-medium`}>{orderPrice}</p>
                 <CurrencyIcon type="primary"/>
               </div>
             </div>
@@ -78,9 +137,6 @@ const OrderCard = ({ orderNumber, title, counter }) => {
       {matchProfileOrders && (
         <Link
         // Тут мы формируем динамический путь для нашего заказа
-
-        // !!! ПРИДУМАТЬ, КАК ЗДЕСЬ НАПИСАТЬ РАЗВИЛКУ, -- c использованием location или match! 
-        // ЧТОБЫ С profile/orders ДИНАМИЧЕСКИЙ ПУТЬ БЫЛ ДРУГОЙ!!!
           to={`/profile/orders/${orderNumber}`}
         // а также сохраняем в свойство background роут,
         // на котором была открыта наша модалка
@@ -91,13 +147,13 @@ const OrderCard = ({ orderNumber, title, counter }) => {
           <div className={orderCardStyles.container}>
             <div className={`${orderCardStyles.numberAndDate} mb-6`}>
               <p className="text text_type_digits-default">{orderNumber}</p>
-              <span className={`${orderCardStyles.formattedDate} text text_type_main-default`}>{date()}</span>
+              <FormattedDate date={new Date(time)} className={`${orderCardStyles.formattedDate} text text_type_main-default`} />
             </div>
             <p className="text text_type_main-medium mb-6">{title}</p>
             <div className={orderCardStyles.ingredientsAndCounter}>
-              <OrderCardIngredients />
+              <OrderCardIngredients ingredients={ingredients} />
               <div className={orderCardStyles.orderCounter}>
-                <p className={`${orderCardStyles.counter} text text_type_main-medium`}>{counter}</p>
+                <p className={`${orderCardStyles.counter} text text_type_main-medium`}>{orderPrice}</p>
                 <CurrencyIcon type="primary"/>
               </div>
             </div>

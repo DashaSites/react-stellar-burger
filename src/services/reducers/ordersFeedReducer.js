@@ -7,11 +7,13 @@ import {
 // initialState for ordersFeedReducer
 const ordersFeedInitialState = {
   allOrders: [],
+  total: null,
+  totalToday: null,
   areAllOrdersLoading: false,
   isErrorWithAllOrders: false
 };
 
-// 1) Редьюсер для загрузки с сервера заказов, сделанных всеми пользователями
+// 1) Редьюсер для загрузки заказов, сделанных всеми пользователями
 export const ordersFeedReducer = (state = ordersFeedInitialState, action) => {
   switch (action.type) {
     case LOAD_ALL_ORDERS_REQUEST: {
@@ -24,7 +26,9 @@ export const ordersFeedReducer = (state = ordersFeedInitialState, action) => {
        console.log(`action payload ${action.payload}`);
       return {
         ...state,
-        allOrders: action.payload.orders, 
+        allOrders: action.payload.orders,
+        total: action.payload.total,
+        totalToday: action.payload.totalToday,
         areAllOrdersLoading: false,
         isErrorWithAllOrders: false
       };
