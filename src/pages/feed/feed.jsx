@@ -23,10 +23,11 @@ export const OrdersFeed = () => {
   );
 
 
+  
+  // Получаю все заказы со статусом "готово"
   const readyOrderNumbersArray = [];
 
   const getReadyOrderNumbersArray = (allOrders) => {
-    
     allOrders.map((order) => {
       if (order.status === "done") {
         readyOrderNumbersArray.push(order.number);
@@ -35,10 +36,23 @@ export const OrdersFeed = () => {
     return readyOrderNumbersArray;
   }
 
-  const ReadyOrderNumbers = getReadyOrderNumbersArray(allOrders);
+  const readyOrderNumbers = getReadyOrderNumbersArray(allOrders);
 
-  console.log(ReadyOrderNumbers);
 
+
+// Получаю все заказы со статусом "в работе"
+  const pendingOrderNumbersArray = [];
+  
+  const getPendingOrderNumbersArray = (allOrders) => {
+    allOrders.map((order) => {
+      if (order.status === "pending") {
+        pendingOrderNumbersArray.push(order.number);
+      }
+    })
+    return pendingOrderNumbersArray;
+  }
+
+  const pendingOrderNumbers = getPendingOrderNumbersArray(allOrders);
 
 
 
@@ -55,11 +69,11 @@ export const OrdersFeed = () => {
               <h2 className={`${ordersFeedStyles.feedStatisticTitle} text text_type_main-medium`}>Готовы:</h2>
               <div className={`${ordersFeedStyles.numbersBox} mt-6`}>
               { // Беру массив всех номеров готовых заказов
-                ReadyOrderNumbers.map((oneOrderNumber) => {
+                readyOrderNumbers.map((oneReadyOrderNumber) => {
                 // прохожу по нему в цикле, по очереди беру каждый номер заказа,
                 // чтобы отрендерить его в строке
                   return (
-                    <p className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>{oneOrderNumber}</p>
+                    <p className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>{oneReadyOrderNumber}</p>
                   )            
                 })
               }
@@ -68,7 +82,15 @@ export const OrdersFeed = () => {
             <div className={ordersFeedStyles.listOrdersInProgress}>
               <h2 className={`${ordersFeedStyles.feedStatisticTitle} text text_type_main-medium`}>В работе:</h2>
               <div className={`${ordersFeedStyles.numbersBox} mt-6`}>
-                <p className={`${ordersFeedStyles.numberItem} text text_type_digits-default mb-2`}>034538</p>
+              { // Беру массив всех номеров заказов "в работе"
+                pendingOrderNumbers.map((onePendingOrderNumber) => {
+                // прохожу по нему в цикле, по очереди беру каждый номер заказа,
+                // чтобы отрендерить его в строке
+                  return (
+                    <p className={`${ordersFeedStyles.numbersPending} text text_type_digits-default mb-2`}>{onePendingOrderNumber}</p>
+                  )            
+                })
+              }
               </div>
             </div>
           </div>

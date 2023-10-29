@@ -37,6 +37,7 @@
 
 .listOrdersReady {
   width: 272px;
+  overflow: auto;
 }
 
 .listOrdersInProgress {
@@ -50,7 +51,7 @@
 
 .numbersBox {
   height: 325px;
-  width: 100px;
+  width: 85px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -61,7 +62,7 @@
 
 .numbersReady {
   color: #00CCCC;
-  width: 100px;
+  width: 85px;
 }
 
 .ordersCounts {
