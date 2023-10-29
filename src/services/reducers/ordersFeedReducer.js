@@ -23,7 +23,9 @@ export const ordersFeedReducer = (state = ordersFeedInitialState, action) => {
       };
     }
     case LOAD_ALL_ORDERS_SUCCESS: {
-       console.log(`action payload ${action.payload}`);
+      const stringifiedPayload = JSON.stringify(action.payload);
+       console.log(`action payload ${stringifiedPayload}`); 
+       
       return {
         ...state,
         allOrders: action.payload.orders,

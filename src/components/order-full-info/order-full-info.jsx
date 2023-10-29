@@ -2,6 +2,10 @@ import React from "react";
 import orderInfoStyles from "./order-full-info.module.css";
 import { useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
+import { orderSelector } from "../../services/selector/ordersSelectors.js";
+import { select } from "../../services/store/store.js";
+import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
+
 import {
   CurrencyIcon,
   FormattedDate
@@ -13,43 +17,24 @@ import six from "../../images/ingredient-previews/six.png";
 
 const OrderFullInfo = () => {
 
-  //const { ingredientId } = useParams();
+  const { orderNumber } = useParams();
+
+
 
   // КЛИКНУТЫЙ ЗАКАЗ
-  // Надо его откуда-то получить (с сервера)
-  const order = {};
+  // Беру детали заказа из стора: вытаскиваю их через селектор, 
+  // который по номеру заказа возвращает весь заказ целиком
+  const order = useSelector(orderSelector(orderNumber)); 
+
+  const orderIngredients = order?.ingredients.map((ingredientId) => {
+    const orderIngredient = select(ingredientSelector(ingredientId));
+    return orderIngredient;
+  }) ?? []
 
 
-  // Захардкоженные ингредиенты, их надо заменить данными с сервера
-  const orderIngredients = [
-    {
-      src: two,
-      name: "Кот",
-      times: 3,
-      price: 546
-    },
 
-    {
-      src: three,
-      name: "Еж",
-      times: 6,
-      price: 43
-    },
+  
 
-    {
-      src: six,
-      name: "Белка",
-      times: 5,
-      price: 779
-    },
-
-    {
-      src: three,
-      name: "Лис",
-      times: 4,
-      price: 1245
-    }
-  ]
 
 
   const displayDate = () => {
@@ -79,13 +64,13 @@ const OrderFullInfo = () => {
   return (
     <article className={orderInfoStyles.container}>
 
-      <p className={`${orderInfoStyles.orderNumber} text text_type_digits-default`}>#034533</p>
+      <p className={`${orderInfoStyles.orderNumber} text text_type_digits-default`}>{`#${orderNumber}`}</p>
 
       <h2 className={`${orderInfoStyles.orderName} text text_type_main-medium mb-3`}>
-        Black Hole Singularity острый бургер
+        {order.name}
       </h2>
 
-      <p className={`${orderInfoStyles.orderStatus} text text_type_main-default mb-15`}>Выполнен</p>
+      <p className={`${orderInfoStyles.orderStatus} text text_type_main-default mb-15`}>{order.status}</p>
 
       <h2 className="text text_type_main-medium mb-6">
         Состав
@@ -97,7 +82,7 @@ const OrderFullInfo = () => {
           return (
             <li>
           <div className={orderInfoStyles.orderIngredient}>
-            <img className={orderInfoStyles.ingredientPreview} src={ingredient.src} />
+            <img className={orderInfoStyles.ingredientPreview} src={ingredient.image} />
             <p className={`${orderInfoStyles.ingredientName} text text_type_main-default`}>{ingredient.name}</p>
             <div className={orderInfoStyles.ingredientCountContainer}>
               <p className="text text_type_digits-default mr-2">{ingredient.times} x {ingredient.price}</p>
