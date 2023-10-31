@@ -1,25 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import orderInfoStyles from "./order-full-info.module.css";
-import { useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { orderSelector } from "../../services/selector/ordersSelectors.js";
 import { select } from "../../services/store/store.js";
 import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
-
+import { useDispatch, useSelector } from "react-redux";
 import {
   CurrencyIcon,
   FormattedDate
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderPreloader from "../order-preloader/order-preloader.jsx";
+import { LOAD_ALL_ORDERS_WS_CONNECT, LOAD_ALL_ORDERS_WS_DISCONNECT } from "../../services/actions/socketFeedActions.js";
 
 
 
 const OrderFullInfo = () => {
 
+  const dispatch = useDispatch();
+
   const { orderNumber } = useParams();
-  const { areAllOrdersLoading } = useSelector(
-    (state) => state.ordersFeedState
-  );
+
+    // Достаю из стора заказы всех покупателей (ленту заказов) с флагами
+    const { allOrders, areAllOrdersLoading } = useSelector(
+      (state) => state.ordersFeedState
+    );
 
 
 
@@ -35,7 +39,18 @@ const OrderFullInfo = () => {
 
 
 
+    useEffect(() => {
 
+      dispatch({
+        type: LOAD_ALL_ORDERS_WS_CONNECT
+      })
+      return () => {
+        dispatch({
+          type: LOAD_ALL_ORDERS_WS_DISCONNECT
+        })
+      }
+ 
+    }, []);
 
 
 
@@ -43,8 +58,11 @@ const OrderFullInfo = () => {
 
   return (
     <>
-      {areAllOrdersLoading && <OrderPreloader />}
-      <article className={orderInfoStyles.container}>
+      {!order ? (
+        <OrderPreloader />
+      ) : (
+        <>
+        <article className={orderInfoStyles.container}>
 
 <p className={`${orderInfoStyles.orderNumber} text text_type_digits-default`}>{`#${orderNumber}`}</p>
 
@@ -85,6 +103,9 @@ const OrderFullInfo = () => {
   </div>
 </div>
 </article>
+        </>
+      )
+      }
     </>
   );
 };

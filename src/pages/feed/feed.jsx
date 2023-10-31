@@ -41,7 +41,7 @@ export const OrdersFeed = () => {
         type: LOAD_ALL_ORDERS_WS_DISCONNECT
       })
     }
- 
+
   }, []);
 
 

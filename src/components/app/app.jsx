@@ -59,9 +59,6 @@ const App = () => {
 
 
 
-
-
-
   const handleModalClose = () => {
   // Возвращаемся к предыдущему пути при закрытии модалки
     navigate(-1);

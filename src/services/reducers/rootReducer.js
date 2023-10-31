@@ -5,7 +5,7 @@ import { orderDetailsReducer } from './orderDetailsReducer.js';
 import { authorizationReducer } from './authorizationReducer.js';
 import { registrationReducer } from "./registrationReducer.js";
 import { ordersFeedReducer } from "./ordersFeedReducer.js";
-import { ordersHistoryReducer } from "./ordersHistoryReducer.js";
+import { ordersHistoryReducer } from "./ordersHistoryReducer";
 
 
 

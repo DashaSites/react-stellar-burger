@@ -1,5 +1,6 @@
 import {
   LOAD_ALL_ORDERS_WS_CONNECT,
+  LOAD_ALL_ORDERS_WS_CONNECTING,
   LOAD_ALL_ORDERS_WS_OPEN,
   LOAD_ALL_ORDERS_WS_CLOSE,
   LOAD_ALL_ORDERS_WS_ERROR,
@@ -20,7 +21,17 @@ const initialState = {
 // 1) Редьюсер для загрузки заказов, сделанных всеми пользователями
 export const socketFeedReducer = (state = initialState, action) => {
   switch (action.type) {
+    
     case LOAD_ALL_ORDERS_WS_CONNECT: {
+      return {
+        ...state,
+        status: WebsocketStatus.CONNECTING,
+        isOrdersFeedLoading: true
+      };
+    }
+
+
+    case LOAD_ALL_ORDERS_WS_CONNECTING: {
       return {
         ...state,
         status: WebsocketStatus.CONNECTING,
@@ -31,7 +42,7 @@ export const socketFeedReducer = (state = initialState, action) => {
       return {
         ...state,
         status: WebsocketStatus.ONLINE,
-        isOrdersFeedLoading: true,
+        isOrdersFeedLoading: false,
         connectionError: ''
       };
     }
