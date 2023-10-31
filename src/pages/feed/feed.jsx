@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ordersFeedStyles from "./feed.module.css";
 import {
   EmailInput,
@@ -8,6 +8,13 @@ import {
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Orders from "../../components/orders/orders.jsx";
+import { socketMiddleware } from "../../services/middleware/socket-middleware.js";
+import { autoBatchEnhancer } from "@reduxjs/toolkit";
+import {
+  LOAD_ALL_ORDERS_WS_CONNECT,
+  LOAD_ALL_ORDERS_WS_DISCONNECT
+} from '../../services/actions/socketFeedActions.js';
+
 
 
 
@@ -21,6 +28,23 @@ export const OrdersFeed = () => {
   const { allOrders, total, totalToday } = useSelector(
     (state) => state.ordersFeedState
   );
+
+
+
+  useEffect(() => {
+
+    dispatch({
+      type: LOAD_ALL_ORDERS_WS_CONNECT
+    })
+    return () => {
+      dispatch({
+        type: LOAD_ALL_ORDERS_WS_DISCONNECT
+      })
+    }
+ 
+  }, []);
+
+
 
 
   
@@ -65,7 +89,7 @@ export const OrdersFeed = () => {
         </section>
         <section className={ordersFeedStyles.feedStatistic}>
           <div className={ordersFeedStyles.currentCountContainer}>
-            <div className={ordersFeedStyles.listOrdersReady}>
+            <div className={`${ordersFeedStyles.listOrdersReady} custom-scroll`}>
               <h2 className={`${ordersFeedStyles.feedStatisticTitle} text text_type_main-medium`}>Готовы:</h2>
               <div className={`${ordersFeedStyles.numbersBox} mt-6`}>
               { // Беру массив всех номеров готовых заказов

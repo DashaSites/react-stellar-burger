@@ -1,64 +1,157 @@
-const socketMiddleware = (wsUrl, wsActions) => {
-  return (store) => {
+
+export const socketMiddleware = (wsUrl, wsActions, isAuthRequired) => {
+  return store => {
     let socket = null;
 
-    return (next) => (action) => {
+    return next => action => {
       const { dispatch } = store;
-      const { type } = action;
+      const { type, payload } = action;
       const { 
-        WEBSOCKET_CONNECT,
-        WEBSOCKET_DISCONNECT,
-        WEBSOCKET_SEND_MESSAGE,
-        WEBSOCKET_ONOPEN,
-        WEBSOCKET_ONCLOSE,
-        WEBSOCKET_ONERROR,
-        WEBSOCKET_ONMESSAGE,
-        WEBSOCKET_CONNECTING
-
-
-
-
-        wsConnect, 
+        wsConnect,
+        wsDisconnect,
         onOpen, 
+        onClose, 
         onError, 
-        onMessage, 
-        onClose 
+        onMessage,
+        wsSendMessage
       } = wsActions;
+      
+      /*
+      const { user } = getState().user;
+      */
 
-      if (type === WEBSOCKET_CONNECT.type) {
-        socket = new Websocket(wsUrl);
-        dispatch(WEBSOCKET_CONNECTING());
+
+      if (type === wsConnect) {
+        if (isAuthRequired) {
+          socket = new WebSocket(`${wsUrl}?token=${localStorage.getItem('accessToken')}`);
+        } else {
+          socket = new WebSocket(wsUrl);
+        }
       }
 
-      if (socket) {
+      if (type === wsDisconnect) {
+        socket.close();
+      }
 
-        socket.onopen = () => {
-          dispatch(WEBSOCKET_ONOPEN());
+
+
+
+      if (socket) {
+        socket.onopen = event => {
+          dispatch({ type: onOpen, payload: event });
+        };
+
+        socket.onerror = () => {
+          dispatch({ type: onError, payload: "Прозошла какая-то ошибка" });
+        };
+
+        socket.onmessage = event => {
+
+          const parsedData = JSON.parse(event.data);
+  
+          const { success, ...restParsedData } = parsedData;
+
+          dispatch({ type: onMessage, payload: restParsedData });
+        };
+
+
+
+
+
+
+
+
+
+        socket.onclose = event => {
+          dispatch({ type: onClose, payload: event });
+        };
+
+        /*
+        if (type === wsSendMessage) {
+          const message = { ...payload, token: user.token };
+          socket.send(JSON.stringify(message));
+        }
+        */
+
+      }
+
+      next(action);
+    };
+  };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+compose(applyMiddleware(thunkMiddleware), applyMiddleware(socketMiddleware('wss://norma.nomoreparties.space/chat', wsActions))) // Ваш код здесь
+
+
+const socketMiddleware = (wsUrl, wsActions) => {
+// параметр wsActions позволяет передать разные наборы экшенов.
+// есть два вебсокет-соединения, и каждый работает со своим редьюсером.
+// поэтому нужно передавать сюда 2 набора экшенов, чтобы они шли каждый в свой редьюсер
+  return (dispatch) => {
+  
+      const { 
+        wsConnect,
+        wsSendMessage,
+        onOpen,
+        onClose,
+        onError,
+        onMessage,
+        wsConnecting,
+        wsDisconnect
+      } = wsActions; // из wsActions вытаскиваем набор полей 
+       // (это экшен-криейторы, в которых уже хранятся соответствующие экшены) 
+
+
+        const socket = new Websocket(wsUrl);
+        // когда я диспатчу экшен на подключение, я в payload должна передать нужный url
+        dispatch(wsConnecting());
+       
+     
+        // подключение случилось, и мы диспатчим экшен, что установилось соединение
+        socket.onopen = () => { 
+          dispatch(onOpen());
         }
 
-        socket.onerror = event => {
-          dispatch({ type: onError, payload: event });
+        // произошла ошибка, и мы диспатчим текст об ошибке
+        socket.onerror = () => {
+          dispatch(onError("Прозошла какая-то ошибка"));
         }
 
         socket.onmessage = event => {
           const { data } = event;
-          const parsedData = JSON.parse(data);
+          const parsedData = JSON.parse(data); // парсим пришедшие данные из JSON'а
+        
           const { success, ...restParsedData } = parsedData;
 
-          dispatch({ type: onMessage, payload: restParsedData });
+          dispatch(onMessage(restParsedData));
         } 
 
-        socket.onclose = event => {
-          dispatch({ type: onClose, payload: event });
+        // если соединение закрывается, то мы диспатчим экшен onClose
+        socket.onclose = () => {
+          dispatch(onClose());
         }
-
-        if (type === WEBSOCKET_DISCONNECT.type) {
-          socket.close();
-        }
-      }
-
-      next(action);
-
     }
   }
-}
+
+  */

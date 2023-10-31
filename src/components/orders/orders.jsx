@@ -29,6 +29,11 @@ const Orders = () => {
     );
 
 
+
+
+
+    
+/*
   // Подключаюсь к вебсокету, в зависимости от того, какая открыта страница
   useEffect(() => {
 
@@ -72,14 +77,14 @@ const Orders = () => {
 
   }, []);
 
-
+*/
 
 
   return (
     <section className={`${ordersStyles.ordersWrapper} custom-scroll`}>
     { 
       allOrders.map((order) => {
-        return <OrderCard orderNumber={order.number} title={order.name} counter={666} time={order.createdAt} ingredients={order.ingredients} />
+        return <OrderCard orderNumber={order.number} title={order.name} time={order.createdAt} ingredients={order.ingredients} />
       })
   }
  

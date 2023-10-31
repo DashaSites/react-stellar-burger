@@ -13,8 +13,8 @@ const AppHeader = () => {
   const location = useLocation();
   const isHome = useMatch("/");
   const isIngredients = location.pathname.includes("ingredients");  
-  const isProfile = useMatch("/profile");
-  const isOrders = useMatch("/profile/orders");
+  const isProfile = useMatch("/profile/*");
+  const isFeed = useMatch("/feed");
   //const currentPath = useResolvedPath("").pathname; // получаю путь, который сейчас есть в адресной строке
   //const currentPathHome = currentPath.includes("ingredients");
 
@@ -46,7 +46,7 @@ const AppHeader = () => {
           </li>
           <li>
             {
-              isOrders ? (
+              isFeed ? (
                 <NavLink
                   to="/feed"
                   className={`${headerStyles.headerLinkActive} pt-4 pr-5 pb-4 pl-5`}
