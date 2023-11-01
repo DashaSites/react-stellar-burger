@@ -14,9 +14,12 @@ export const LOAD_ALL_ORDERS_WS_MESSAGE = 'LOAD_ALL_ORDERS_WS_MESSAGE';
 export const LOAD_ALL_ORDERS_WS_ERROR = 'LOAD_ALL_ORDERS_WS_ERROR';
 
 
-// Экшены для редьюсера истории заказов пользователя
-export const LOAD_USERS_ORDERS_CONNECT = 'LOAD_USERS_ORDERS_CONNECT';
-export const LOAD_USERS_ORDERS_DISCONNECT = 'LOAD_USERS_ORDERS_DISCONNECT';
+
+
+// для подключения к серверу (послать из компонентов) - идет в мидлвар
+export const LOAD_USERS_ORDERS_WS_CONNECT = 'LOAD_USERS_ORDERS_WS_CONNECT';
+// для отключения от сервера (послать из компонентов) - идет в мидлвар
+export const LOAD_USERS_ORDERS_WS_DISCONNECT = 'LOAD_USERS_ORDERS_WS_DISCONNECT'; 
 
 export const LOAD_USERS_ORDERS_WS_CONNECTING = 'LOAD_USERS_ORDERS_WS_CONNECTING';
 export const LOAD_USERS_ORDERS_WS_OPEN = 'LOAD_USERS_ORDERS_WS_OPEN';

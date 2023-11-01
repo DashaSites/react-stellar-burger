@@ -1,10 +1,3 @@
-/*
-import {
-  LOAD_ALL_ORDERS_REQUEST,
-  LOAD_ALL_ORDERS_SUCCESS,
-  LOAD_ALL_ORDERS_ERROR
-} from "../actions/ordersFeedActions";
-*/
 import {
   LOAD_ALL_ORDERS_WS_CONNECT,
   LOAD_ALL_ORDERS_WS_CONNECTING,
@@ -12,7 +5,7 @@ import {
   LOAD_ALL_ORDERS_WS_CLOSE,
   LOAD_ALL_ORDERS_WS_ERROR,
   LOAD_ALL_ORDERS_WS_MESSAGE
-} from '../actions/socketFeedActions.js';
+} from '../actions/socketActions.js';
 import { WebsocketStatus } from "../../utils/socketData.js";
 
 // initialState for ordersFeedReducer
@@ -75,35 +68,5 @@ export const ordersFeedReducer = (state = ordersFeedInitialState, action) => {
     default: {
       return state;
     }
-/*
-    case LOAD_ALL_ORDERS_REQUEST: {
-      return {
-        ...state,
-        areAllOrdersLoading: true
-      };
-    }
-    case LOAD_ALL_ORDERS_SUCCESS: {
-      const stringifiedPayload = JSON.stringify(action.payload);
-
-      return {
-        ...state,
-        allOrders: action.payload.orders,
-        total: action.payload.total,
-        totalToday: action.payload.totalToday,
-        areAllOrdersLoading: false,
-        isErrorWithAllOrders: false
-      };
-    }
-    case LOAD_ALL_ORDERS_ERROR: {
-      return {
-        ...ordersFeedInitialState,
-        isErrorWithAllOrders: true
-      };
-    }
-    default: {
-      return state;
-    }
-
-    */
   }
 };

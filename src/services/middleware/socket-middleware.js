@@ -23,7 +23,10 @@ export const socketMiddleware = (wsUrl, wsActions, isAuthRequired) => {
 
       if (type === wsConnect) {
         if (isAuthRequired) {
-          socket = new WebSocket(`${wsUrl}?token=${localStorage.getItem('accessToken')}`);
+
+          const accessToken = localStorage.getItem('accessToken');
+          const tokenNumber = accessToken.split(" ")[1];
+          socket = new WebSocket(`${wsUrl}?token=${tokenNumber}`);
         } else {
           socket = new WebSocket(wsUrl);
         }

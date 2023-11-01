@@ -28,7 +28,8 @@ export const getOrderDetails = (idArray) => {
   return request(`${API_URL}/orders`, {
     method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      authorization: localStorage.getItem('accessToken')
     },
     body: JSON.stringify({
       "ingredients": idArray

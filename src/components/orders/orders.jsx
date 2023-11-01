@@ -8,6 +8,7 @@ import { select } from "../../services/store/store.js";
 import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
 import { useMatch } from "react-router-dom";
 import { LOAD_USER_ORDERS_SUCCESS } from "../../services/actions/ordersHistoryActions.js";
+import OrderPreloader from "../../components/order-preloader/order-preloader.jsx";
 
 
 
@@ -17,96 +18,20 @@ import { LOAD_USER_ORDERS_SUCCESS } from "../../services/actions/ordersHistoryAc
 
 
 
-const Orders = () => {
-  const dispatch = useDispatch();
-
-  const isFeed = useMatch("/feed");
-  const isProfileOrders = useMatch("/profile/orders");
-
-    // Достаю из стора заказы всех покупателей (ленту заказов) с флагами
-    const { allOrders, areAllOrdersLoading, isErrorWithAllOrders } = useSelector(
-      (state) => state.ordersFeedState
-    );
-
-
-
-
-
-    
-/*
-  // Подключаюсь к вебсокету, в зависимости от того, какая открыта страница
-  useEffect(() => {
-
-    if (isFeed) {
-      const ws = new WebSocket('wss://norma.nomoreparties.space/orders/all');
-
-      ws.onopen = () => {
-        console.log('ws opened on browser')
-        ws.send('hello world')
-      }
-
-      // загружаю с сервера все заказы к себе в ленту заказов
-      ws.onmessage = (message) => {
-        const parsedData = JSON.parse(message.data);
-
-        dispatch({
-          type: LOAD_ALL_ORDERS_SUCCESS, 
-          payload: parsedData
-        })
-      }
-    } else if (isProfileOrders) {
-      const accessToken = localStorage.getItem("accessToken");
-      const accessTokenNumber = accessToken.split(" ")[1]
-      const wsUser = new WebSocket(`wss://norma.nomoreparties.space/orders?token=${accessTokenNumber}`);
-
-      wsUser.onopen = () => {
-        console.log('wsUser opened on browser')
-        wsUser.send('hello Dasha')
-      }
-
-            // загружаю с сервера все заказы к себе в ленту заказов
-            wsUser.onmessage = (message) => {
-              const parsedData = JSON.parse(message.data);
-      
-              dispatch({
-                type: LOAD_ALL_ORDERS_SUCCESS, 
-                payload: parsedData
-              })
-            }
-    }
-
-  }, []);
-
-*/
+const Orders = ({ orders }) => {
 
 
   return (
-    <section className={`${ordersStyles.ordersWrapper} custom-scroll`}>
-    { 
-      allOrders.map((order) => {
-        return <OrderCard orderNumber={order.number} title={order.name} time={order.createdAt} ingredients={order.ingredients} />
-      })
-  }
- 
-
-
-
-{/* Динамически это будет рендериться как-то так: 
-
-    <ul className={`${ordersStyles.ordersList} mb-4`}>
-      {orderCards.map((orderCard) => (
-        <OrderCard key={orderCard.number} />
-      ))}
-    </ul>
-
-*/}
-
-      
-    </section>
+      !orders ? <OrderPreloader /> : (
+        <section className={`${ordersStyles.ordersWrapper} custom-scroll`}>
+        { 
+          orders.map((order) => {
+            return <OrderCard orderNumber={order.number} title={order.name} time={order.createdAt} ingredients={order.ingredients} />
+          })
+        }
+        </section>
+      )
   );
 };
 
 export default Orders;
-
-{/* Модалка на финальном этапе должна открываться не из этого компонента, 
-// а при попадании на динамические маршруты заказов */}

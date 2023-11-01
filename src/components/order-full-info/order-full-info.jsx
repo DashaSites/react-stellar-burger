@@ -3,14 +3,14 @@ import orderInfoStyles from "./order-full-info.module.css";
 import { useParams } from 'react-router-dom';
 import { orderSelector } from "../../services/selector/ordersSelectors.js";
 import { select } from "../../services/store/store.js";
-import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
+import { ingredientSelector, orderPriceSelector } from "../../services/selector/ingredientsSelectors.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
   CurrencyIcon,
   FormattedDate
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderPreloader from "../order-preloader/order-preloader.jsx";
-import { LOAD_ALL_ORDERS_WS_CONNECT, LOAD_ALL_ORDERS_WS_DISCONNECT } from "../../services/actions/socketFeedActions.js";
+import { LOAD_ALL_ORDERS_WS_CONNECT, LOAD_ALL_ORDERS_WS_DISCONNECT } from "../../services/actions/socketActions.js";
 
 
 
@@ -19,11 +19,6 @@ const OrderFullInfo = () => {
   const dispatch = useDispatch();
 
   const { orderNumber } = useParams();
-
-    // Достаю из стора заказы всех покупателей (ленту заказов) с флагами
-    const { allOrders, areAllOrdersLoading } = useSelector(
-      (state) => state.ordersFeedState
-    );
 
 
 
@@ -36,6 +31,12 @@ const OrderFullInfo = () => {
     const orderIngredient = select(ingredientSelector(ingredientId));
     return orderIngredient;
   }) ?? []
+
+  const orderIngredientsIds =  orderIngredients.map((item) => {
+    return item._id;
+  })
+
+  const orderPrice = select(orderPriceSelector(orderIngredientsIds));
 
 
 
@@ -98,7 +99,7 @@ const OrderFullInfo = () => {
 <div className={orderInfoStyles.timeAndTotalPriceContainer}>
   <p className={`${orderInfoStyles.orderTime} text text_type_main-default text_color_inactive`}>{order.createdAt}</p>
   <div className={orderInfoStyles.totalPriceContainer}>
-    <p className={`${orderInfoStyles.totalPrice} text text_type_digits-default`}>345</p>
+    <p className={`${orderInfoStyles.totalPrice} text text_type_digits-default`}>{orderPrice}</p>
     <CurrencyIcon />
   </div>
 </div>

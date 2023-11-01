@@ -5,7 +5,7 @@ import {
   LOAD_ALL_ORDERS_WS_CLOSE,
   LOAD_ALL_ORDERS_WS_ERROR,
   LOAD_ALL_ORDERS_WS_MESSAGE
-} from '../actions/socketFeedActions.js';
+} from '../actions/socketActions.js';
 import { WebsocketStatus } from "../../utils/socketData.js";
 
 const initialState = {

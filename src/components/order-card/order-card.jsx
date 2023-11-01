@@ -8,8 +8,7 @@ import {
 import OrderCardIngredients from "../../components/order-card-ingredients/order-card-ingredients.jsx";
 import { useLocation, Link, useResolvedPath, useMatch } from 'react-router-dom';
 import { select } from "../../services/store/store.js";
-import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
-
+import { ingredientSelector, orderPriceSelector } from "../../services/selector/ingredientsSelectors.js";
 
 
 const OrderCard = ({ orderNumber, title, time, ingredients }) => {
@@ -25,7 +24,7 @@ const OrderCard = ({ orderNumber, title, time, ingredients }) => {
 
   ///// ПРОВЕРКА ВАЛИДНОСТИ ЗАКАЗОВ (ЧТОБЫ НЕВАЛИДНЫЕ НЕ ОТРИСОВЫВАТЬ)
 
-  const areEnoughIngredients = ingredients.length >= 3;
+  //const areEnoughIngredients = ingredients.length >= 3;
   
 
   const ingredientsInOrder = ingredients.map((ingredientId) => {
@@ -34,29 +33,11 @@ const OrderCard = ({ orderNumber, title, time, ingredients }) => {
     return ingredient;
   });
 
-
-  const ingredientsInOrderTypes = ingredientsInOrder.map((ingredientInOrder) => {
-    return ingredientInOrder.type;
+  const ingredientsIdsInOrder = ingredientsInOrder.map((ingredient) => {
+    return ingredient._id;
   })
 
-
-// ПОДСЧЕТ СТОИМОСТИ ЗАКАЗА
-  const getOrderPrice = (ingredientsInOrder) => {
-    let orderPrice = 0;
-
-    ingredientsInOrder.forEach((ingredient) => {
-      orderPrice += ingredient.price; 
-    });
-
-    return orderPrice;
-  }
-
-  const orderPrice = getOrderPrice(ingredientsInOrder);
-
-
-
-
-
+  const orderPrice = select(orderPriceSelector(ingredientsIdsInOrder));
 
 
 

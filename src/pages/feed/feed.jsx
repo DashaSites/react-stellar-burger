@@ -13,7 +13,7 @@ import { autoBatchEnhancer } from "@reduxjs/toolkit";
 import {
   LOAD_ALL_ORDERS_WS_CONNECT,
   LOAD_ALL_ORDERS_WS_DISCONNECT
-} from '../../services/actions/socketFeedActions.js';
+} from '../../services/actions/socketActions.js';
 
 
 
@@ -85,7 +85,7 @@ export const OrdersFeed = () => {
       <h1 className={`${ordersFeedStyles.heading} text text_type_main-large`}>Лента заказов</h1>
       <div className={ordersFeedStyles.feedContainer}>
         <section className={ordersFeedStyles.orderCardsContainer}>
-           <Orders />
+           <Orders orders={allOrders} />
         </section>
         <section className={ordersFeedStyles.feedStatistic}>
           <div className={ordersFeedStyles.currentCountContainer}>
