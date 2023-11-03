@@ -99,11 +99,11 @@ export const OrdersFeed = () => {
               <h2 className={`${ordersFeedStyles.feedStatisticTitle} text text_type_main-medium`}>Готовы:</h2>
               <div className={`${ordersFeedStyles.numbersBox} mt-6`}>
               { // Беру массив всех номеров готовых заказов
-                readyOrderNumbers.map((oneReadyOrderNumber) => {
+                readyOrderNumbers.map((oneReadyOrderNumber, index) => {
                 // прохожу по нему в цикле, по очереди беру каждый номер заказа,
                 // чтобы отрендерить его в строке
                   return (
-                    <p className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>{oneReadyOrderNumber}</p>
+                    <p key={index} className={`${ordersFeedStyles.numbersReady} text text_type_digits-default mb-2`}>{oneReadyOrderNumber}</p>
                   )            
                 })
               }
@@ -113,11 +113,11 @@ export const OrdersFeed = () => {
               <h2 className={`${ordersFeedStyles.feedStatisticTitle} text text_type_main-medium`}>В работе:</h2>
               <div className={`${ordersFeedStyles.numbersBox} mt-6`}>
               { // Беру массив всех номеров заказов "в работе"
-                pendingOrderNumbers.map((onePendingOrderNumber) => {
+                pendingOrderNumbers.map((onePendingOrderNumber, index) => {
                 // прохожу по нему в цикле, по очереди беру каждый номер заказа,
                 // чтобы отрендерить его в строке
                   return (
-                    <p className={`${ordersFeedStyles.numbersPending} text text_type_digits-default mb-2`}>{onePendingOrderNumber}</p>
+                    <p key={index} className={`${ordersFeedStyles.numbersPending} text text_type_digits-default mb-2`}>{onePendingOrderNumber}</p>
                   )            
                 })
               }

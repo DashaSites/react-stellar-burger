@@ -90,9 +90,9 @@ const OrderFullInfo = () => {
             </h2>
             <ul className={`${orderInfoStyles.orderIngredientsList} custom-scroll`}>
               {
-                orderIngredients.map((ingredient) => {
+                orderIngredients.map((ingredient, index) => {
                   return (
-                    <li>
+                    <li key={index}>
                       <div className={orderInfoStyles.orderIngredient}>
                         <img className={orderInfoStyles.ingredientPreview} src={ingredient.image} />
                         <p className={`${orderInfoStyles.ingredientName} text text_type_main-default`}>{ingredient.name}</p>

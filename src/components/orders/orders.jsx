@@ -16,8 +16,8 @@ const Orders = ({ orders }) => {
       !orders ? <OrderPreloader /> : (
         <section className={`${ordersStyles.ordersWrapper} custom-scroll`}>
         { 
-          orders.map((order) => {
-            return <OrderCard orderNumber={order.number} title={order.name} time={order.createdAt} ingredientsIds={order.ingredients} />
+          orders.map((order, index) => {
+            return <OrderCard key={index} orderNumber={order.number} title={order.name} time={order.createdAt} ingredientsIds={order.ingredients} />
           })
         }
         </section>
