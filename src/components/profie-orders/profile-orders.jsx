@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import OrderPreloader from "../order-preloader/order-preloader.jsx";
 import Orders from "../orders/orders.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import {
   LOAD_USERS_ORDERS_WS_CONNECT,
   LOAD_USERS_ORDERS_WS_DISCONNECT
 } from '../../services/actions/socketActions.js';
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const ProfileOrders = () => {

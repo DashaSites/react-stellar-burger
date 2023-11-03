@@ -9,8 +9,11 @@ export function ingredientSelector(id) {
   };
 }
 
+
+
 // Общая цена заказа, найденная по id всех его ингредиентов
 export function orderPriceSelector(ingredientsIds) {
+
   return function (state) {
     const allIngredients = state.ingredientsState.ingredients;
     const selectedIngredients = allIngredients.filter((ingredient) => {
@@ -33,7 +36,6 @@ export function orderPriceSelector(ingredientsIds) {
 
 
 
-
 // Все ингредиенты - не помню, нужен ли этот селектор
 export function allIngredientsSelector() {
   return function (state) {
@@ -42,10 +44,6 @@ export function allIngredientsSelector() {
     return allIngredients;
   };
 }
-
-
-
-
 
 
 

@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import React from "react";
 import orderCardStyles from "./order-card.module.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
-  FormattedDate,
+  FormattedDate, 
   CurrencyIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderCardIngredients from "../../components/order-card-ingredients/order-card-ingredients.jsx";
@@ -23,15 +23,17 @@ const OrderCard = ({ orderNumber, title, time, ingredients }) => {
   const matchProfileOrders = useMatch("/profile/orders");
 
   ///// ПРОВЕРКА ВАЛИДНОСТИ ЗАКАЗОВ (ЧТОБЫ НЕВАЛИДНЫЕ НЕ ОТРИСОВЫВАТЬ)
-
   //const areEnoughIngredients = ingredients.length >= 3;
-  
 
+
+  
+// ГДЕ-ТО ЗДЕСЬ НИЖЕ БЫЛА ОШИБКА. ЧТО ЗА ХРЕНЬ?!
   const ingredientsInOrder = ingredients.map((ingredientId) => {
 
     const ingredient = select(ingredientSelector(ingredientId));
     return ingredient;
   });
+
 
   const ingredientsIdsInOrder = ingredientsInOrder.map((ingredient) => {
     return ingredient._id;
@@ -45,7 +47,13 @@ const OrderCard = ({ orderNumber, title, time, ingredients }) => {
   // Если есть две булки, то такой заказ валидный
 
   // Проверить, чтобы в списке идентификаторов ингредиентов не было null
-
+  // Если приходит какая-нибудь такая фигня, то карточку с этим заказом не отрисовывать:
+  // Что вообще пришли заказы,
+  // Что они не нулевые,
+  // Что в каждом заказе не андифайнд
+  // Что он не нулевой
+  // Что в нем есть ингредиенты
+  // Что айдишники не нулевые 
 
   /*
   if (!orders) {
@@ -85,7 +93,6 @@ const OrderCard = ({ orderNumber, title, time, ingredients }) => {
 
   return (
     <>
-
       {matchFeed && (
         <Link
         // Тут мы формируем динамический путь для нашего заказа

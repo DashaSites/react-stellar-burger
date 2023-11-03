@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import orderDetailsStyles from "./order-details.module.css";
 import OrderFullInfo from "../order-full-info/order-full-info.jsx";
 

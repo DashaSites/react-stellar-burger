@@ -59,12 +59,6 @@ export const socketMiddleware = (wsUrl, wsActions, isAuthRequired) => {
 
 
 
-
-
-
-
-
-
         socket.onclose = event => {
           dispatch({ type: onClose, payload: event });
         };

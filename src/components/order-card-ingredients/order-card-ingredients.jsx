@@ -1,23 +1,12 @@
-import React, { useRef } from "react";
+import React from "react";
 import orderCardIngredients from "./order-card-ingredients.module.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { select } from "../../services/store/store.js";
 import { ingredientSelector } from "../../services/selector/ingredientsSelectors.js";
-//import {  
-//} from "@ya.praktikum/react-developer-burger-ui-components";
-import one from "../../images/ingredient-previews/one.png";
-import two from "../../images/ingredient-previews/two.png";
-import three from "../../images/ingredient-previews/three.png";
-import four from "../../images/ingredient-previews/four.png";
-import five from "../../images/ingredient-previews/five.png";
-import six from "../../images/ingredient-previews/six.png";
-import seven from "../../images/ingredient-previews/seven.png";
-import eight from "../../images/ingredient-previews/eight.png";
-import nine from "../../images/ingredient-previews/nine.png";
 
 
 
-const OrderCardIngredients = ( { ingredients } ) => {
+const OrderCardIngredients = ({ ingredients }) => {
   const dispatch = useDispatch();
 
 

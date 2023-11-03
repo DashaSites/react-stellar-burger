@@ -1,15 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import ordersFeedStyles from "./feed.module.css";
-import {
-  EmailInput,
-  PasswordInput,
-  Button
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Orders from "../../components/orders/orders.jsx";
-import { socketMiddleware } from "../../services/middleware/socket-middleware.js";
-import { autoBatchEnhancer } from "@reduxjs/toolkit";
 import {
   LOAD_ALL_ORDERS_WS_CONNECT,
   LOAD_ALL_ORDERS_WS_DISCONNECT
@@ -21,21 +13,20 @@ import {
 // Страница ленты заказов
 export const OrdersFeed = () => { 
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Достаю из стора заказы всех покупателей (ленту заказов) с флагами
+  // Достаю из стора заказы всех покупателей (ленту заказов)
   const { allOrders, total, totalToday } = useSelector(
     (state) => state.ordersFeedState
   );
 
 
-
+  // При открытии страницы feed подключаюсь к серверу, отправляя экшен в мидлвар
   useEffect(() => {
 
     dispatch({
       type: LOAD_ALL_ORDERS_WS_CONNECT
-    })
+    }) // а при закрытии страницы — закрываю соединенение
     return () => {
       dispatch({
         type: LOAD_ALL_ORDERS_WS_DISCONNECT
@@ -45,10 +36,13 @@ export const OrdersFeed = () => {
   }, []);
 
 
+  // Делаю проверки полученной с сервера ленты заказов, чтобы не отрисовывать случайную фигню:
+  
+
 
 
   
-  // Получаю все заказы со статусом "готово"
+  // Отбираю все заказы со статусом "готово"
   const readyOrderNumbersArray = [];
 
   const getReadyOrderNumbersArray = (allOrders) => {
@@ -130,8 +124,6 @@ export const OrdersFeed = () => {
           </div>
         </section>
       </div>
-
-
     </div>
   )
 }

@@ -16,7 +16,7 @@ import {
   LOAD_USERS_ORDERS_WS_ERROR,
   LOAD_USERS_ORDERS_WS_MESSAGE
 } from '../actions/socketActions.js';
-import { socketMiddleware } from "../middleware/socket-middleware.js";
+import { socketMiddleware } from '../middleware/socket-middleware.js';
 
 
 
@@ -39,7 +39,6 @@ const historyWsActions = {
 }
 
 
-
 const isAuthRequiredForFeed = false;
 const isAuthRequiredForHistory = true;
 
@@ -50,8 +49,8 @@ const composeEnhancers =
     : compose;
 
 
-    const feedSocketMiddleware = socketMiddleware('wss://norma.nomoreparties.space/orders/all', feedWsActions, isAuthRequiredForFeed);
-    const historySocketMiddleware = socketMiddleware('wss://norma.nomoreparties.space/orders', historyWsActions, isAuthRequiredForHistory);
+const feedSocketMiddleware = socketMiddleware('wss://norma.nomoreparties.space/orders/all', feedWsActions, isAuthRequiredForFeed);
+const historySocketMiddleware = socketMiddleware('wss://norma.nomoreparties.space/orders', historyWsActions, isAuthRequiredForHistory);
 
 const enhancer = composeEnhancers(applyMiddleware(thunk), 
                                   applyMiddleware(feedSocketMiddleware),
