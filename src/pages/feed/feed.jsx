@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import ordersFeedStyles from "./feed.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import Orders from "../../components/orders/orders.jsx";
+import React, { useEffect } from 'react';
+import ordersFeedStyles from './feed.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import Orders from '../../components/orders/orders.jsx';
 import {
   LOAD_ALL_ORDERS_WS_CONNECT,
   LOAD_ALL_ORDERS_WS_DISCONNECT
 } from '../../services/actions/socketActions.js';
+import OrderPreloader from '../../components/order-preloader/order-preloader.jsx';
 
 
 
@@ -36,12 +37,26 @@ export const OrdersFeed = () => {
   }, []);
 
 
-  // Делаю проверки полученной с сервера ленты заказов, чтобы не отрисовывать случайную фигню:
-  
+  // Делаю проверки полученной с сервера ленты заказов
+  const checkAllOrdersValidity = (ordersFromServer) => {
+    
+    if (
+      ordersFromServer === null ||
+      ordersFromServer === undefined ||
+      ordersFromServer.length === 0 
+    ) {
+      return (
+        <OrderPreloader />
+      )
+    }
+
+  }
+
+  checkAllOrdersValidity(allOrders);
 
 
 
-  
+
   // Отбираю все заказы со статусом "готово"
   const readyOrderNumbersArray = [];
 
