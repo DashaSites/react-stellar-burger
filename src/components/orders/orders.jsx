@@ -23,7 +23,7 @@ const Orders = ({ orders }) => {
         <section className={`${ordersStyles.ordersWrapper} custom-scroll`}>
         { 
           orders.map((order) => {
-            return <OrderCard orderNumber={order.number} title={order.name} time={order.createdAt} ingredients={order.ingredients} />
+            return <OrderCard orderNumber={order.number} title={order.name} time={order.createdAt} ingredientsIds={order.ingredients} />
           })
         }
         </section>

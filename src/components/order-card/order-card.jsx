@@ -11,7 +11,7 @@ import { select } from "../../services/store/store.js";
 import { ingredientSelector, orderPriceSelector } from "../../services/selector/ingredientsSelectors.js";
 
 
-const OrderCard = ({ orderNumber, title, time, ingredients }) => {
+const OrderCard = ({ orderNumber, title, time, ingredientsIds }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   // хук useResolvedPath возвращает объект данных, 
@@ -21,23 +21,9 @@ const OrderCard = ({ orderNumber, title, time, ingredients }) => {
 
   const matchFeed = useMatch("/feed");
   const matchProfileOrders = useMatch("/profile/orders");
-
-
-  
-// ЗДЕСЬ БЫЛА ОШИБКА. ЧТО ЗА?
-  // Массив ingredients, пришедший с сервера, - это массив id ингредиентов, а не их объектов целиком
-  const ingredientsInOrder = ingredients.map((ingredientId) => {
-    const ingredient = select(ingredientSelector(ingredientId));
-    return ingredient;
-  });
   
 
-  const ingredientsIdsInOrder = ingredientsInOrder.map((ingredient) => {
-    return ingredient._id;
-  })
-  
-
-  const orderPrice = select(orderPriceSelector(ingredientsIdsInOrder));
+  const orderPrice = select(orderPriceSelector(ingredientsIds));
 
 
 
@@ -63,11 +49,11 @@ const checkOrderValidity = (orderNumberFromServer, titleFromServer, ingredientsI
     ingredientsInOrder !== null &&
     ingredientsInOrder !== undefined &&
     ingredientsInOrder.length >= 3 &&
-    isNoNullIngredient(ingredients)
+    isNoNullIngredient(ingredientsIds)
   )
 }
 
-const isCheckOrderValitityPassed = checkOrderValidity(orderNumber, title, ingredients);
+const isCheckOrderValitityPassed = checkOrderValidity(orderNumber, title, ingredientsIds);
 
 
 if (!isCheckOrderValitityPassed) {
@@ -94,7 +80,7 @@ return (
           </div>
           <p className="text text_type_main-medium mb-6">{title}</p>
           <div className={orderCardStyles.ingredientsAndCounter}>
-            <OrderCardIngredients ingredients={ingredients} />
+            <OrderCardIngredients ingredients={ingredientsIds} />
             <div className={orderCardStyles.orderCounter}>
               <p className={`${orderCardStyles.counter} text text_type_main-medium`}>{orderPrice}</p>
               <CurrencyIcon type="primary"/>
@@ -122,7 +108,7 @@ return (
           </div>
           <p className="text text_type_main-medium mb-6">{title}</p>
           <div className={orderCardStyles.ingredientsAndCounter}>
-            <OrderCardIngredients ingredients={ingredients} />
+            <OrderCardIngredients ingredients={ingredientsIds} />
             <div className={orderCardStyles.orderCounter}>
               <p className={`${orderCardStyles.counter} text text_type_main-medium`}>{orderPrice}</p>
               <CurrencyIcon type="primary"/>

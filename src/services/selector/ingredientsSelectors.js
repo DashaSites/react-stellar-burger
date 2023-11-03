@@ -16,8 +16,9 @@ export function orderPriceSelector(ingredientsIds) {
 
   return function (state) {
     const allIngredients = state.ingredientsState.ingredients;
-    const selectedIngredients = allIngredients.filter((ingredient) => {
-      return ingredientsIds.includes(ingredient._id)
+
+    const selectedIngredients = ingredientsIds.map((id) => {
+      return allIngredients.find((ingredient) => ingredient._id === id)
     })
 
     const getOrderPrice = (ingredientsInOrder) => {
