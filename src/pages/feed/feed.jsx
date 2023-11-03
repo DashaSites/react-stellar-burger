@@ -10,7 +10,6 @@ import OrderPreloader from '../../components/order-preloader/order-preloader.jsx
 
 
 
-
 // Страница ленты заказов
 export const OrdersFeed = () => { 
 
@@ -53,8 +52,6 @@ export const OrdersFeed = () => {
   }
 
   checkAllOrdersValidity(allOrders);
-
-
 
 
   // Отбираю все заказы со статусом "готово"

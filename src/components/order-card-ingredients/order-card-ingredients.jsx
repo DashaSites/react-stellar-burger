@@ -10,12 +10,6 @@ const OrderCardIngredients = ({ ingredients }) => {
   const dispatch = useDispatch();
 
 
-  // Если в массиве превьюшек их больше шести, тогда:
-  // Затемнить последнюю картинку с превью (опасити 60%) и
-  // По центру этой картинки написать "+ число, на которое длинна массива превышает шесть"
-  
-// найти картинки ингредиентов по айдишнику
-
   return (
     <>
       <section className={orderCardIngredients.section}>

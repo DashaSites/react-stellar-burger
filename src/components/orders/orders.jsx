@@ -9,12 +9,6 @@ import OrderPreloader from "../../components/order-preloader/order-preloader.jsx
 
 
 
-// Внутри компонента Orders надо с помощью useMatch проверить:
-// Если он открыт со страницы /profile/orders, то тогда он сам делает подключение к вебсокету, только здесь уже при этом добавляется токен.
-// То есть всего в проекте 2 подключения к вебсокету.
-
-
-
 const Orders = ({ orders }) => {
 
 

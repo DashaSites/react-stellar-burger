@@ -36,7 +36,6 @@ export function orderPriceSelector(ingredientsIds) {
 }
 
 
-
 // Все ингредиенты - не помню, нужен ли этот селектор
 export function allIngredientsSelector() {
   return function (state) {
@@ -56,5 +55,3 @@ export function clickedIngredientSelector() {
     return clickedIngredient;
   };
 }
-
-

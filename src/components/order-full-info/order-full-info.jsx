@@ -54,6 +54,25 @@ const OrderFullInfo = () => {
 
 
 
+  const setOrderStatus = (order) => {
+    
+    let orderStatus;
+    
+    if (order.status === "done") {
+      orderStatus = "Готово";
+    } else if (order.status === "pending") {
+      orderStatus = "В работе";
+    } else if (order.status === "created") {
+      orderStatus = "Создан";
+    } else {
+      orderStatus = order.status;
+    }
+
+    return orderStatus;
+  }
+  
+
+
   return (
     <>
       {!order ? (
@@ -65,7 +84,7 @@ const OrderFullInfo = () => {
             <h2 className={`${orderInfoStyles.orderName} text text_type_main-medium mb-3`}>
               {order.name}
             </h2>
-            <p className={`${orderInfoStyles.orderStatus} text text_type_main-default mb-15`}>{order.status}</p>
+            <p className={`${orderInfoStyles.orderStatus} text text_type_main-default mb-15`}>{setOrderStatus(order)}</p>
             <h2 className="text text_type_main-medium mb-6">
               Состав
             </h2>
