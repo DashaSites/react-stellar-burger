@@ -9,16 +9,29 @@ import { ingredientSelector } from "../../services/selector/ingredientsSelectors
 const OrderCardIngredients = ({ ingredients }) => {
   const dispatch = useDispatch();
 
-  //  ПОСЧИТАТЬ, СКОЛЬКО РАЗ ВСТРЕЧАЕТСЯ КАЖДЫЙ ИНГРЕДИЕНТ
-  // ОТРЕНДЕРИТЬ КАЖДЫЙ ИНГРЕДИЕНТ ТОЛЬКО ОДИН РАЗ
-  // НО НАПИСАТЬ, СКОЛЬКО РАЗ ОН ВСТРЕЧАЕТСЯ
+    // Получаю массив уникальных ингредиентов из заказа:
+    const getOrderIngredientsWithoutDuplicates = (orderIngredients) => {
+      let orderIngredientsWithoutDuplicates = []; 
+  
+      orderIngredients.filter((ingredient) => {
+        if (!orderIngredientsWithoutDuplicates.includes(ingredient)) {
+          orderIngredientsWithoutDuplicates.push(ingredient);
+        }
+        return orderIngredientsWithoutDuplicates;
+      })
+      return orderIngredientsWithoutDuplicates;
+    }
+  
+    // "Чистый" (без повторений) массив ингредиентов заказа
+    const cleanIngredientsArray = getOrderIngredientsWithoutDuplicates(ingredients);
+
 
 
   return (
     <>
       <section className={orderCardIngredients.section}>
         { // с сервера получила айдишники ингредиентов
-          ingredients.map((ingredientId, index) => {
+          cleanIngredientsArray.map((ingredientId, index) => {
             
             // в цикле через селектор получаю по каждому айдишнику ингредиент,
             // чтобы ниже отрендерить картинки этих ингредиентов
@@ -32,7 +45,7 @@ const OrderCardIngredients = ({ ingredients }) => {
             })
         }
         {
-          ingredients.length > 6 && (
+          cleanIngredientsArray.length > 6 && (
             <div className={orderCardIngredients.counterContainer}>
               <span className={`${orderCardIngredients.counterOnLastPreview} text text_type_digits-default`}>{`+${ingredients.length - 6}`}</span>
             </div>
