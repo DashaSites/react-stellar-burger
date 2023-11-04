@@ -27,11 +27,16 @@ const OrderFullInfo = () => {
   // который по номеру заказа возвращает заказ целиком
   const order = useSelector(orderSelector(orderNumber)); 
 
+ 
+
   const orderIngredients = order?.ingredients.map((ingredientId) => {
     const orderIngredient = select(ingredientSelector(ingredientId));
     return orderIngredient;
   }) ?? []
 
+
+  
+  
   const orderIngredientsIds =  orderIngredients.map((item) => {
     return item._id;
   })
@@ -70,8 +75,38 @@ const OrderFullInfo = () => {
 
     return orderStatus;
   }
+
+
+
+  // Получаю массив ингредиентов заказа, выкинув из изначального массива все повторения
+  const getOrderIngredientsWithoutDuplicates = (orderIngredients) => {
+    let orderIngredientsWithoutDuplicates = []; 
+
+    orderIngredients.filter((ingredient) => {
+      if (!orderIngredientsWithoutDuplicates.includes(ingredient)) {
+        orderIngredientsWithoutDuplicates.push(ingredient);
+      }
+      return orderIngredientsWithoutDuplicates;
+    })
+    return orderIngredientsWithoutDuplicates;
+  }
+
+  // "Чистый" (без повторений) массив ингредиентов в заказе
+  const cleanIngredientsArray = getOrderIngredientsWithoutDuplicates(orderIngredients);
+
+
+  
+  // Выявляю, сколько раз данный ингредиент встречается в заказе:
+    const countIngredient = (ingredient) => {
+      const ingredientIdCountInOrder = orderIngredientsIds.filter((id) => {
+        return ingredient._id === id;
+      })
+      return ingredientIdCountInOrder.length;
+    }
   
 
+
+   
 
   return (
     <>
@@ -90,14 +125,14 @@ const OrderFullInfo = () => {
             </h2>
             <ul className={`${orderInfoStyles.orderIngredientsList} custom-scroll`}>
               {
-                orderIngredients.map((ingredient, index) => {
+                cleanIngredientsArray.map((ingredient, index) => {
                   return (
                     <li key={index}>
                       <div className={orderInfoStyles.orderIngredient}>
                         <img className={orderInfoStyles.ingredientPreview} src={ingredient.image} />
                         <p className={`${orderInfoStyles.ingredientName} text text_type_main-default`}>{ingredient.name}</p>
                           <div className={orderInfoStyles.ingredientCountContainer}>
-                            <p className="text text_type_digits-default mr-2">{ingredient.count} x {ingredient.price}</p>
+                            <p className="text text_type_digits-default mr-2"> {countIngredient(ingredient)} x {ingredient.price}</p>
                             <CurrencyIcon />
                           </div>
                       </div>

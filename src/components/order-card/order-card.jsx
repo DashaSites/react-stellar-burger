@@ -17,16 +17,16 @@ const OrderCard = ({ orderNumber, title, time, ingredientsIds }) => {
   // хук useResolvedPath возвращает объект данных, 
   // в котором с помощью pathname можно получить текущий путь в адресной строке:
   const match = useResolvedPath("").pathname;
-  console.log(match);
 
   const matchFeed = useMatch("/feed");
   const matchProfileOrders = useMatch("/profile/orders");
   
+  // Высчитываю стоимость заказа
 
   const orderPrice = select(orderPriceSelector(ingredientsIds));
 
 
-
+  // Если заказ не проходит проверку на валидность, возвращаю null
   const isNoNullIngredient = (ingredients) => {
     const boolsArray = ingredients.map((ingredient) => ingredient != null);
     return !boolsArray.includes(false);
@@ -47,7 +47,6 @@ const OrderCard = ({ orderNumber, title, time, ingredientsIds }) => {
   }
 
   const isCheckOrderValitityPassed = checkOrderValidity(orderNumber, title, ingredientsIds);
-
 
   if (!isCheckOrderValitityPassed) {
     return null;

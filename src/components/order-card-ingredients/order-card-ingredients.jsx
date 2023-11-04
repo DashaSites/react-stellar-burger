@@ -9,6 +9,10 @@ import { ingredientSelector } from "../../services/selector/ingredientsSelectors
 const OrderCardIngredients = ({ ingredients }) => {
   const dispatch = useDispatch();
 
+  //  ПОСЧИТАТЬ, СКОЛЬКО РАЗ ВСТРЕЧАЕТСЯ КАЖДЫЙ ИНГРЕДИЕНТ
+  // ОТРЕНДЕРИТЬ КАЖДЫЙ ИНГРЕДИЕНТ ТОЛЬКО ОДИН РАЗ
+  // НО НАПИСАТЬ, СКОЛЬКО РАЗ ОН ВСТРЕЧАЕТСЯ
+
 
   return (
     <>
