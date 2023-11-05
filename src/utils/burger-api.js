@@ -38,6 +38,15 @@ export const getOrderDetails = (idArray) => {
 };
 
 
+export const getOrderByNumber = (number) => {
+  return request(`${API_URL}/orders/${number}`, {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+};
+
+
 
 ///// ЗАПРОСЫ, СВЯЗАННЫЕ С РОУТИНГОМ /////
 

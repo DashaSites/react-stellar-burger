@@ -1,4 +1,4 @@
-// Заказ целиком (со всеми параметрами), найденный по номеру 
+// Заказ целиком, найденный по номеру 
 // через ordersFeedReducer (редьюсер ленты заказов)
 export function orderSelector(someNumber) {
   return function (state) {
@@ -8,5 +8,6 @@ export function orderSelector(someNumber) {
 
     return orderFromFeed;
   };
+
 }
 
