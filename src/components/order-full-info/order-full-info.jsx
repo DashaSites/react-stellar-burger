@@ -6,8 +6,7 @@ import { select } from "../../services/store/store.js";
 import { ingredientSelector, orderPriceSelector } from "../../services/selector/ingredientsSelectors.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  CurrencyIcon,
-  FormattedDate
+  CurrencyIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderPreloader from "../order-preloader/order-preloader.jsx";
 import { LOAD_ALL_ORDERS_WS_CONNECT, LOAD_ALL_ORDERS_WS_DISCONNECT } from "../../services/actions/socketActions.js";
@@ -22,35 +21,25 @@ const OrderFullInfo = () => {
   const { orderNumber } = useParams();
 
 
-
   // КЛИКНУТЫЙ ЗАКАЗ
-  // Беру детали заказа из стора: вытаскиваю их через селектор, 
-  // который по номеру заказа через ordersFeedReducer возвращает заказ целиком
-  // ВИДИМО, ПРОБЛЕМА В ТОМ, ЧТО ЧЕРЕЗ orderFeedReducer НАХОДЯТСЯ ТОЛЬКО ПАРА ПОСЛЕДНИХ
-  
-
-  // ТАК ОТКРЫВАЮТСЯ ТОЛЬКО ПОСЛЕДНИЕ ТРИ ЗАКАЗА
-  const order = useSelector(orderSelector(orderNumber)); 
-
-  /* // НО ВСЕ РАВНО ТАК ПОКА НЕ ОТКРЫВАЕТСЯ НИ ОДИН ЗАКАЗ
-  const order = useSelector(
+  const orderFromFeed = useSelector(orderSelector(orderNumber)); 
+  const orderFromApi = useSelector(
     (state) => state.fullOrderFoundByNumberState.order
   );
-  */
+
+  const order = orderFromFeed || orderFromApi;
   
-  // МОЖЕТ, АЙДИ НАДО ПРИВЕСТИ К СТРОКЕ/ЧИСЛУ
+  if (!order) {
+    dispatch(getFetchedFullOrderDetails(orderNumber));
+  }
+     
+
+
   const orderIngredients = order?.ingredients.map((ingredientId) => {
     const orderIngredient = select(ingredientSelector(ingredientId));
     return orderIngredient;
   }) ?? []
  
-/*
-  const orderIngredients = order?.ingredients.map((ingredientId) => {
-    const orderIngredient = select(ingredientSelector(ingredientId));
-    return orderIngredient;
-  }) ?? []
-*/
-
   
   
   const orderIngredientsIds =  orderIngredients.map((item) => {
@@ -62,9 +51,6 @@ const OrderFullInfo = () => {
     // Диспатчу с сервера заказы из ordersFeed и конкретный кликнутый заказ
     useEffect(() => {
 
-      dispatch(getFetchedFullOrderDetails(orderNumber)); // ПОЛУЧИЛА ИСКОМЫЙ ЗАКАЗ 
-      // ОТ АПИ, НО ОН СУКА НЕ ИСПОЛЬЗУЕТСЯ В РЕДЬЮСЕРЕ. ИСПРАВИТЬ ЭТО
-
       dispatch({
         type: LOAD_ALL_ORDERS_WS_CONNECT
       })
@@ -74,7 +60,7 @@ const OrderFullInfo = () => {
         })
       }
  
-    }, [orderNumber]);
+    }, []);
 
 
 
