@@ -7,6 +7,7 @@ import { RegisterPage } from "../../pages/register/register.jsx";
 import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password.jsx";
 import { ResetPasswordPage } from "../../pages/reset-password/reset-password.jsx";
 import { ProfilePage } from "../../pages/profile/profile.jsx";
+import { OrdersFeed } from "../../pages/feed/feed.jsx";
 import ProfileOrders from "../profie-orders/profile-orders.jsx";
 import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import Modal from "../modal/modal.jsx";
@@ -16,8 +17,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { checkUserAuth } from "../../services/actions/authorizationActions.js";
 import { getFetchedIngredientsFromApi } from "../../services/actions/ingredientsActions.js";
 
+
 import { OnlyAuth, OnlyUnAuth } from "../protected-route-element/protected-route-element.jsx";
 import Preloader from "../preloader/preloader.jsx";
+import OrderDetails from "../../components/order-details/order-details.jsx";
 
 
 const App = () => {
@@ -26,6 +29,14 @@ const App = () => {
   const { ingredients, isLoading, isError } = useSelector(
     (state) => state.ingredientsState
   );
+
+
+
+  // Достаю из стора историю заказов пользователя
+  const { userOrders, areUserOrdersLoading, isErrorWithUserOrders } = useSelector(
+    (state) => state.ordersHistoryState
+  );
+
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -44,6 +55,7 @@ const App = () => {
   useEffect(() => {
     dispatch(getFetchedIngredientsFromApi());
   }, []);
+
 
 
   const handleModalClose = () => {
@@ -73,14 +85,28 @@ const App = () => {
               {/* Только для неавторизованных */}
               <Route path="reset-password" element={<ResetPasswordPage />} />
 
+              {/* Только для неавторизованных - ЛЕНТА ЗАКАЗОВ */}
+              <Route exact path="feed" element={<OrdersFeed />} />
+
+              <Route path="feed/:orderNumber"
+                  element={<OrderDetails />} />
+
+
               {/* Только для авторизованных */}
               <Route path="/profile/" element={<OnlyAuth component={<Layout />} />}>
                 {/* ключевое слово index означает, что <ProfilePage /> размещен по адресу выше */}
                 <Route index element={<OnlyAuth component={<ProfilePage />} />} />
+                {/* Только для авторизованных - ИСТОРИЯ ЗАКАЗОВ */}
                 <Route path="orders" element={<OnlyAuth component={<ProfileOrders />} />} />
               </Route>
+
+              {/* Когда перехожу на динамический урл, кликая по модалке с деталями заказа на странице /profile/orders, компонент с деталями этого заказа открывается в отдельном окне */}
+              <Route path="/profile/orders/:orderNumber" 
+                  element={<OnlyAuth component={<OrderDetails />} />} />
+
      
               <Route path="*" element={<PageNotFound />} />
+
             </Routes>
 
             {background && (
@@ -90,6 +116,22 @@ const App = () => {
 	                element={
 	                  <Modal closeModals={handleModalClose}>
 	                    <IngredientDetails />
+	                  </Modal>
+	                }
+	              />
+                <Route
+	                path='feed/:orderNumber'
+	                element={
+	                  <Modal closeModals={handleModalClose}>
+	                    <OrderDetails />
+	                  </Modal>
+	                }
+	              />
+                <Route
+	                path='profile/orders/:orderNumber'
+	                element={
+	                  <Modal closeModals={handleModalClose}>
+	                    <OrderDetails />
 	                  </Modal>
 	                }
 	              />

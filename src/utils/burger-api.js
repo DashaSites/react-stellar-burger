@@ -1,5 +1,6 @@
 
 const API_URL = 'https://norma.nomoreparties.space/api';
+const API_URL_SOCKET = "wss://norma.nomoreparties.space/orders";
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -27,13 +28,24 @@ export const getOrderDetails = (idArray) => {
   return request(`${API_URL}/orders`, {
     method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      authorization: localStorage.getItem('accessToken')
     },
     body: JSON.stringify({
       "ingredients": idArray
     })
   })
 };
+
+
+export const getOrderByNumber = (number) => {
+  return request(`${API_URL}/orders/${number}`, {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+};
+
 
 
 ///// ЗАПРОСЫ, СВЯЗАННЫЕ С РОУТИНГОМ /////

@@ -1,0 +1,7 @@
+
+
+// экшены для редьюсера ordersFeedReducer 
+export const LOAD_USER_ORDERS_REQUEST = "LOAD_USER_ORDERS_REQUEST";
+export const LOAD_USER_ORDERS_SUCCESS = "LOAD_USER_ORDERS_SUCCESS";
+export const LOAD_USER_ORDERS_ERROR = "LOAD_USER_ORDERS_ERROR";
+

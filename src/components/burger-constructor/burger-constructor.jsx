@@ -21,7 +21,7 @@ import { ingredientSelector } from "../../services/selector/ingredientsSelectors
 import { dropIngredientWithUuid } from "../../services/actions/ingredientsActions.js";
 import { MiddleConstructorElement } from "../middle-constructor-element/middle-constructor-element.jsx";
 import Modal from "../modal/modal.jsx";
-import OrderDetails from "../order-details/order-details.jsx";
+import OrderDetails from "../order-receipt/order-receipt.jsx";
 import Preloader from "../preloader/preloader.jsx";
 import { Navigate, useNavigate } from "react-router-dom";
 import { isUserAuthorizedSelector } from "../../services/selector/authorizationSelectors.js";
@@ -44,20 +44,22 @@ const BurgerConstructor = () => {
   const mainsAndSaucesElementsCount = mainsAndSaucesElements.length;
 
 
+  const selectedIngredients = useMemo(() => {
+
+    if (bunElement && mainsAndSaucesElements) {
+      return [bunElement, ...mainsAndSaucesElements, bunElement];
+    } else if (bunElement) {
+      return [bunElement, bunElement];
+    } else if (mainsAndSaucesElements) {
+      return mainsAndSaucesElements;
+    } else {
+      return [];
+    }
+
+  }, [bunElement, mainsAndSaucesElementsCount])
 
   // Текущая стоимость заказа на данный момент
   const totalOrderPrice = useMemo(() => {
-
-    let selectedIngredients = [];
-
-    if (bunElement && mainsAndSaucesElements) {
-      selectedIngredients = [bunElement, ...mainsAndSaucesElements, bunElement];
-    } else if (bunElement) {
-      selectedIngredients = [bunElement, bunElement];
-    } else if (mainsAndSaucesElements) {
-      selectedIngredients = mainsAndSaucesElements;
-    }
-
 
     const newSum = selectedIngredients.reduce((sum, currentIngredient) => {
       return sum + currentIngredient.price;
@@ -78,8 +80,8 @@ const BurgerConstructor = () => {
     setIsOrderDetailsOpened(false);
   };
 
-  // Соберем id всех ингредиентов в массив
-  const ingredientsIdArray = ingredients.map((ingredient) => ingredient._id);
+  // Соберем id выбранных покупателем ингредиентов в массив
+  const selectedIngredientsIdArray = selectedIngredients.map((ingredient) => ingredient._id);
   
 
   // Создание заказа
@@ -89,7 +91,7 @@ const BurgerConstructor = () => {
 
     if (isAuthorized) {
       setIsOrderDetailsOpened(true);
-      dispatch(getFetchedOrderDetailsFromApi(ingredientsIdArray)); // вспомогательная функция, чтобы в ней повесить флажок isError
+      dispatch(getFetchedOrderDetailsFromApi(selectedIngredientsIdArray)); // вспомогательная функция, чтобы в ней повесить флажок isError
     } else {
       navigate("/login");
     }

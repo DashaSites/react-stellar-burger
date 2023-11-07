@@ -55,7 +55,7 @@ export const LoginPage = () => {
   return (
     <div className={loginStyles.formContainer}>
       <form className={loginStyles.form} onSubmit={handleFormSubmit}>
-        
+
         <h2 className={`${loginStyles.headline} text text_type_main-medium mb-6`}>Вход</h2>
         <fieldset className={loginStyles.inputItems}>
          <EmailInput 
@@ -76,7 +76,7 @@ export const LoginPage = () => {
       <div className={`${loginStyles.navigationContainer} mb-4`}>
 
         <p className={`${loginStyles.navigationText} text text_type_main-default`}>
-          Вы — новый пользователь?
+          Вы — новый пользователь?
         </p>
 
         <button className={`${loginStyles.navigationButton} text text_type_main-default`} onClick={registerButtonClickHandler}>

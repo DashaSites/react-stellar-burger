@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import ingredientsStyles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../ingredient/ingredient.jsx";
-import IngredientDetails from "../ingredient-details/ingredient-details.jsx";
 import { useSelector, useDispatch } from "react-redux";
 
 
