@@ -63,7 +63,6 @@ const App = () => {
     navigate(-1);
   };
 
-  
   return (
     <>
       {isError && "Что-то пошло не так"}
