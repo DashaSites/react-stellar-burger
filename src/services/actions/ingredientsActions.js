@@ -11,6 +11,8 @@ export const DROP_INGREDIENT_BUN = 'DROP_INGREDIENT_BUN';
 export const DROP_INGREDIENT_MIDDLE = 'DROP_INGREDIENT_MIDDLE';
 export const MOVE_INGREDIENT = 'MOVE_INGREDIENT';
 
+export const GET_CLICKED_INGREDIENT = 'GET_CLICKED_INGREDIENT';
+
 
 
 // экшен-криейтор для удаления элемента конструктора
@@ -22,7 +24,7 @@ export function deleteIngredient(_id) {
 }
 
 
-// экшен-криейтор для дропания ингредиента (он добавляет ин-ту key с уникальным номером)
+// экшен-криейтор для бросания ингредиента (он добавляет ин-ту key с уникальным номером)
 export function dropIngredientWithUuid(droppedIngredient) {
   return {
     type: DROP_INGREDIENT_MIDDLE,

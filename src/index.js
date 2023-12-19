@@ -5,8 +5,10 @@ import App from "./components/app/app";
 import { Provider } from 'react-redux';
 import reportWebVitals from "./reportWebVitals";
 import { store } from "./services/store/store.js";
-import { HTML5Backend } from 'react-dnd-html5-backend' // Контекст для dnd
-import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'; // Контекст для dnd
+import { DndProvider } from 'react-dnd';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 
 
 
@@ -15,8 +17,10 @@ ReactDOM.render(
   <React.StrictMode>
   <DndProvider backend={HTML5Backend}>
     <Provider store={store}>
+      <Router>
         <App />
-      </Provider>
+      </Router>
+    </Provider>
     </DndProvider>
   </React.StrictMode>,
   document.getElementById("root")
