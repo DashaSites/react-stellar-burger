@@ -10,7 +10,6 @@ export function ingredientSelector(id) {
 }
 
 
-
 // Общая цена заказа, найденная по id всех его ингредиентов
 export function orderPriceSelector(ingredientsIds) {
 
