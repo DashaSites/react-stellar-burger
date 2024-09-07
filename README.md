@@ -4,4 +4,4 @@
 
 Written on JavaScript, React, React DND and Redux
 
-https://dashasites.github.io/react-stellar-burger/
+https://vermillion-cendol-631f68.netlify.app

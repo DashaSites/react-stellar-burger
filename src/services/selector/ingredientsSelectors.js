@@ -48,9 +48,9 @@ export function allIngredientsSelector() {
 
 // NEW
 // Кликнутый ингредиент
-export function clickedIngredientSelector() {
-  return function (state) {
-    const clickedIngredient = state.ingredientsState.clickedIngredient;
-    return clickedIngredient;
-  };
-}
+// export function clickedIngredientSelector() {
+//   return function (state) {
+//     const clickedIngredient = state.ingredientsState.clickedIngredient;
+//     return clickedIngredient;
+//   };
+// }
